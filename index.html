@@ -618,7 +618,7 @@ footer{
     <li><a href="#revenue">Revenue</a></li>
     <li><a href="#cta">Invest</a></li>
   </ul>
-  <a href="#cta" class="nav-cta" id="nav-download-btn">Get Early Access</a>
+  <a href="#cta" class="nav-cta" id="nav-download-btn">Get Free Early Access</a>
 </nav>
 
 <!-- HERO -->
@@ -887,7 +887,7 @@ footer{
         <div class="price-title">Individual Physician</div>
         <div class="price-val" style="color:var(--teal)">$49</div>
         <div class="price-period">per doctor / month</div>
-        <div class="price-annual" style="color:var(--teal2)">Annual: $588 / yr</div>
+        <div class="price-annual" style="color:var(--teal2)">or Annual: $468 / yr</div>
         <div class="price-divider"></div>
         <div class="price-feat"><span class="check">✓</span> Core diagnostic engine</div>
         <div class="price-feat"><span class="check">✓</span> 5 clinical sections</div>
@@ -1003,7 +1003,7 @@ footer{
   <p class="cta-sub reveal" style="transition-delay:.15s">diagnose smarter. &nbsp; document instantly.</p>
   <div class="cta-stats reveal" style="transition-delay:.2s">
     <div class="cta-stat">
-      <div class="cta-stat-val">5–10 min</div>
+      <div class="cta-stat-val">5 – 10 min</div>
       <div class="cta-stat-label">saved / encounter</div>
     </div>
     <div class="cta-stat">
@@ -1046,72 +1046,78 @@ footer{
     <div class="footer-right">ER Clinical Edition · AI-Powered · 100% Offline · © 2026</div>
   </footer>
   
-  <script>
-  // ── UTILITIES & REVEAL ──
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if(e.isIntersecting) { e.target.classList.add('visible'); }
-    });
-  }, {threshold: 0.12});
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  
-  // ── BACK4APP CONFIG ──
-  const B4A_APP_ID   = "Wm6rlmXv53Ik1VlBTsnaMhQHDcEIreugsv5xVoCw";
-  const B4A_JS_KEY    = "wZWpVa513LWcKKpYNqYi7iDY9lr3svqFLoRNy07l";
-  // Replace this with your actual Dropbox ZIP link
-  const DOWNLOAD_URL = "https://www.dropbox.com/scl/fi/znzgwgdxzzpy0thz12fiu/BrainBuddy.zip?rlkey=hewcmasgdpnb7opaut918cjxu&dl=1";
-  
-  document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("downloadForm");
-    const messageDiv = document.getElementById("formMessage");
-  
-    if (form) {
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const email = document.getElementById("userEmail").value;
-        const submitBtn = form.querySelector("button[type='submit']");
-  
-        // UI Loading State
-        submitBtn.innerText = "Verifying...";
-        submitBtn.style.opacity = "0.7";
-        submitBtn.disabled = true;
-  
-        // Call Back4App Cloud Function
-        fetch("https://parseapi.back4app.com/functions/sendDownloadLink", {
-          method: "POST",
-          headers: { 
-            "X-Parse-Application-Id": B4A_APP_ID,
-            "X-Parse-Javascript-Key": B4A_JS_KEY,
-            "Content-Type": "application/json" 
-          },
-          body: JSON.stringify({ 
-            email: email, 
-            download_url: DOWNLOAD_URL 
-          })
-        })
-        .then(response => {
-          if (response.ok) {
-            form.style.display = "none";
-            messageDiv.style.display = "block";
-            messageDiv.style.color = "#4ade80";
-            messageDiv.innerHTML = "<strong>Success!</strong> Check your inbox for your secure download link.";
-          } else {
-            throw new Error("Server error");
-          }
-        })
-        .catch(error => {
-          console.error("Submission Error:", error);
-          submitBtn.innerText = "Get Mac App";
-          submitBtn.style.opacity = "1";
-          submitBtn.disabled = false;
-          messageDiv.style.display = "block";
-          messageDiv.style.color = "#f87171";
-          messageDiv.innerHTML = "Connection error. Please try again or contact support.";
-        });
-      });
-    }
-  });
-  </script>
+ <script>
+ // Scroll reveal (Keeps your site animations working)
+ const observer = new IntersectionObserver((entries) => {
+   entries.forEach(e => {
+     if(e.isIntersecting) { e.target.classList.add('visible'); }
+   });
+ }, {threshold: 0.12});
+ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+ </script>
+ 
+ <script>
+   document.addEventListener("DOMContentLoaded", function () {
+     const form = document.getElementById("downloadForm");
+     const messageDiv = document.getElementById("formMessage");
+ 
+     // 1. YOUR ACTUAL MAC APP ZIP LINK (With auto-download enabled)
+     const downloadUrl = "https://www.dropbox.com/scl/fi/znzgwgdxzzpy0thz12fiu/BrainBuddy.zip?rlkey=hewcmasgdpnb7opaut918cjxu&dl=0";
+ 
+     // 2. BACK4APP CLOUD CODE ENDPOINT
+     const backendEndpoint = "https://parseapi.back4app.com/functions/sendDownloadLink";
+ 
+     // 3. YOUR EXACT BACK4APP KEYS
+     const APP_ID = "Wm6rlmXv53Ik1VlBTsnaMhQHDcEIreugsv5xVoCw";
+     const JS_KEY = "wZWpVa513LWcKKpYNqYi7iDY9lr3svqFLoRNy07l";
+ 
+     if (form) {
+       form.addEventListener("submit", function (e) {
+         e.preventDefault();
+         const email = document.getElementById("userEmail").value;
+         const submitBtn = form.querySelector("button[type='submit']");
+ 
+         submitBtn.innerText = "Verifying...";
+         submitBtn.style.opacity = "0.7";
+         submitBtn.disabled = true;
+ 
+         const payload = { 
+             email: email, 
+             download_url: downloadUrl 
+         };
+ 
+         fetch(backendEndpoint, {
+           method: "POST",
+           headers: { 
+             "X-Parse-Application-Id": APP_ID,
+             "X-Parse-Javascript-Key": JS_KEY,
+             "Content-Type": "application/json" 
+           },
+           body: JSON.stringify(payload)
+         })
+         .then(response => {
+           if (response.ok) {
+             form.style.display = "none";
+             messageDiv.style.display = "block";
+             messageDiv.style.color = "#4ade80";
+             messageDiv.innerHTML = "<strong>Success!</strong> Check your inbox for your secure download link.";
+           } else {
+             throw new Error("Server error");
+           }
+         })
+         .catch(error => {
+           console.error("Submission Error:", error);
+           submitBtn.innerText = "Get Mac App";
+           submitBtn.style.opacity = "1";
+           submitBtn.disabled = false;
+           messageDiv.style.display = "block";
+           messageDiv.style.color = "#f87171";
+           messageDiv.innerHTML = "Connection error. Please try again or contact support.";
+         });
+       });
+     }
+   });
+ </script>
 
 </body>
 </html>
