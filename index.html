@@ -114,80 +114,162 @@ section.light{background:var(--off);color:var(--navy)}
 .tag.dark-tag{color:var(--teal2)}
 
 /* ── HERO ── */
-#hero{
-  padding-top:80px;
-  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+#hero {
+  padding: 120px 0 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  min-height: calc(100vh - 80px);
 }
-.hero-left{}
-.hero-eyebrow{
-  font-family:var(--font-mono);
-  font-size:11px;letter-spacing:3px;color:var(--teal);
-  text-transform:uppercase;margin-bottom:24px;
+.hero-left {
+  padding-right: 20px;
 }
-.hero-title{
-  font-family:var(--font-display);
-  font-size:clamp(52px,7vw,86px);
-  font-weight:800;
-  line-height:0.95;
-  letter-spacing:-2px;
-  margin-bottom:24px;
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 24px;
 }
-.hero-title .accent{color:var(--teal)}
-.hero-tagline{
-  font-family:var(--font-mono);
-  font-size:14px;color:var(--teal);
-  margin-bottom:40px;letter-spacing:0.5px;
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 82px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  margin-bottom: 24px;
 }
-.hero-desc{
-  color:var(--muted);font-size:16px;line-height:1.7;
-  max-width:480px;margin-bottom:40px;
+.hero-title .accent { color: var(--teal); }
+.hero-tagline {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--teal);
+  margin-bottom: 40px;
+  letter-spacing: 0.5px;
 }
-.hero-btns{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.btn-primary{
-  background:var(--teal);color:var(--navy);
-  padding:14px 28px;border-radius:8px;
-  font-family:var(--font-display);font-size:14px;font-weight:700;
-  text-decoration:none;letter-spacing:0.5px;
-  transition:transform .2s,opacity .2s;display:inline-block;
+.hero-desc {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 40px;
 }
-.btn-primary:hover{transform:translateY(-2px);opacity:0.92}
-.btn-ghost{
-  border:1px solid rgba(255,255,255,0.2);color:var(--white);
-  padding:13px 28px;border-radius:8px;
-  font-family:var(--font-display);font-size:14px;font-weight:600;
-  text-decoration:none;letter-spacing:0.5px;
-  transition:border-color .2s,background .2s;display:inline-block;
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
 }
-.btn-ghost:hover{border-color:var(--teal);background:rgba(0,200,150,0.06)}
+.btn-primary {
+  background: var(--teal);
+  color: var(--navy);
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: transform .2s, opacity .2s;
+  display: inline-block;
+}
+.btn-primary:hover { transform: translateY(-2px); opacity: 0.92; }
+.btn-ghost {
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--white);
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: border-color .2s, background .2s;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--teal); background: rgba(0,200,150,0.06); }
 
-.hero-stats{
-  display:flex;gap:32px;margin-top:48px;padding-top:40px;
-  border-top:1px solid var(--border);
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
 }
-.hstat{}
-.hstat-val{
-  font-family:var(--font-display);font-size:28px;font-weight:800;
-  color:var(--teal);line-height:1;margin-bottom:4px;
+.hstat-val {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1;
+  margin-bottom: 6px;
 }
-.hstat-val.amber{color:var(--amber)}
-.hstat-val.red{color:var(--red)}
-.hstat-label{font-size:12px;color:var(--muted);letter-spacing:0.3px}
+.hstat-val.amber { color: var(--amber); }
+.hstat-label {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
 
-.hero-right{
-  display:grid;grid-template-columns:1fr 1fr;gap:12px;
-  position:relative;
+.hero-right {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  position: relative;
+  perspective: 1200px;
 }
-.screen-card{
-  border-radius:12px;overflow:hidden;
-  border:1px solid rgba(255,255,255,0.1);
-  box-shadow:0 20px 60px rgba(0,0,0,0.3);
-  transition:transform .3s;
+.screen-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  transition: transform .4s cubic-bezier(0.165, 0.84, 0.44, 1);
   background: #000;
 }
-.screen-card:hover{transform:translateY(-6px)}
-.screen-card img{max-width:100%;height:auto;display:block;object-fit:contain}
-.screen-card.tall{grid-row:span 2}
-.screen-card.span2{grid-column:span 2}
+.screen-card:hover {
+  transform: scale(1.02) translateY(-8px) rotate(0deg) !important;
+  z-index: 20;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+.screen-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.card-featured {
+  grid-column: span 6;
+  height: 280px;
+  transform: rotate(-2deg);
+  z-index: 5;
+}
+.card-medium {
+  grid-column: span 2;
+  height: 180px;
+  margin-top: -30px;
+}
+.card-medium:nth-of-type(2) { transform: rotate(1deg); z-index: 6; }
+.card-medium:nth-of-type(3) { transform: rotate(-1deg); z-index: 4; }
+.card-medium:nth-of-type(4) { transform: rotate(1.5deg); z-index: 7; }
+
+.card-small {
+  grid-column: span 3;
+  height: 140px;
+  margin-top: -20px;
+  z-index: 8;
+}
+.card-extra {
+  grid-column: span 6;
+  height: 100px;
+  margin-top: -20px;
+  opacity: 0.6;
+  filter: blur(1px);
+  z-index: 3;
+}
 
 /* ── PROBLEM ── */
 #problem{background:var(--navy)}
@@ -608,7 +690,7 @@ footer{
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo">
+  <a href="#hero" class="nav-logo" onclick="document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));">
     <div class="nav-logo-bar"></div>
     <div class="nav-logo-text">Brain<span>Buddy</span></div>
   </a>
@@ -633,7 +715,7 @@ footer{
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left reveal">
-    <div class="hero-eyebrow">ER Clinical Edition · AI-Powered · 100% Offline</div>
+    <div class="hero-eyebrow">ER Clinical Edition · AI-Powered · 100% OFFLINE</div>
     <h1 class="hero-title">Brain<span class="accent">Buddy</span><br>Clinical<br>Intelligence</h1>
     <p class="hero-tagline">// diagnose smarter. document instantly.</p>
     <p class="hero-desc">An AI-powered clinical scribe that sits beside the EMR — watching what the doctor types, delivering differential diagnoses, recommended tests, drug references and billing codes before the doctor even asks.</p>
@@ -650,17 +732,37 @@ footer{
         <div class="hstat-val amber">6,096</div>
         <div class="hstat-label">Clinical synonyms</div>
       </div>
-      <div class="hstat">
-        <div class="hstat-val red">5–10 min</div>
-        <div class="hstat-label">Saved per encounter</div>
-      </div>
     </div>
   </div>
   <div class="hero-right reveal" style="transition-delay:.2s">
-    <div class="screen-card span2"><img src="Screenshot_2026-04-25_at_9_54_53_PM.png" alt="BrainBuddy stroke documentation"></div>
-    <div class="screen-card"><img src="Screenshot_2026-04-25_at_9_55_44_PM.png" alt="BrainBuddy STEMI documentation"></div>
-    <div class="screen-card"><img src="Screenshot_2026-04-25_at_9_56_12_PM.png" alt="BrainBuddy ankle sprain documentation"></div>
-    <div class="screen-card span2"><img src="Screenshot_2026-04-25_at_9_54_22_PM.png" alt="BrainBuddy onboarding state"></div>
+    <!-- Featured (Large) -->
+    <div class="screen-card card-featured">
+      <img src="Screenshot_2026-04-25_at_9_54_53_PM.png" alt="BrainBuddy Stroke/CVA documentation">
+    </div>
+    
+    <!-- Medium Row -->
+    <div class="screen-card card-medium">
+      <img src="Screenshot_2026-04-25_at_9_55_44_PM.png" alt="BrainBuddy STEMI documentation">
+    </div>
+    <div class="screen-card card-medium">
+      <img src="Screenshot_2026-04-25_at_9_56_12_PM.png" alt="BrainBuddy Ankle Sprain light mode">
+    </div>
+    <div class="screen-card card-medium">
+      <img src="Screenshot_2026-04-25_at_9_54_22_PM.png" alt="BrainBuddy Idle state">
+    </div>
+    
+    <!-- Bottom 2 -->
+    <div class="screen-card card-small">
+      <img src="Screenshot_2026-04-25_at_9_55_14_PM.png" alt="BrainBuddy Clinical Engine">
+    </div>
+    <div class="screen-card card-small">
+      <img src="Screenshot_2026-04-25_at_9_56_22_PM.png" alt="BrainBuddy Differential Diagnosis">
+    </div>
+    
+    <!-- Remaining -->
+    <div class="screen-card card-extra">
+      <img src="Screenshot_2026-04-25_at_9_55_35_PM.png" alt="BrainBuddy medications screen">
+    </div>
   </div>
 </section>
 
