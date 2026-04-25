@@ -618,7 +618,7 @@ footer{
     <li><a href="#revenue">Revenue</a></li>
     <li><a href="#cta">Invest</a></li>
   </ul>
-  <a href="#cta" class="nav-cta" id="nav-download-btn">Get Free Early Access</a>
+  <a href="#cta" class="nav-cta download-btn" id="nav-download-btn">Get Free Early Access</a>
 </nav>
 
 <!-- HERO -->
@@ -1056,68 +1056,107 @@ footer{
  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
  </script>
  
- <script>
-   document.addEventListener("DOMContentLoaded", function () {
-     const form = document.getElementById("downloadForm");
-     const messageDiv = document.getElementById("formMessage");
- 
-     // 1. YOUR ACTUAL MAC APP ZIP LINK (With auto-download enabled)
-     const downloadUrl = "https://www.dropbox.com/scl/fi/znzgwgdxzzpy0thz12fiu/BrainBuddy.zip?rlkey=hewcmasgdpnb7opaut918cjxu&dl=1";
- 
-     // 2. BACK4APP CLOUD CODE ENDPOINT
-     const backendEndpoint = "https://parseapi.back4app.com/functions/sendDownloadLink";
- 
-     // 3. YOUR EXACT BACK4APP KEYS
-     const APP_ID = "Wm6rlmXv53Ik1VlBTsnaMhQHDcEIreugsv5xVoCw";
-     const JS_KEY = "wZWpVa513LWcKKpYNqYi7iDY9lr3svqFLoRNy07l";
- 
-     if (form) {
-       form.addEventListener("submit", function (e) {
-         e.preventDefault();
-         const email = document.getElementById("userEmail").value;
-         const submitBtn = form.querySelector("button[type='submit']");
- 
-         submitBtn.innerText = "Verifying...";
-         submitBtn.style.opacity = "0.7";
-         submitBtn.disabled = true;
- 
-         const payload = { 
-             email: email, 
-             download_url: downloadUrl 
-         };
- 
-         fetch(backendEndpoint, {
-           method: "POST",
-           headers: { 
-             "X-Parse-Application-Id": APP_ID,
-             "X-Parse-Javascript-Key": JS_KEY,
-             "Content-Type": "application/json" 
-           },
-           body: JSON.stringify(payload)
-         })
-         .then(response => {
-           if (response.ok) {
-             form.style.display = "none";
-             messageDiv.style.display = "block";
-             messageDiv.style.color = "#4ade80";
-             messageDiv.innerHTML = "<strong>Success!</strong> Check your inbox for your secure download link.";
-           } else {
-             throw new Error("Server error");
-           }
-         })
-         .catch(error => {
-           console.error("Submission Error:", error);
-           submitBtn.innerText = "Get Mac App";
-           submitBtn.style.opacity = "1";
-           submitBtn.disabled = false;
-           messageDiv.style.display = "block";
-           messageDiv.style.color = "#f87171";
-           messageDiv.innerHTML = "Connection error. Please try again or contact support.";
-         });
-       });
-     }
-   });
- </script>
+  <script>
+    const BACK4APP_APP_ID  = 'Wm6rlmXv53Ik1VlBTsnaMhQHDcEIreugsv5xVoCw';
+    const BACK4APP_REST_KEY = '8mVf9Hs9DbGz1B69cIGsN8HS6YFAEBnXcWvHX3P2';
+
+    // 1. Function to load the download URL and update any .download-btn elements (e.g. Nav bar)
+    async function loadDownloadUrl() {
+      try {
+        const res = await fetch(
+          'https://parseapi.back4app.com/classes/brainbuddy',
+          {
+            headers: {
+              'X-Parse-Application-Id': BACK4APP_APP_ID,
+              'X-Parse-REST-API-Key':   BACK4APP_REST_KEY
+            }
+          }
+        );
+        const data = await res.json();
+        const record = data.results?.[0];
+        if (record?.download_url) {
+          document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.href = record.download_url;
+          });
+        }
+      } catch (e) {
+        console.error('Failed to load download URL:', e);
+      }
+    }
+
+    // 2. Form submission handler
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("downloadForm");
+      const messageDiv = document.getElementById("formMessage");
+
+      if (form) {
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const email = document.getElementById("userEmail").value;
+          const submitBtn = form.querySelector("button[type='submit']");
+
+          submitBtn.innerText = "Verifying...";
+          submitBtn.style.opacity = "0.7";
+          submitBtn.disabled = true;
+
+          try {
+            // Step 1: Get latest download_url from Back4App
+            const configRes = await fetch(
+              'https://parseapi.back4app.com/classes/brainbuddy',
+              {
+                headers: {
+                  'X-Parse-Application-Id': BACK4APP_APP_ID,
+                  'X-Parse-REST-API-Key': BACK4APP_REST_KEY
+                }
+              }
+            );
+            const configData = await configRes.json();
+            const download_url = configData.results?.[0]?.download_url || '';
+
+            // Step 2: Call Cloud Code with email + download_url
+            const res = await fetch(
+              'https://parseapi.back4app.com/functions/sendDownloadLink',
+              {
+                method: "POST",
+                headers: {
+                  "X-Parse-Application-Id": BACK4APP_APP_ID,
+                  "X-Parse-REST-API-Key": BACK4APP_REST_KEY,
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, download_url })
+              }
+            );
+
+            const result = await res.json();
+            
+            // Check for success
+            if (res.ok && (result.result?.status === 'success' || result.result)) {
+              form.style.display = "none";
+              messageDiv.style.display = "block";
+              messageDiv.style.color = "#4ade80";
+              messageDiv.innerHTML = "<strong>Success!</strong> Check your inbox for your secure download link.";
+            } else {
+              throw new Error("Server error");
+            }
+          } catch (error) {
+            console.error("Submission Error:", error);
+            submitBtn.innerText = "Get Mac App";
+            submitBtn.style.opacity = "1";
+            submitBtn.disabled = false;
+            messageDiv.style.display = "block";
+            messageDiv.style.color = "#f87171";
+            messageDiv.innerHTML = "Connection error. Please try again or contact support.";
+          }
+        });
+      }
+      
+      // Also load the download URL for the nav button
+      loadDownloadUrl();
+    });
+  </script>
+
+
+
 
 </body>
 </html>
