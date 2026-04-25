@@ -188,33 +188,116 @@ section.light{background:var(--off);color:var(--navy)}
   font-size: 12px; color: var(--muted); letter-spacing: 0.3px; text-transform: uppercase;
 }
 
-/* Thumbnail Grid */
-.hero-thumbnail-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 160px);
-  gap: 12px;
+/* ── SCREENSHOT SHOWCASE ── */
+.hero-showcase {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
-.hero-thumbnail {
-  width: 160px;
-  height: 120px;
-  border-radius: 8px;
+
+/* ambient glow behind the stack */
+.hero-showcase::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 55% 50%, rgba(0,200,150,0.10) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.showcase-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+}
+
+/* left col sits 40px lower → stagger effect */
+.showcase-col.col-left  { margin-top: 40px; }
+.showcase-col.col-right { margin-top: -40px; }
+
+.showcase-col + .showcase-col { margin-left: 14px; }
+
+.sc-thumb {
+  position: relative;
+  border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: all 0.2s ease;
-  background: #000;
+  border: 1px solid rgba(255,255,255,0.09);
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.5),
+    0 0 0 0px rgba(0,200,150,0);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  background: #0a0e1a;
 }
-.hero-thumbnail:hover {
-  transform: scale(1.05);
-  border-color: var(--teal);
-  z-index: 10;
-}
-.hero-thumbnail img {
+
+/* size variants */
+.sc-thumb.large  { width: 220px; }
+.sc-thumb.medium { width: 186px; }
+.sc-thumb.small  { width: 158px; }
+
+.sc-thumb img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16/10;
   object-fit: cover;
+}
+
+/* featured card — first thumb in right col */
+.sc-thumb.featured {
+  border-color: rgba(0,200,150,0.45);
+  box-shadow:
+    0 0 0 1px rgba(0,200,150,0.3),
+    0 8px 32px rgba(0,0,0,0.6),
+    0 0 40px rgba(0,200,150,0.12);
+}
+
+/* hover */
+.sc-thumb:hover {
+  transform: translateY(-5px) scale(1.03);
+  border-color: var(--teal);
+  box-shadow:
+    0 0 0 1px rgba(0,200,150,0.6),
+    0 16px 40px rgba(0,0,0,0.55),
+    0 0 32px rgba(0,200,150,0.20);
+  z-index: 20;
+}
+
+/* click-hint overlay on hover */
+.sc-thumb::after {
+  content: '⤢';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: rgba(255,255,255,0);
+  background: rgba(0,200,150,0);
+  transition: all 0.22s ease;
+  border-radius: 10px;
+}
+.sc-thumb:hover::after {
+  color: rgba(255,255,255,0.85);
+  background: rgba(0,200,150,0.08);
+}
+
+/* label pill on featured */
+.sc-thumb .sc-label {
+  position: absolute;
+  bottom: 8px; left: 8px;
+  background: var(--teal);
+  color: var(--navy);
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 1.2px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  pointer-events: none;
 }
 
 /* Lightbox Styles */
@@ -479,7 +562,7 @@ section.light{background:var(--off);color:var(--navy)}
   color:var(--navy);
   font-family:var(--font-display);font-size:13px;font-weight:800;
   padding:10px 14px;border-radius:50px;
-  writing-mode:vertical-rl;letter-spacing:2px;
+  
 }
 
 /* ── CTA ── */
@@ -703,13 +786,35 @@ footer{
     </div>
   </div>
   <div class="hero-right reveal" style="transition-delay:.2s">
-    <div class="hero-thumbnail-grid">
-      <div class="hero-thumbnail" onclick="openLightbox(0)"><img src="Screenshot_2026-04-25_at_9_54_53_PM.png" alt="Stroke Case"></div>
-      <div class="hero-thumbnail" onclick="openLightbox(1)"><img src="Screenshot_2026-04-25_at_9_55_44_PM.png" alt="STEMI Report"></div>
-      <div class="hero-thumbnail" onclick="openLightbox(2)"><img src="Screenshot_2026-04-25_at_9_56_12_PM.png" alt="Ankle Sprain"></div>
-      <div class="hero-thumbnail" onclick="openLightbox(3)"><img src="Screenshot_2026-04-25_at_9_54_22_PM.png" alt="Idle State"></div>
-      <div class="hero-thumbnail" onclick="openLightbox(4)"><img src="Screenshot_2026-04-25_at_9_55_14_PM.png" alt="Clinical Engine"></div>
-      <div class="hero-thumbnail" onclick="openLightbox(5)"><img src="Screenshot_2026-04-25_at_9_56_22_PM.png" alt="Differential Diagnosis"></div>
+    <div id="screenshots-grid" class="hero-showcase">
+
+      <!-- LEFT COLUMN: thumbnails 1, 3, 5 — offset down -->
+      <div class="showcase-col col-left">
+        <div class="sc-thumb large" onclick="openLightbox(0)">
+          <img src="Screenshot_2026-04-25_at_9_54_22_PM.png" alt="BrainBuddy Screenshot 1">
+        </div>
+        <div class="sc-thumb large" onclick="openLightbox(2)">
+          <img src="Screenshot_2026-04-25_at_9_55_14_PM.png" alt="BrainBuddy Screenshot 3">
+        </div>
+        <div class="sc-thumb large" onclick="openLightbox(4)">
+          <img src="Screenshot_2026-04-25_at_9_56_12_PM.png" alt="BrainBuddy Screenshot 5">
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: thumbnails 2, 4, 6 — offset up, first is featured -->
+      <div class="showcase-col col-right">
+        <div class="sc-thumb large featured" onclick="openLightbox(1)">
+          <img src="Screenshot_2026-04-25_at_9_54_53_PM.png" alt="BrainBuddy Screenshot 2">
+          <span class="sc-label">Live demo</span>
+        </div>
+        <div class="sc-thumb large" onclick="openLightbox(3)">
+          <img src="Screenshot_2026-04-25_at_9_55_35_PM.png" alt="BrainBuddy Screenshot 4">
+        </div>
+        <div class="sc-thumb large" onclick="openLightbox(5)">
+          <img src="Screenshot_2026-04-25_at_9_56_22_PM.png" alt="BrainBuddy Screenshot 6">
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1057,7 +1162,7 @@ footer{
   <p class="cta-sub reveal" style="transition-delay:.15s">diagnose smarter. &nbsp; document instantly.</p>
   <div class="cta-stats reveal" style="transition-delay:.2s">
     <div class="cta-stat">
-      <div class="cta-stat-val">5 – 10 min</div>
+      <div class="cta-stat-val">5-10 min</div>
       <div class="cta-stat-label">saved / encounter</div>
     </div>
     <div class="cta-stat">
@@ -1096,7 +1201,7 @@ footer{
   </section>
   
   <footer>
-    <div class="footer-logo">Brain<span>Buddy</span></div>
+    <div class="footer-logo"><a href="#screenshots-grid" style="text-decoration:none;color:inherit;cursor:pointer;" onclick="event.preventDefault();document.getElementById('screenshots-grid').scrollIntoView({behavior:'smooth',block:'center'});">Brain<span>Buddy</span></a></div>
     <div class="footer-right">ER Clinical Edition · AI-Powered · 100% Offline · © 2026</div>
   </footer>
   
@@ -1232,11 +1337,11 @@ footer{
 
   <script>
     const screenshots = [
-      "Screenshot_2026-04-25_at_9_54_53_PM.png",
-      "Screenshot_2026-04-25_at_9_55_44_PM.png",
-      "Screenshot_2026-04-25_at_9_56_12_PM.png",
       "Screenshot_2026-04-25_at_9_54_22_PM.png",
+      "Screenshot_2026-04-25_at_9_54_53_PM.png",
       "Screenshot_2026-04-25_at_9_55_14_PM.png",
+      "Screenshot_2026-04-25_at_9_55_35_PM.png",
+      "Screenshot_2026-04-25_at_9_56_12_PM.png",
       "Screenshot_2026-04-25_at_9_56_22_PM.png"
     ];
     let currentIdx = 0;
