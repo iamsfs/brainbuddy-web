@@ -180,11 +180,12 @@ section.light{background:var(--off);color:var(--navy)}
 .screen-card{
   border-radius:12px;overflow:hidden;
   border:1px solid rgba(255,255,255,0.1);
-  box-shadow:0 24px 60px rgba(0,0,0,0.5);
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
   transition:transform .3s;
+  background: #000;
 }
 .screen-card:hover{transform:translateY(-6px)}
-.screen-card img{width:100%;display:block}
+.screen-card img{max-width:100%;height:auto;display:block;object-fit:contain}
 .screen-card.tall{grid-row:span 2}
 .screen-card.span2{grid-column:span 2}
 
@@ -615,10 +616,11 @@ footer{
     <li><a href="#problem">Problem</a></li>
     <li><a href="#solution">Solution</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
-    <li><a href="#tech">Technology</a></li>
-    <li><a href="#competitive-advantage">Advantage</a></li>
+    <li><a href="#tech">Built on</a></li>
+    <li><a href="#data-enrichment">BrainBuddy Engine</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#revenue">Revenue</a></li>
+    <li><a href="#competitive-advantage">Advantage</a></li>
     <li><a href="#cta">Invest</a></li>
   </ul>
   <a href="#downloadForm" 
@@ -655,10 +657,10 @@ footer{
     </div>
   </div>
   <div class="hero-right reveal" style="transition-delay:.2s">
-    <img src="Screenshot_2026-04-25_at_9_54_53_PM.png" alt="BrainBuddy stroke documentation" class="screen-card span2">
-    <img src="Screenshot_2026-04-25_at_9_55_44_PM.png" alt="BrainBuddy STEMI documentation" class="screen-card">
-    <img src="Screenshot_2026-04-25_at_9_56_12_PM.png" alt="BrainBuddy ankle sprain documentation" class="screen-card">
-    <img src="Screenshot_2026-04-25_at_9_54_22_PM.png" alt="BrainBuddy onboarding state" class="screen-card span2">
+    <div class="screen-card span2"><img src="Screenshot_2026-04-25_at_9_54_53_PM.png" alt="BrainBuddy stroke documentation"></div>
+    <div class="screen-card"><img src="Screenshot_2026-04-25_at_9_55_44_PM.png" alt="BrainBuddy STEMI documentation"></div>
+    <div class="screen-card"><img src="Screenshot_2026-04-25_at_9_56_12_PM.png" alt="BrainBuddy ankle sprain documentation"></div>
+    <div class="screen-card span2"><img src="Screenshot_2026-04-25_at_9_54_22_PM.png" alt="BrainBuddy onboarding state"></div>
   </div>
 </section>
 
