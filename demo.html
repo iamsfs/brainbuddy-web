@@ -123,7 +123,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 }
 .cc-code  { color: #4a6a8a; font-weight: 600; }
 .cc-label { color: #6a7a8a; }
-.cc-value { font-weight: 700; color: var(--epd-navy); flex: 1; }
+.cc-value { font-weight: 700; color: var(--epd-navy); flex: 1; transition: opacity .25s ease; }
 .cc-btn   { padding: 2px 8px; background: #e8f0f8; border: 1px solid #b0c0d0; color: #4a6a8a; font-size: 10px; border-radius: 3px; cursor: pointer; }
 .cc-prior { padding: 2px 8px; background: #ffeaea; border: 1px solid #f0a0a0; color: #c04040; font-size: 10px; border-radius: 3px; }
 
@@ -466,7 +466,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   <div id="epd-cc-bar">
     <span class="cc-code">E003</span>
     <span class="cc-label">Chief Complaint:</span>
-    <span class="cc-value">INFLUENZA-LIKE ILLNESS</span>
+    <span class="cc-value" id="epd-cc-value">INFLUENZA-LIKE ILLNESS</span>
     <span id="bb-cc-badge"
           title="In standard EPOWERdoc, this requires manual selection from a category picker. BrainBuddy eliminates this step entirely.">
       ⚡ Auto-detected by BrainBuddy
@@ -833,17 +833,53 @@ function getEPdCategory(condName) {
   return 'MISCELLANEOUS';
 }
 
+const CC_TEXT_MAP = [
+  { keys: ['influenza','covid','uri','upper respiratory','pneumonia','bronchitis'], text: 'INFLUENZA-LIKE ILLNESS / RESPIRATORY' },
+  { keys: ['stemi','nstemi','acs','angina','unstable angina'],                     text: 'CHEST PAIN / CARDIOVASCULAR' },
+  { keys: ['stroke','cva','tia','transient ischemic'],                             text: 'NEUROLOGICAL DEFICIT / STROKE SYMPTOMS' },
+  { keys: ['sepsis'],                                                              text: 'SEPSIS / FEVER' },
+  { keys: ['dka','diabetic ketoacidosis'],                                         text: 'ALTERED MENTAL STATUS / DKA' },
+  { keys: ['anaphylaxis'],                                                         text: 'ALLERGIC REACTION / ANAPHYLAXIS' },
+  { keys: ['pulmonary embolism','pe '],                                            text: 'SHORTNESS OF BREATH / CHEST PAIN' },
+  { keys: ['heart failure'],                                                       text: 'SHORTNESS OF BREATH / CARDIAC' },
+  { keys: ['atrial fib'],                                                          text: 'PALPITATIONS / CARDIOVASCULAR' },
+];
+
+function getCCText(condName) {
+  if (!condName) return 'INFLUENZA-LIKE ILLNESS';
+  const lower = condName.toLowerCase();
+  for (const { keys, text } of CC_TEXT_MAP) {
+    if (keys.some(k => lower.includes(k))) return text;
+  }
+  return condName.toUpperCase();
+}
+
 function updateCCBadge(condName) {
   const badge = document.getElementById('bb-cc-badge');
-  if (!badge) return;
+  const ccVal = document.getElementById('epd-cc-value');
+
+  // Reset badge to idle if no condition
   if (!condName) {
-    badge.className = '';
-    badge.textContent = '⚡ Auto-detected by BrainBuddy';
+    if (badge) { badge.className = ''; badge.textContent = '\u26a1 Auto-detected by BrainBuddy'; }
+    if (ccVal) ccVal.textContent = 'INFLUENZA-LIKE ILLNESS';
     return;
   }
-  const category = getEPdCategory(condName);
-  badge.className = 'active';
-  badge.textContent = `⚡ ${category} — Auto-detected`;
+
+  // Update badge
+  if (badge) {
+    const category = getEPdCategory(condName);
+    badge.className = 'active';
+    badge.textContent = `\u26a1 ${category} \u2014 Auto-detected`;
+  }
+
+  // Fade out → update → fade in CC value
+  if (ccVal) {
+    ccVal.style.opacity = '0';
+    setTimeout(() => {
+      ccVal.textContent = getCCText(condName);
+      ccVal.style.opacity = '1';
+    }, 260);
+  }
 }
 
 let debounceTimer = null;
@@ -1230,6 +1266,8 @@ function clearResults() {
   document.getElementById('conf-label').textContent = 'Confidence: —';
   document.getElementById('top-cond-reasoning').textContent = '';
   document.getElementById('bb-alert').classList.remove('show');
+  // Reset CC value and badge
+  updateCCBadge(null);
 
   // ROS reset — deselect all, re-select none-pills
   document.querySelectorAll('#ros-table .ros-pill').forEach(p => {
