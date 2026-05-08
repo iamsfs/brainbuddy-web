@@ -751,7 +751,11 @@ def analyze():
         "COPD": ["copd", "chronic obstructive pulmonary disease"],
         "Anticoagulation": ["anticoagulation", "blood thinner", "eliquis", "xarelto", "warfarin", "coumadin"],
         "CAD": ["cad", "coronary artery disease"],
-        "CHF": ["chf", "congestive heart failure", "heart failure"]
+        "CHF": ["chf", "congestive heart failure", "heart failure"],
+        "Hypothyroidism": ["hypothyroidism", "underactive thyroid"],
+        "GERD": ["gerd", "acid reflux", "heartburn"],
+        "Anxiety/Depression": ["anxiety", "depression", "depressed", "anxious"],
+        "Neuropathy": ["neuropathy", "nerve damage", "nerve pain"]
     }
     
     for tag, keywords in history_keywords.items():
