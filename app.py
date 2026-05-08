@@ -740,6 +740,24 @@ def analyze():
     #   - appending dynamic pills for anything not in the hardcoded set
     associated = [s.title() for s in display_symptoms]
 
+    # ── History Context Detection ────────────────────────────────────────────────────
+    history_context = []
+    text_lower = text.lower()
+    
+    history_keywords = {
+        "Diabetes": ["diabetes", "diabetic"],
+        "Atrial Fibrillation": ["atrial fibrillation", "a-fib", "afib"],
+        "Hypertension": ["hypertension", "htn", "high blood pressure"],
+        "COPD": ["copd", "chronic obstructive pulmonary disease"],
+        "Anticoagulation": ["anticoagulation", "blood thinner", "eliquis", "xarelto", "warfarin", "coumadin"],
+        "CAD": ["cad", "coronary artery disease"],
+        "CHF": ["chf", "congestive heart failure", "heart failure"]
+    }
+    
+    for tag, keywords in history_keywords.items():
+        if any(re.search(rf"\b{re.escape(kw)}\b", text_lower) for kw in keywords):
+            history_context.append(tag)
+
     # ── Impression & Prescriptions ────────────────────────────────────────────
     impression_lines  = build_impression_lines(top_name, top_icd10, detected_symptoms)
     prescriptions     = build_prescriptions(medications)
@@ -758,6 +776,7 @@ def analyze():
         "medications":        medications,
         "ros_findings":       ros_findings,
         "associated_symptoms": associated,
+        "history_context":    history_context,
         "impression_lines":   impression_lines,
         "prescriptions":      prescriptions,
         "alert":              alert_out,
