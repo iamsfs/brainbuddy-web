@@ -466,7 +466,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   <div id="epd-cc-bar">
     <span class="cc-code">E003</span>
     <span class="cc-label">Chief Complaint:</span>
-    <span class="cc-value" id="epd-cc-value">INFLUENZA-LIKE ILLNESS</span>
+    <span class="cc-value" id="epd-cc-value">PENDING ASSESSMENT</span>
     <span id="bb-cc-badge"
           title="In standard EPOWERdoc, this requires manual selection from a category picker. BrainBuddy eliminates this step entirely.">
       ⚡ Auto-detected by BrainBuddy
@@ -846,7 +846,7 @@ const CC_TEXT_MAP = [
 ];
 
 function getCCText(condName) {
-  if (!condName) return 'INFLUENZA-LIKE ILLNESS';
+  if (!condName) return 'PENDING ASSESSMENT';
   const lower = condName.toLowerCase();
   for (const { keys, text } of CC_TEXT_MAP) {
     if (keys.some(k => lower.includes(k))) return text;
@@ -860,8 +860,8 @@ function updateCCBadge(condName) {
 
   // Reset badge to idle if no condition
   if (!condName) {
-    if (badge) { badge.className = ''; badge.textContent = '\u26a1 Auto-detected by BrainBuddy'; }
-    if (ccVal) ccVal.textContent = 'INFLUENZA-LIKE ILLNESS';
+    if (badge) { badge.className = ''; badge.textContent = '⚡ Auto-detected by BrainBuddy'; }
+    if (ccVal) ccVal.textContent = 'PENDING ASSESSMENT';
     return;
   }
 
