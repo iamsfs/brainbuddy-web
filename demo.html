@@ -142,6 +142,12 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   background: #e6fdf8; border-color: #00b894; color: #007a60;
   animation: bb-badge-pulse .5s ease;
 }
+.epd-active-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 10px; font-size: 9.5px; font-weight: 600;
+  border: 1px solid #00b894; background: #e6fdf8; color: #007a60;
+  white-space: nowrap; cursor: pointer;
+}
 @keyframes bb-badge-pulse {
   0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,212,170,.5); }
   50%  { transform: scale(1.06); box-shadow: 0 0 0 5px rgba(0,212,170,0); }
@@ -222,10 +228,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 #bb-imp-badge.show { opacity: 1; }
 
 .disp-icd-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 2px 9px; border-radius: 10px; font-size: 9.5px; font-weight: 600;
-  border: 1px solid #00d4aa; background: transparent; color: #00d4aa;
-  white-space: nowrap; cursor: pointer;
+  cursor: pointer;
 }
 
 .imp-line-input, .rx-line-input {
@@ -693,7 +696,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
       <div class="epd-section-body">
         <div style="font-size:11px; margin-bottom: 5px;">Based on my analysis of the history, physical exam, and data, I believe the most likely impression is:</div>
         <div style="margin-bottom: 8px;">
-          <span class="disp-icd-btn" id="disp-top-icd">Impressions ICD10</span>
+          <span class="disp-icd-btn epd-active-badge" id="disp-top-icd">Impressions ICD10</span>
         </div>
         <input class="imp-line-input" id="imp-line-1" readonly />
         <input class="imp-line-input" id="imp-line-2" readonly />
