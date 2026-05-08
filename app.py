@@ -391,19 +391,21 @@ CHART_TEMPLATE = """
 <meta charset="UTF-8">
 <title>Physician Chart</title>
 <style>
-  body { font-family: "Times New Roman", Times, serif; font-size: 11px; color: #000; background: #fff; line-height: 1.4; padding: 40px; max-width: 800px; margin: 0 auto; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 11px; color: #000; background: #fff; line-height: 1.8; padding: 40px 60px; max-width: 800px; margin: 0 auto; }
   h1, h2, h3 { margin: 0 0 5px 0; }
   .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
   .header-grid { display: grid; grid-template-columns: 1fr 1fr; text-align: left; margin-bottom: 15px; }
   .chart-title { text-align: center; font-weight: bold; font-size: 14px; margin: 15px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 5px 0; }
-  .section { margin-bottom: 15px; }
-  .section-title { font-weight: bold; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid #ccc; margin-bottom: 8px; padding-bottom: 3px; }
-  .ros-grid { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 2px; }
+  .section { margin-bottom: 20px; }
+  .section-title { font-weight: bold; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid #ccc; margin-top: 24px; margin-bottom: 8px; padding-bottom: 3px; }
+  .ros-grid { display: grid; grid-template-columns: 150px 1fr; padding: 5px 0; }
   .ros-label { font-weight: bold; text-transform: uppercase; }
   ul { margin: 0; padding-left: 20px; }
   .print-btn { position: absolute; top: 20px; right: 20px; padding: 5px 15px; cursor: pointer; font-family: sans-serif; }
   .footer { margin-top: 40px; border-top: 1px solid #000; padding-top: 10px; font-size: 10px; text-align: center; color: #555; }
-  .pill { border: 1px solid #333; border-radius: 10px; padding: 1px 6px; font-size: 10px; margin: 0 2px; display: inline-block; }
+  .pill { border: 1px solid #333; border-radius: 10px; padding: 2px 8px; font-size: 10px; margin: 2px 3px; display: inline-block; }
+  .field-row { margin-bottom: 6px; }
+  .mdm-row { margin-bottom: 8px; }
   @media print {
     .print-btn { display: none; }
     body { padding: 0; }
@@ -443,15 +445,15 @@ CHART_TEMPLATE = """
   <div class="section">
     <div class="section-title">History of Present Illness</div>
     <div>
-      HISTORY OF PRESENT ILLNESS: &nbsp;&nbsp; {{ data.chief_complaint }}<br>
-      Assessment time: {{ data.patient.arrival }}<br>
-      Reviewed: <span class="pill">VS's</span> <span class="pill">SPO2</span> <span class="pill">Nursing/Treatment notes</span> <span class="pill">ALL</span><br>
-      Timing: DIT___ (or) 2 Days<br>
-      Quality: Cough: <span class="pill">Nonproductive</span><br>
-      Severity: Cough <span class="pill">Mild</span> &middot; Shortness of breath <span class="pill">Mild</span> &middot; Sore throat <span class="pill">Mild</span><br>
-      Context: <span class="pill">Spontaneous onset</span><br>
-      Symptoms: {% for sym in data.symptoms %}<span class="pill">{{ sym | title }}</span> {% endfor %}<br>
-      Other history/Staff note: {{ data.hpi_text }}
+      <div class="field-row">HISTORY OF PRESENT ILLNESS: &nbsp;&nbsp; {{ data.chief_complaint }}</div>
+      <div class="field-row">Assessment time: {{ data.patient.arrival }}</div>
+      <div class="field-row">Reviewed: <span class="pill">VS's</span> <span class="pill">SPO2</span> <span class="pill">Nursing/Treatment notes</span> <span class="pill">ALL</span></div>
+      <div class="field-row">Timing: DIT___ (or) 2 Days</div>
+      <div class="field-row">Quality: Cough: <span class="pill">Nonproductive</span></div>
+      <div class="field-row">Severity: Cough <span class="pill">Mild</span> &middot; Shortness of breath <span class="pill">Mild</span> &middot; Sore throat <span class="pill">Mild</span></div>
+      <div class="field-row">Context: <span class="pill">Spontaneous onset</span></div>
+      <div class="field-row">Symptoms: {% for sym in data.symptoms %}<span class="pill">{{ sym | title }}</span> {% endfor %}</div>
+      <div class="field-row">Other history/Staff note: {{ data.hpi_text }}</div>
     </div>
   </div>
 
@@ -546,16 +548,16 @@ CHART_TEMPLATE = """
   <div class="section">
     <div class="section-title">MDM (Medical Decision Making)</div>
     <div>
-      Problems Addressed:<br>
-      &nbsp;&nbsp;* Chronic disease processes: <span class="pill">None</span><br>
-      &nbsp;&nbsp;* Acute/chronic illness: <span class="pill">{{ data.top_condition.name }}</span> <span class="pill">See Differential Diagnosis</span><br>
-      Reviewed and Analyzed Data:<br>
-      &nbsp;&nbsp;* Independent Historian(s): <span class="pill">None</span><br>
-      &nbsp;&nbsp;* Review of external records: <span class="pill">None</span><br>
-      &nbsp;&nbsp;* Independent study performed on: <span class="pill">Labs</span><br>
-      &nbsp;&nbsp;* Labs: <span class="pill">See Notes in Results</span><br>
-      Risk of Morbidity: <span class="pill">Treatment considered but not performed &mdash; see additional treatments considered</span><br>
-      Disposition Management: Patient Care Management was discussed with <span class="pill">None</span>
+      <div class="mdm-row">Problems Addressed:</div>
+      <div class="mdm-row">&nbsp;&nbsp;* Chronic disease processes: <span class="pill">None</span></div>
+      <div class="mdm-row">&nbsp;&nbsp;* Acute/chronic illness: <span class="pill">{{ data.top_condition.name }}</span> <span class="pill">See Differential Diagnosis</span></div>
+      <div class="mdm-row">Reviewed and Analyzed Data:</div>
+      <div class="mdm-row">&nbsp;&nbsp;* Independent Historian(s): <span class="pill">None</span></div>
+      <div class="mdm-row">&nbsp;&nbsp;* Review of external records: <span class="pill">None</span></div>
+      <div class="mdm-row">&nbsp;&nbsp;* Independent study performed on: <span class="pill">Labs</span></div>
+      <div class="mdm-row">&nbsp;&nbsp;* Labs: <span class="pill">See Notes in Results</span></div>
+      <div class="mdm-row">Risk of Morbidity: <span class="pill">Treatment considered but not performed &mdash; see additional treatments considered</span></div>
+      <div class="mdm-row">Disposition Management: Patient Care Management was discussed with <span class="pill">None</span></div>
     </div>
   </div>
 
