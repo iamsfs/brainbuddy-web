@@ -16,7 +16,7 @@
   --epd-border: #b0c0d8;
   --epd-row: #f4f7fb;
   --epd-row2: #eaf0f8;
-  --epd-green: #d4edda;
+  --epd-green: #dc3545;
   --epd-flash: #fff3cd;
   --bb-bg:    #0d1117;
   --bb-card:  #161b22;
@@ -151,7 +151,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 .med-table th { background: #e8f0f8; color: #4a6a8a; padding: 3px 6px; text-align: left; font-weight: 600; border-bottom: 1px solid #c0d0e0; }
 .med-table td { padding: 3px 6px; border-bottom: 1px solid #e8eff8; color: #2a3a4a; vertical-align: middle; }
 .med-table tr:last-child td { border-bottom: none; }
-.med-status { background: #d4edda; color: #1a6a30; padding: 1px 6px; border-radius: 8px; font-size: 9.5px; font-weight: 600; }
+.med-status { background: #dc3545; color: #fff; padding: 1px 6px; border-radius: 8px; font-size: 9.5px; font-weight: 600; }
 
 /* HPI textarea */
 .hpi-label { font-size: 10.5px; font-weight: 600; color: #4a6a8a; margin-bottom: 4px; display: block; }
@@ -169,8 +169,8 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   font-size: 10.5px; color: #5a7a9a; cursor: pointer; user-select: none;
   transition: all .3s; background: #f0f6ff; white-space: nowrap;
 }
-.assoc-pill.selected { background: var(--epd-green); border-color: #2a9a50; color: #1a6a30; font-weight: 600; }
-.assoc-pill.flash    { background: var(--epd-flash); border-color: #e0b000; color: #806000; }
+.assoc-pill.selected { background: #dc3545; border-color: #b02030; color: #fff; font-weight: 600; }
+.assoc-pill.flash    { background: #ffe0e0; border-color: #dc3545; color: #8a0010; }
 .assoc-pill.none-pill { background: #e8eef4; border-color: #a0b0c0; }
 
 /* ROS table */
@@ -184,8 +184,8 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   padding: 2px 8px; border: 1px solid #c0cede; border-radius: 10px; font-size: 10px;
   color: #5a7a9a; cursor: pointer; user-select: none; transition: all .25s; background: #f8fafd;
 }
-.ros-pill.selected { background: var(--epd-green); border-color: #2a9a50; color: #1a6a30; font-weight: 600; }
-.ros-pill.flash    { background: var(--epd-flash); border-color: #d0a000; }
+.ros-pill.selected { background: #dc3545; border-color: #b02030; color: #fff; font-weight: 600; }
+.ros-pill.flash    { background: #ffe0e0; border-color: #dc3545; }
 .ros-none-pill { background: #f0f0f0; color: #8a9aaa; border-color: #c0ccd8; }
 .ros-none-pill.selected { background: #e0e8f0; border-color: #8aadcc; color: #4a6a8a; font-weight: 600; }
 
@@ -403,8 +403,8 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   <div id="epd-patient-header">
     <div class="ph-row">
       <div class="ph-col-main">
-        <div class="ph-name">WILLIAMS, JESSICA</div>
-        <div class="ph-sub">36 F &nbsp;/&nbsp; DOB: 08/13/1989 &nbsp;|&nbsp; MRN: 1003847</div>
+        <div class="ph-name">DOE, JANE</div>
+        <div class="ph-sub">41 F &nbsp;/&nbsp; DOB: 01/15/1985 &nbsp;|&nbsp; MRN: 1004521</div>
         <div class="ph-sub" style="margin-top:3px;">PCP: UZOH, STELLA MD &nbsp;|&nbsp; Attending: Lena Edwards MD &nbsp;|&nbsp; 5/8/2026 12:31 PM</div>
       </div>
       <div class="ph-col-vitals" style="margin: 0 8px;">
