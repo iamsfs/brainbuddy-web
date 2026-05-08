@@ -127,6 +127,24 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 .cc-btn   { padding: 2px 8px; background: #e8f0f8; border: 1px solid #b0c0d0; color: #4a6a8a; font-size: 10px; border-radius: 3px; cursor: pointer; }
 .cc-prior { padding: 2px 8px; background: #ffeaea; border: 1px solid #f0a0a0; color: #c04040; font-size: 10px; border-radius: 3px; }
 
+/* Auto-detect badge */
+#bb-cc-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 10px; font-size: 9.5px; font-weight: 600;
+  border: 1px solid #c0cdd8; background: #f0f4f8; color: #8a9aaa;
+  white-space: nowrap; cursor: default;
+  transition: background .4s, border-color .4s, color .4s;
+}
+#bb-cc-badge.active {
+  background: #e6fdf8; border-color: #00b894; color: #007a60;
+  animation: bb-badge-pulse .5s ease;
+}
+@keyframes bb-badge-pulse {
+  0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,212,170,.5); }
+  50%  { transform: scale(1.06); box-shadow: 0 0 0 5px rgba(0,212,170,0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,212,170,0); }
+}
+
 /* Tab content panels */
 .tab-panel { display: none; padding: 10px 12px; flex-direction: column; gap: 8px; }
 .tab-panel.active { display: flex; }
@@ -449,6 +467,10 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
     <span class="cc-code">E003</span>
     <span class="cc-label">Chief Complaint:</span>
     <span class="cc-value">INFLUENZA-LIKE ILLNESS</span>
+    <span id="bb-cc-badge"
+          title="In standard EPOWERdoc, this requires manual selection from a category picker. BrainBuddy eliminates this step entirely.">
+      ⚡ Auto-detected by BrainBuddy
+    </span>
     <button class="cc-btn">Edit</button>
     <span class="cc-prior">● Prior Visit</span>
   </div>
@@ -789,6 +811,41 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 <script>
 const DEMO_TEXT = `36 year old female who presents with concern of flu like symptoms. She has been having cough, fever, chills, nasal congestion, body aches, nausea and sore throat for the last 2 days. She said that she almost vomited this morning. She felt feverish yesterday. She denies any diarrhea. She admits to some shortness of breath.`;
 
+// ── CC badge category mapper ──────────────────────────────────────────────────────
+const CC_CATEGORY_MAP = [
+  { keys: ['influenza','pneumonia','covid','uri','upper respiratory','bronchitis',
+           'asthma','copd','pulmonary embolism'], label: 'RESPIRATORY' },
+  { keys: ['stemi','nstemi','acs','angina','atrial fib','heart failure',
+           'myocardial','pericarditis','myocarditis'], label: 'CARDIOVASCULAR' },
+  { keys: ['stroke','cva','tia','transient ischemic'], label: 'NEUROLOGIC' },
+  { keys: ['dka','diabetic ketoacidosis','hypoglycemia','thyroid'], label: 'ENDOCRINE' },
+  { keys: ['anaphylaxis','sepsis','meningitis','appendicitis','toxic','overdose'], label: 'MISCELLANEOUS' },
+  { keys: ['urinary','uti','pyelonephritis'], label: 'GENITOURINARY' },
+  { keys: ['fracture','sprain','musculoskeletal'], label: 'MUSCULOSKELETAL' },
+];
+
+function getEPdCategory(condName) {
+  if (!condName) return null;
+  const lower = condName.toLowerCase();
+  for (const { keys, label } of CC_CATEGORY_MAP) {
+    if (keys.some(k => lower.includes(k))) return label;
+  }
+  return 'MISCELLANEOUS';
+}
+
+function updateCCBadge(condName) {
+  const badge = document.getElementById('bb-cc-badge');
+  if (!badge) return;
+  if (!condName) {
+    badge.className = '';
+    badge.textContent = '⚡ Auto-detected by BrainBuddy';
+    return;
+  }
+  const category = getEPdCategory(condName);
+  badge.className = 'active';
+  badge.textContent = `⚡ ${category} — Auto-detected`;
+}
+
 let debounceTimer = null;
 let lastData = null;
 let isSyncing = false;
@@ -888,6 +945,7 @@ function setIdleState() {
 // ── Main auto-fill sequence ───────────────────────────────────────────────
 function runAutoFillSequence(data) {
   clearResults();
+  updateCCBadge(null); // reset badge to idle
   const log = [];
 
   // T=0ms: symptom chips
@@ -895,9 +953,10 @@ function runAutoFillSequence(data) {
   populateChips(syms);
   showCard('card-symptoms', 0);
 
-  // T=400ms: top condition
+  // T=400ms: top condition + CC badge
   setTimeout(() => {
     populateTopCondition(data.top_condition || {});
+    updateCCBadge((data.top_condition || {}).name || null);
     showCard('card-top', 0);
   }, 400);
 
