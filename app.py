@@ -1,9 +1,85 @@
-from flask import Flask, send_from_directory, request, jsonify, render_template_string
+from flask import Flask, send_from_directory, request, jsonify, render_template_string, session, redirect
 import os
 import json
 import re
 
 app = Flask(__name__, static_folder='.')
+app.secret_key = 'brainbuddy-demo-2026'
+
+DEMO_USERNAME = 'demo'
+DEMO_PASSWORD = 'demo'
+
+LOGIN_TEMPLATE = """<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BrainBuddy ER — Login</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background: #0d1117; color: #c8d8f0;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  }
+  .card {
+    background: #111827; border: 1px solid #1e3a6e;
+    border-radius: 12px; padding: 48px 40px 40px;
+    width: 100%; max-width: 380px; text-align: center;
+    box-shadow: 0 8px 40px rgba(0,0,0,.6);
+  }
+  .logo { font-size: 40px; margin-bottom: 10px; }
+  .title {
+    font-size: 22px; font-weight: 700; color: #00d4aa;
+    letter-spacing: .5px; margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 11px; color: #6a8aaa; letter-spacing: .3px; margin-bottom: 32px;
+  }
+  .field { margin-bottom: 14px; text-align: left; }
+  .field label { display: block; font-size: 11px; color: #8ab0cc; margin-bottom: 5px; font-weight: 600; letter-spacing: .4px; text-transform: uppercase; }
+  .field input {
+    width: 100%; padding: 10px 12px; background: #0d1117;
+    border: 1px solid #1e3a6e; border-radius: 6px;
+    color: #c8d8f0; font-size: 13px; font-family: inherit;
+    outline: none; transition: border-color .2s;
+  }
+  .field input:focus { border-color: #00d4aa; }
+  .btn {
+    width: 100%; margin-top: 8px; padding: 11px;
+    background: #00d4aa; border: none; border-radius: 6px;
+    color: #0a1628; font-size: 14px; font-weight: 700;
+    cursor: pointer; letter-spacing: .3px; transition: background .2s;
+  }
+  .btn:hover { background: #00b894; }
+  .error {
+    background: rgba(220,53,69,.15); border: 1px solid #dc3545;
+    color: #ff6b7a; font-size: 12px; border-radius: 6px;
+    padding: 8px 12px; margin-bottom: 16px;
+  }
+  .footer { margin-top: 28px; font-size: 10px; color: #3a5a7a; letter-spacing: .3px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🧠</div>
+    <div class="title">BrainBuddy ER</div>
+    <div class="subtitle">Clinical Intelligence Engine &mdash; Demo Access</div>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form method="POST">
+      <div class="field">
+        <label>Username</label>
+        <input type="text" name="username" autocomplete="username" autofocus required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn" type="submit">Access Demo</button>
+    </form>
+    <div class="footer">Authorized access only</div>
+  </div>
+</body>
+</html>"""
 
 # ── Engine bootstrap (lazy, singleton) ───────────────────────────────────────
 _engine_ready = False
@@ -605,8 +681,28 @@ CHART_TEMPLATE = """
 </html>
 """
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] == DEMO_USERNAME and request.form['password'] == DEMO_PASSWORD:
+            session['authenticated'] = True
+            return redirect('/demo')
+        else:
+            error = 'Invalid credentials'
+    return render_template_string(LOGIN_TEMPLATE, error=error)
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/login')
+
+
 @app.route('/chart', methods=['POST'])
 def chart():
+    if not session.get('authenticated'):
+        return redirect('/login')
     import json
     data = json.loads(request.form.get('data', '{}'))
     # Ensure all required keys exist to prevent Jinja undefined errors
@@ -630,6 +726,8 @@ def index():
 
 @app.route('/demo')
 def demo():
+    if not session.get('authenticated'):
+        return redirect('/login')
     return send_from_directory('.', 'demo.html')
 
 @app.route('/<path:filename>')
@@ -639,6 +737,8 @@ def static_files(filename):
 
 @app.route('/api/analyze', methods=['POST'])
 def analyze():
+    if not session.get('authenticated'):
+        return redirect('/login')
     bootstrap_engine()
 
     data = request.get_json(silent=True) or {}
