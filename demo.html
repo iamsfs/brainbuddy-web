@@ -1041,20 +1041,49 @@ function populateMeds(meds) {
 
 function fillAssocSymptoms(assocList) {
   const lower = assocList.map(s => s.toLowerCase());
-  const pills = document.querySelectorAll('#assoc-pills-container .assoc-pill:not(.none-pill)');
+  const container = document.getElementById('assoc-pills-container');
+  const pills = container.querySelectorAll('.assoc-pill:not(.none-pill):not([data-dynamic])');
+  const nonePill = container.querySelector('.none-pill');
+
   // Clear "None" selection
-  const nonePill = document.querySelector('.assoc-pill.none-pill');
   if (nonePill) nonePill.classList.remove('selected');
 
+  // Track which returned symptoms matched an existing pill
+  const matched = new Set();
+
+  // Pass 1 — highlight existing hardcoded pills
   pills.forEach((pill, idx) => {
     const sym = (pill.dataset.sym || '').toLowerCase();
-    const match = lower.some(a => a.includes(sym) || sym.includes(a));
-    if (match) {
+    const hit = lower.find(a => a.includes(sym) || sym.includes(a));
+    if (hit) {
+      matched.add(hit);
       setTimeout(() => {
         pill.classList.add('flash');
         setTimeout(() => { pill.classList.remove('flash'); pill.classList.add('selected'); }, 350);
       }, idx * 160);
     }
+  });
+
+  // Pass 2 — append dynamic pills for unmatched extras (insert before "None")
+  const existingSyms = Array.from(pills).map(p => (p.dataset.sym || '').toLowerCase());
+  lower.forEach((sym, i) => {
+    if (matched.has(sym)) return; // already highlighted above
+    // Skip if effectively covered by an existing pill
+    const alreadyCovered = existingSyms.some(e => e.includes(sym) || sym.includes(e));
+    if (alreadyCovered) return;
+    const delay = (pills.length + i) * 160;
+    setTimeout(() => {
+      const pill = document.createElement('div');
+      pill.className = 'assoc-pill';
+      pill.dataset.sym = sym;
+      pill.dataset.dynamic = 'true';
+      pill.textContent = sym.replace(/\b\w/g, c => c.toUpperCase());
+      pill.onclick = () => toggleAssocPill(pill);
+      container.insertBefore(pill, nonePill);
+      // Flash → select
+      pill.classList.add('flash');
+      setTimeout(() => { pill.classList.remove('flash'); pill.classList.add('selected'); }, 350);
+    }, delay);
   });
 }
 
@@ -1144,7 +1173,8 @@ function clearResults() {
     if (p.classList.contains('ros-none-pill')) p.classList.add('selected');
   });
 
-  // Assoc pills reset
+  // Assoc pills reset — remove dynamic pills first, then deselect hardcoded ones
+  document.querySelectorAll('#assoc-pills-container .assoc-pill[data-dynamic]').forEach(p => p.remove());
   document.querySelectorAll('.assoc-pill:not(.none-pill)').forEach(p => p.classList.remove('selected','flash'));
   const nonePill = document.querySelector('.assoc-pill.none-pill');
   if (nonePill) nonePill.classList.add('selected');
