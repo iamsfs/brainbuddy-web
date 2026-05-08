@@ -38,7 +38,9 @@ ROS_MAP = {
     "ent":            ["sore throat", "nasal congestion", "ear pain", "hearing loss", "nasal discharge",
                        "throat pain", "earache", "runny nose", "rhinorrhea"],
     "respiratory":    ["cough", "shortness of breath", "wheezing", "dyspnea", "sob"],
-    "cv":             ["chest pain", "palpitations", "rapid heart rate", "tachycardia"],
+    "cv":             ["chest pain", "palpitations", "rapid heart rate", "tachycardia",
+                       "arm pain", "diaphoresis", "chest tightness", "chest pressure",
+                       "jaw pain", "left arm pain"],
     "gi":             ["nausea", "vomiting", "diarrhea", "abdominal pain", "constipation",
                        "hematemesis", "bloody stool"],
     "musculoskeletal":["myalgia", "joint pain", "back pain", "body aches", "arthralgia"],
@@ -478,9 +480,21 @@ def analyze():
     # ── ROS — use raw detected_symptoms (all terms, not just display-clean) ────
     ros_findings = classify_ros(detected_symptoms)
 
-    # ── Associated symptoms (subset of pill list) ─────────────────────────────
-    syms_lower = [s.lower() for s in detected_symptoms]
-    associated = [s.title() for s in ASSOCIATED_SYMPTOMS_OPTIONS if s in syms_lower]
+    # ── Cardiac inference: inject Chest Pain into CV when top condition is cardiac ─────
+    CARDIAC_CONDITIONS = [
+        "stemi", "nstemi", "acs", "heart attack", "angina",
+        "myocardial infarction", "aortic", "pericarditis", "myocarditis",
+    ]
+    if top_name and any(c in top_name.lower() for c in CARDIAC_CONDITIONS):
+        if "Chest Pain" not in ros_findings.get("cv", []):
+            ros_findings.setdefault("cv", []).insert(0, "Chest Pain")
+
+    # ── Associated symptoms ──────────────────────────────────────────────────────────
+    # Return ALL detected symptoms as the associated list.
+    # The JS fillAssocSymptoms() handles:
+    #   - matching against the 8 hardcoded EPd pills (highlight existing)
+    #   - appending dynamic pills for anything not in the hardcoded set
+    associated = [s.title() for s in display_symptoms]
 
     # ── Impression & Prescriptions ────────────────────────────────────────────
     impression_lines  = build_impression_lines(top_name, top_icd10, detected_symptoms)
