@@ -977,6 +977,11 @@ function runAutoFillSequence(data) {
   }
 }
 
+// ── Symptom label formatter ────────────────────────────────────────────────
+function formatSymptom(s) {
+  return s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
 // ── Populate helpers ──────────────────────────────────────────────────────
 function populateChips(symptoms) {
   const c = document.getElementById('chips-container');
@@ -984,7 +989,7 @@ function populateChips(symptoms) {
   symptoms.forEach((sym, i) => {
     const chip = document.createElement('div');
     chip.className = 'sym-chip';
-    chip.textContent = sym;
+    chip.textContent = formatSymptom(sym);
     c.appendChild(chip);
     setTimeout(() => chip.classList.add('show'), i * 55);
   });
@@ -1077,7 +1082,7 @@ function fillAssocSymptoms(assocList) {
       pill.className = 'assoc-pill';
       pill.dataset.sym = sym;
       pill.dataset.dynamic = 'true';
-      pill.textContent = sym.replace(/\b\w/g, c => c.toUpperCase());
+      pill.textContent = formatSymptom(sym);
       pill.onclick = () => toggleAssocPill(pill);
       container.insertBefore(pill, nonePill);
       // Flash → select
@@ -1167,10 +1172,12 @@ function clearResults() {
   document.getElementById('top-cond-reasoning').textContent = '';
   document.getElementById('bb-alert').classList.remove('show');
 
-  // ROS reset
+  // ROS reset — deselect all, re-select none-pills
   document.querySelectorAll('#ros-table .ros-pill').forEach(p => {
-    p.classList.remove('selected','flash');
-    if (p.classList.contains('ros-none-pill')) p.classList.add('selected');
+    p.classList.remove('selected', 'flash');
+  });
+  document.querySelectorAll('#ros-table .ros-none-pill').forEach(p => {
+    p.classList.add('selected');
   });
 
   // Assoc pills reset — remove dynamic pills first, then deselect hardcoded ones

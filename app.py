@@ -44,7 +44,9 @@ ROS_MAP = {
     "gi":             ["nausea", "vomiting", "diarrhea", "abdominal pain", "constipation",
                        "hematemesis", "bloody stool"],
     "musculoskeletal":["myalgia", "joint pain", "back pain", "body aches", "arthralgia"],
-    "neurological":   ["headache", "dizziness", "altered mental status", "confusion", "syncope"],
+    "neurological":   ["headache", "dizziness", "altered mental status", "confusion",
+                       "syncope", "facial droop", "slurred speech", "arm weakness",
+                       "seizure", "vision loss", "diplopia", "ataxia", "aphasia"],
 }
 
 ROS_LABEL_MAP = {
@@ -128,6 +130,14 @@ ICD10_OVERRIDES = {
     "heart failure (acute)":             None,   # suppress from flu differentials
     "asthma (acute)":                    None,   # suppress from flu differentials
     "copd exacerbation":                 None,   # suppress from flu differentials
+    # Stroke
+    "stroke":                             "I63.9",
+    "stroke / cva":                       "I63.9",
+    "cva":                                "I63.9",
+    "ischemic stroke":                    "I63.9",
+    "hemorrhagic stroke":                 "I61.9",
+    "tia":                                "G45.9",
+    "transient ischemic attack":          "G45.9",
 }
 
 def resolve_icd10(condition_name: str, engine_icd: str) -> str:
@@ -488,6 +498,15 @@ def analyze():
     if top_name and any(c in top_name.lower() for c in CARDIAC_CONDITIONS):
         if "Chest Pain" not in ros_findings.get("cv", []):
             ros_findings.setdefault("cv", []).insert(0, "Chest Pain")
+
+    # ── Stroke/neuro inference: inject Altered Mental Status + Facial Droop ────────
+    STROKE_CONDITIONS = ["stroke", "cva", "tia", "transient ischemic"]
+    if top_name and any(c in top_name.lower() for c in STROKE_CONDITIONS):
+        neuro = ros_findings.setdefault("neurological", [])
+        if "Altered Mental Status" not in neuro:
+            neuro.insert(0, "Altered Mental Status")
+        if "Facial Droop" not in neuro:
+            neuro.append("Facial Droop")
 
     # ── Associated symptoms ──────────────────────────────────────────────────────────
     # Return ALL detected symptoms as the associated list.
