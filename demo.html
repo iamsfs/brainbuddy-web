@@ -268,15 +268,19 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   transition: border-color .2s;
 }
 #bb-textarea:focus { border-color: var(--bb-teal); }
-#bb-analyze-btn {
-  width: 100%; margin-top: 8px; background: linear-gradient(135deg, var(--bb-teal) 0%, var(--bb-teal2) 100%);
-  border: none; color: #000; font-family: 'IBM Plex Sans', sans-serif; font-weight: 700;
-  font-size: 12px; padding: 8px; border-radius: 5px; cursor: pointer; letter-spacing: .3px;
-  transition: opacity .2s, transform .1s;
+#bb-status-line {
+  font-size: 10.5px; color: var(--bb-muted); margin-top: 7px;
+  display: flex; align-items: center; gap: 6px; min-height: 18px;
+  transition: color .25s;
 }
-#bb-analyze-btn:hover { opacity: .9; }
-#bb-analyze-btn:active { transform: scale(.98); }
-.bb-input-hint { font-size: 10px; color: var(--bb-muted); margin-top: 5px; text-align: center; }
+#bb-status-line .status-spinner {
+  width: 11px; height: 11px; border: 1.5px solid #30363d;
+  border-top-color: var(--bb-teal); border-radius: 50%;
+  animation: spin .7s linear infinite; flex-shrink: 0; display: none;
+}
+#bb-status-line.analyzing { color: var(--bb-teal); }
+#bb-status-line.analyzing .status-spinner { display: block; }
+#bb-status-line.complete { color: #3fb950; }
 
 /* BB result cards */
 .bb-card {
@@ -714,8 +718,10 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
     <!-- Input area -->
     <div id="bb-input-area">
       <textarea id="bb-textarea" placeholder="Type or paste symptoms here... (synced with EPd HPI field)"></textarea>
-      <button id="bb-analyze-btn" onclick="triggerAnalyze()">▶ Analyze Now</button>
-      <div class="bb-input-hint">⌨ Typing in either field triggers analysis automatically</div>
+      <div id="bb-status-line">
+        <div class="status-spinner"></div>
+        <span id="bb-status-msg">⌨ Type or paste symptoms to analyze</span>
+      </div>
     </div>
 
     <!-- Analyzing indicator -->
@@ -852,22 +858,31 @@ async function callAnalyzeAPI(text) {
 
 // ── Analyzing state ───────────────────────────────────────────────────────
 function showAnalyzingState(active) {
-  const el  = document.getElementById('bb-analyzing');
-  const dot = document.getElementById('bb-status-dot');
-  const txt = document.getElementById('bb-status-text');
+  const dot      = document.getElementById('bb-status-dot');
+  const txt      = document.getElementById('bb-status-text');
+  const line     = document.getElementById('bb-status-line');
+  const lineMsg  = document.getElementById('bb-status-msg');
   if (active) {
-    el.classList.add('active');
     dot.classList.remove('live');
     dot.style.background = '#d29922';
     txt.textContent = 'ANALYZING…';
     txt.style.color = '#d29922';
+    line.className = 'analyzing';
+    lineMsg.textContent = '⟳ Analyzing...';
   } else {
-    el.classList.remove('active');
     dot.classList.add('live');
     dot.style.background = '#30a060';
     txt.textContent = 'LIVE';
     txt.style.color = 'var(--bb-teal)';
+    line.className = 'complete';
+    lineMsg.textContent = '✓ Analysis complete';
   }
+}
+
+function setIdleState() {
+  const line    = document.getElementById('bb-status-line');
+  const lineMsg = document.getElementById('bb-status-msg');
+  if (line) { line.className = ''; lineMsg.textContent = '⌨ Type or paste symptoms to analyze'; }
 }
 
 // ── Main auto-fill sequence ───────────────────────────────────────────────
@@ -1162,6 +1177,7 @@ function clearHPI() {
   document.getElementById('bb-textarea').value  = '';
   lastData = null;
   showAnalyzingState(false);
+  setIdleState();
 }
 
 // ── Copy helpers ──────────────────────────────────────────────────────────

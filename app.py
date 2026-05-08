@@ -400,6 +400,9 @@ def analyze():
         from diagnosis_engine import get_diagnoses, get_alert
 
         detected_symptoms = list(SymptomLibrary.detect_symptoms(text))
+        # Strip internal sentinel tokens (e.g. __vitals__, __negated__)
+        detected_symptoms = [s for s in detected_symptoms
+                             if not (s.startswith('__') and s.endswith('__'))]
         diagnoses_raw     = get_diagnoses(detected_symptoms, raw_text=text)
         alerts            = get_alert(detected_symptoms)
 
