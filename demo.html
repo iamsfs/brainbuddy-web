@@ -222,8 +222,10 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 #bb-imp-badge.show { opacity: 1; }
 
 .disp-icd-btn {
-  display: inline-block; padding: 3px 8px; background: transparent; border: 1px solid #00d4aa;
-  color: #00d4aa; font-size: 11px; font-weight: 500; border-radius: 12px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 10px; font-size: 9.5px; font-weight: 600;
+  border: none; background: #00d4aa; color: #0a1628;
+  white-space: nowrap; cursor: pointer;
 }
 
 .imp-line-input, .rx-line-input {
@@ -691,7 +693,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
       <div class="epd-section-body">
         <div style="font-size:11px; margin-bottom: 5px;">Based on my analysis of the history, physical exam, and data, I believe the most likely impression is:</div>
         <div style="margin-bottom: 8px;">
-          <span class="disp-icd-btn" id="disp-top-icd">⚡ Impressions ICD10</span>
+          <span class="disp-icd-btn" id="disp-top-icd">Impressions ICD10</span>
         </div>
         <input class="imp-line-input" id="imp-line-1" readonly />
         <input class="imp-line-input" id="imp-line-2" readonly />
