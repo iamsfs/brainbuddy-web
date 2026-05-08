@@ -231,7 +231,12 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   font-size: 11px; font-family: 'IBM Plex Sans', sans-serif; background: #fff; margin-bottom: 4px;
   outline: none; transition: background 0.3s, border-color 0.3s; box-sizing: border-box;
 }
-.imp-line-input.filled { background: #e8f8ee; border-color: #40b060; }
+.imp-line-input.filled { background: #ffffff; border-color: #b0c4de; color: #1a1a2e; }
+@keyframes imp-autofill-flash {
+  0%   { background: #fff3cd; border-color: #b0c4de; }
+  100% { background: #ffffff; border-color: #b0c4de; }
+}
+.imp-line-input.flash-fill { animation: imp-autofill-flash 600ms ease-out forwards; }
 .rx-line-input.filled { background: #fff8e0; border-color: #d0a820; }
 
 .disp-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
@@ -1153,7 +1158,11 @@ function runAutoFillSequence(data) {
   impLines.forEach((line, i) => {
     setTimeout(() => {
       const el = document.getElementById(`imp-line-${i+1}`);
-      if (el) { el.value = line; el.classList.add('filled'); }
+      if (el) {
+        el.value = line;
+        el.classList.add('filled', 'flash-fill');
+        setTimeout(() => el.classList.remove('flash-fill'), 650);
+      }
     }, rosDelay + 200 + i * 200);
   });
   

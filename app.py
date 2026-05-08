@@ -130,6 +130,11 @@ ICD10_OVERRIDES = {
     "heart failure (acute)":             None,   # suppress from flu differentials
     "asthma (acute)":                    None,   # suppress from flu differentials
     "copd exacerbation":                 None,   # suppress from flu differentials
+    "gerd / acid reflux":                None,   # suppress GI from respiratory differentials
+    "gerd":                              None,
+    "gastritis":                         None,
+    "peptic ulcer disease":              None,
+    "irritable bowel syndrome":          None,
     # Stroke
     "stroke":                             "I63.9",
     "stroke / cva":                       "I63.9",
@@ -172,6 +177,8 @@ def apply_snomed_filter(diagnoses: list, detected_syms: list) -> list:
         "malt fever", "febrile transfusion reaction",
         "cough with fever", "chills and fever",
         "hyperthermia", "pain general",
+        "gerd / acid reflux", "gerd", "gastritis",
+        "peptic ulcer disease", "irritable bowel syndrome",
     }
 
     def _is_blocked(c):         return c[0].lower() in _BLOCKED
@@ -354,6 +361,14 @@ def build_impression_lines(top_condition, top_icd10, detected_symptoms):
     """Build ICD-10 impression lines."""
     lines = []
     if top_condition:
+        top_lower = top_condition.lower()
+        if any(c in top_lower for c in ("stroke", "cva", "ischemic stroke")):
+            return [
+                "STROKE / CVA — I63.9",
+                "HYPERTENSION — I10",
+                "ATRIAL FIBRILLATION — I48.91",
+                "ALTERED MENTAL STATUS — R41.3",
+            ]
         lines.append(f"{top_condition.upper()} — {top_icd10}")
     seen = set()
     for sym in detected_symptoms[:4]:
