@@ -291,6 +291,19 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 }
 .bb-btn:hover { border-color: var(--bb-teal); color: var(--bb-teal); }
 
+/* Quick Scenarios strip */
+#quick-scenarios { padding: 6px 12px 4px; border-bottom: 1px solid #21262d; }
+#quick-scenarios .qs-label { font-size: 9.5px; color: #484f58; font-weight: 600; letter-spacing: .4px; text-transform: uppercase; margin-bottom: 5px; }
+#quick-scenarios .qs-row { display: flex; gap: 4px; margin-bottom: 4px; flex-wrap: nowrap; }
+.qs-btn {
+  flex: 1; padding: 3px 0; font-size: 10.5px; font-family: inherit;
+  border: 1px solid #30363d; color: #8b949e; background: transparent;
+  border-radius: 10px; cursor: pointer; white-space: nowrap; text-align: center;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.qs-btn:hover { border-color: #8b949e; color: #c8d8f0; }
+.qs-btn.active { border-color: #00d4aa; color: #00d4aa; background: rgba(0,212,170,.08); }
+
 /* BB Scrollable body */
 #bb-body {
   flex: 1; overflow-y: auto; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px;
@@ -822,6 +835,25 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   </div>
 
   <div id="bb-body">
+
+    <!-- Quick Scenarios -->
+    <div id="quick-scenarios">
+      <div class="qs-label">⚡ Quick Scenarios</div>
+      <div class="qs-row">
+        <button class="qs-btn" onclick="loadScenario(this)">🤧 Flu</button>
+        <button class="qs-btn" onclick="loadScenario(this)">❤️ Chest Pain</button>
+        <button class="qs-btn" onclick="loadScenario(this)">🧠 Stroke</button>
+        <button class="qs-btn" onclick="loadScenario(this)">🩸 Sepsis</button>
+        <button class="qs-btn" onclick="loadScenario(this)">🫁 PE</button>
+      </div>
+      <div class="qs-row">
+        <button class="qs-btn" onclick="loadScenario(this)">🍬 DKA</button>
+        <button class="qs-btn" onclick="loadScenario(this)">🤰 Ectopic</button>
+        <button class="qs-btn" onclick="loadScenario(this)">😵 Meningitis</button>
+        <button class="qs-btn" onclick="loadScenario(this)">🤕 Head Injury</button>
+        <button class="qs-btn" onclick="loadScenario(this)">😮‍💨 Anaphylaxis</button>
+      </div>
+    </div>
 
     <!-- Input area -->
     <div id="bb-input-area">
@@ -1471,12 +1503,40 @@ function resetDemo() {
   setTimeout(() => triggerAnalyze(), 400);
 }
 
+// ── Quick Scenarios ───────────────────────────────────────────────────────
+const SCENARIOS = {
+  '🤧 Flu': '36 year old female who presents with concern of flu like symptoms. She has been having cough, fever, chills, nasal congestion, body aches, nausea and sore throat for the last 2 days. She said that she almost vomited this morning. She felt feverish yesterday. She denies any diarrhea. She admits to some shortness of breath. Past medical history significant for hypothyroidism, hypertension, GERD, and anxiety.',
+  '❤️ Chest Pain': '58 year old male presents with crushing chest pain radiating to left arm and jaw, diaphoresis, nausea, shortness of breath. Pain started 45 minutes ago at rest, rated 9/10. History of hypertension, diabetes, and hyperlipidemia. Smoker 20 pack years. BP 88/60, HR 112, SpO2 94%.',
+  '🧠 Stroke': '72 year old female brought in by family. Sudden onset facial droop on right side, slurred speech, left arm weakness. Symptoms started 45 minutes ago. History of atrial fibrillation, on warfarin. BP 180/100.',
+  '🩸 Sepsis': '67 year old male brought in by wife with confusion, high fever, chills, and hypotension. Temperature 39.8C, BP 82/50, HR 124, RR 28, SpO2 91% on room air. Has been feeling unwell for 3 days with productive cough and decreased urine output. History of diabetes and chronic kidney disease. Appears toxic and lethargic.',
+  '🫁 PE': '44 year old female presents with sudden onset shortness of breath and sharp pleuritic chest pain worse with breathing. Right calf swelling and pain for the past week. Just returned from a 12 hour flight 3 days ago. Heart rate 118, SpO2 93%, respiratory rate 24. No fever. History of oral contraceptive use.',
+  '🍬 DKA': '19 year old male with type 1 diabetes presents with nausea, vomiting, abdominal pain, and deep rapid breathing for the past 12 hours. Blood glucose 480, fruity breath odor noted. Has not taken insulin for 2 days. Appears dehydrated with dry mucous membranes. BP 98/60, HR 118, RR 28 deep and labored. Known diabetic since age 8.',
+  '🤰 Ectopic': '28 year old female presents with severe right lower quadrant pelvic pain and light vaginal bleeding. Last menstrual period was 7 weeks ago. Positive home pregnancy test. Pain is sharp and constant, radiating to right shoulder. BP 90/58, HR 126. Appears pale and diaphoretic. Denies prior pregnancies.',
+  '😵 Meningitis': '23 year old male presents with severe headache, high fever, neck stiffness, and sensitivity to light. Symptoms started 18 hours ago and are rapidly worsening. Temperature 39.9C, HR 108. Roommate recently had similar illness. Non-blanching petechial rash noted on trunk and lower extremities. Photophobia and phonophobia present.',
+  '🤕 Head Injury': '31 year old male brought in by ambulance after motor vehicle accident. Was unrestrained driver, airbag deployed. Brief loss of consciousness at scene, now confused and agitated. GCS 12. Right pupil slightly larger than left. Laceration to forehead. BP 158/94, HR 58, RR 14. Denies alcohol use. Complaining of severe headache and neck pain.',
+  '😮‍💨 Anaphylaxis': '34 year old female presents with sudden onset throat swelling, difficulty breathing, hives over entire body, and hypotension 10 minutes after eating at a restaurant. Known peanut allergy. Stridor present on auscultation. BP 78/44, HR 138, SpO2 89%. Angioedema of lips and tongue visible. Patient is panicked and says throat feels like it is closing.',
+};
+
+function loadScenario(btn) {
+  const label = btn.textContent.trim();
+  const text  = SCENARIOS[label];
+  if (!text) return;
+  clearTimeout(debounceTimer);
+  clearResults();
+  document.getElementById('hpi-textarea').value = text;
+  document.getElementById('bb-textarea').value  = text;
+  document.querySelectorAll('.qs-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  setTimeout(() => callAnalyzeAPI(text), 300);
+}
+
 function clearHPI() {
   // Clears text only — does NOT restore demo pre-fill (unlike Reset)
   clearTimeout(debounceTimer);
   clearResults();
   document.getElementById('hpi-textarea').value = '';
   document.getElementById('bb-textarea').value  = '';
+  document.querySelectorAll('.qs-btn').forEach(b => b.classList.remove('active'));
   lastData = null;
   showAnalyzingState(false);
   setIdleState();
