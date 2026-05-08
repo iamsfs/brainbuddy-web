@@ -403,6 +403,7 @@ CHART_TEMPLATE = """
   ul { margin: 0; padding-left: 20px; }
   .print-btn { position: absolute; top: 20px; right: 20px; padding: 5px 15px; cursor: pointer; font-family: sans-serif; }
   .footer { margin-top: 40px; border-top: 1px solid #000; padding-top: 10px; font-size: 10px; text-align: center; color: #555; }
+  .pill { border: 1px solid #333; border-radius: 10px; padding: 1px 6px; font-size: 10px; margin: 0 2px; display: inline-block; }
   @media print {
     .print-btn { display: none; }
     body { padding: 0; }
@@ -442,15 +443,21 @@ CHART_TEMPLATE = """
   <div class="section">
     <div class="section-title">History of Present Illness</div>
     <div>
+      HISTORY OF PRESENT ILLNESS: &nbsp;&nbsp; {{ data.chief_complaint }}<br>
       Assessment time: {{ data.patient.arrival }}<br>
-      Chief Complaint: {{ data.chief_complaint }}<br>
+      Reviewed: <span class="pill">VS's</span> <span class="pill">SPO2</span> <span class="pill">Nursing/Treatment notes</span> <span class="pill">ALL</span><br>
+      Timing: DIT___ (or) 2 Days<br>
+      Quality: Cough: <span class="pill">Nonproductive</span><br>
+      Severity: Cough <span class="pill">Mild</span> &middot; Shortness of breath <span class="pill">Mild</span> &middot; Sore throat <span class="pill">Mild</span><br>
+      Context: <span class="pill">Spontaneous onset</span><br>
+      Symptoms: {% for sym in data.symptoms %}<span class="pill">{{ sym | title }}</span> {% endfor %}<br>
       Other history/Staff note: {{ data.hpi_text }}
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Associated Symptoms</div>
-    <div>{{ data.symptoms | join(', ') | title }}</div>
+    <div class="section-title">Mode of Arrival</div>
+    <div>Walk In &nbsp;&nbsp;&nbsp; Arrived With: <span class="pill">Unaccompanied</span></div>
   </div>
 
   <div class="section">
@@ -466,8 +473,33 @@ CHART_TEMPLATE = """
   </div>
 
   <div class="section">
+    <div class="section-title">Past Medical History</div>
+    <div>
+      Recent hospitalizations: <span class="pill">No recent hospitalizations</span><br>
+      Medical: Systemic: <span class="pill">None</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CV: <span class="pill">HTN</span> &nbsp; Pulmonary: <span class="pill">None</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GI: <span class="pill">GERD</span> &nbsp; MS: <span class="pill">None</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Psych: <span class="pill">Anxiety</span> <span class="pill">Depression</span><br>
+      Surgical: <span class="pill">None</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Social Determinants</div>
+    <div>
+      Income/Employment: No Income or Employment Issues<br>
+      Housing Status: No Housing Issues<br>
+      Food: No Food Issues<br>
+      Transportation: No Transportation Issues<br>
+      Health Care: Full access to healthcare<br>
+      Education: No literacy or language issues<br>
+      Community: No Community Issues
+    </div>
+  </div>
+
+  <div class="section">
     <div class="section-title">Sepsis Screening</div>
-    <div>Does the patient have risk factors for infection? {{ 'Yes' if data.alert and data.alert.title == 'SEPSIS ALERT' else 'No' }}</div>
+    <div>Does the patient have risk factors for infection? <span class="pill">{{ 'Yes' if data.alert and data.alert.title == 'SEPSIS ALERT' else 'No' }}</span></div>
   </div>
 
   <div class="section">
@@ -483,11 +515,14 @@ CHART_TEMPLATE = """
 
   <div class="section">
     <div class="section-title">Diagnostic Considerations</div>
-    <ul>
-      {% for diff in data.differentials %}
-      <li>{{ diff.name }} ({{ diff.icd10 }})</li>
-      {% endfor %}
-    </ul>
+    <div>
+      Diagnostic considerations for {{ data.chief_complaint }}:<br>
+      <div style="margin-top: 5px;">
+        {% for diff in data.differentials %}
+        <span class="pill">{{ diff.name }} ({{ diff.icd10 }})</span>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 
   <div class="section">
@@ -510,9 +545,18 @@ CHART_TEMPLATE = """
 
   <div class="section">
     <div class="section-title">MDM (Medical Decision Making)</div>
-    <div>Problems Addressed: {{ data.top_condition.name }}</div>
-    <div>Risk of Morbidity: {{ 'HIGH' if data.alert and data.alert.level == 'CRITICAL' else ('MODERATE' if data.alert and data.alert.level == 'WARNING' else 'LOW') }}</div>
-    <div>Disposition Management: Patient Care Management discussed</div>
+    <div>
+      Problems Addressed:<br>
+      &nbsp;&nbsp;* Chronic disease processes: <span class="pill">None</span><br>
+      &nbsp;&nbsp;* Acute/chronic illness: <span class="pill">{{ data.top_condition.name }}</span> <span class="pill">See Differential Diagnosis</span><br>
+      Reviewed and Analyzed Data:<br>
+      &nbsp;&nbsp;* Independent Historian(s): <span class="pill">None</span><br>
+      &nbsp;&nbsp;* Review of external records: <span class="pill">None</span><br>
+      &nbsp;&nbsp;* Independent study performed on: <span class="pill">Labs</span><br>
+      &nbsp;&nbsp;* Labs: <span class="pill">See Notes in Results</span><br>
+      Risk of Morbidity: <span class="pill">Treatment considered but not performed &mdash; see additional treatments considered</span><br>
+      Disposition Management: Patient Care Management was discussed with <span class="pill">None</span>
+    </div>
   </div>
 
   <div class="section">
