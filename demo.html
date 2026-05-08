@@ -155,12 +155,21 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 
 /* HPI textarea */
 .hpi-label { font-size: 10.5px; font-weight: 600; color: #4a6a8a; margin-bottom: 4px; display: block; }
-#hpi-textarea {
+#hpi-textarea { 
   width: 100%; min-height: 110px; font-size: 11px; font-family: 'IBM Plex Sans', sans-serif;
   padding: 8px; border: 1px solid #b0c4d8; border-radius: 3px; resize: vertical;
   color: #1a2a3a; background: #f8fafc; line-height: 1.5; outline: none; transition: box-shadow .2s, border-color .2s;
 }
 #hpi-textarea:focus { border-color: #4a80c0; box-shadow: 0 0 0 3px rgba(74,128,192,.15); background: #fff; }
+.hpi-wrap { position: relative; }
+.hpi-clear-btn {
+  position: absolute; bottom: 6px; right: 6px;
+  padding: 2px 9px; background: #e8eef4; border: 1px solid #b0c0d0;
+  color: #5a7a9a; font-size: 10px; border-radius: 3px; cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif; transition: background .15s, color .15s;
+  line-height: 16px;
+}
+.hpi-clear-btn:hover { background: #d0dae8; color: #2a4a6a; border-color: #8aaac8; }
 
 /* Associated symptoms pills */
 .assoc-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
@@ -489,7 +498,10 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
       </div>
       <div class="epd-section-body">
         <label class="hpi-label" for="hpi-textarea">Other history / Staff note:</label>
-        <textarea id="hpi-textarea" placeholder="Type patient history here... BrainBuddy analyzes in real time"></textarea>
+        <div class="hpi-wrap">
+          <textarea id="hpi-textarea" placeholder="Type patient history here... BrainBuddy analyzes in real time"></textarea>
+          <button class="hpi-clear-btn" onclick="clearHPI()" title="Clear HPI and results">Clear</button>
+        </div>
       </div>
     </div>
 
@@ -1152,6 +1164,16 @@ function resetDemo() {
   document.getElementById('bb-textarea').value  = DEMO_TEXT;
   lastData = null;
   setTimeout(() => triggerAnalyze(), 400);
+}
+
+function clearHPI() {
+  // Clears text only — does NOT restore demo pre-fill (unlike Reset)
+  clearTimeout(debounceTimer);
+  clearResults();
+  document.getElementById('hpi-textarea').value = '';
+  document.getElementById('bb-textarea').value  = '';
+  lastData = null;
+  showAnalyzingState(false);
 }
 
 // ── Copy helpers ──────────────────────────────────────────────────────────
