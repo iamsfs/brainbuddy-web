@@ -126,6 +126,9 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 .cc-value { font-weight: 700; color: var(--epd-navy); flex: 1; transition: opacity .25s ease; }
 .cc-btn   { padding: 2px 8px; background: #e8f0f8; border: 1px solid #b0c0d0; color: #4a6a8a; font-size: 10px; border-radius: 3px; cursor: pointer; }
 .cc-prior { padding: 2px 8px; background: #ffeaea; border: 1px solid #f0a0a0; color: #c04040; font-size: 10px; border-radius: 3px; }
+.gen-chart-btn { margin-left: auto; padding: 4px 12px; background: #162d5a; color: #fff; border: 1px solid #0e1a38; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; transition: opacity .2s; }
+.gen-chart-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.gen-chart-btn:hover:not(:disabled) { background: #1e3a75; }
 
 /* Auto-detect badge */
 #bb-cc-badge {
@@ -473,6 +476,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
     </span>
     <button class="cc-btn">Edit</button>
     <span class="cc-prior">● Prior Visit</span>
+    <button id="btn-gen-chart" class="gen-chart-btn" disabled onclick="generateChart()">🖨 Generate Physician Chart</button>
   </div>
 
   <!-- ─── H&P TAB ─── -->
@@ -943,6 +947,8 @@ async function callAnalyzeAPI(text) {
     lastData = data;
     showAnalyzingState(false);
     runAutoFillSequence(data);
+    const genChartBtn = document.getElementById('btn-gen-chart');
+    if (genChartBtn) genChartBtn.disabled = false;
   } catch (e) {
     console.error('[BB] API error:', e);
     showAnalyzingState(false);
@@ -982,6 +988,7 @@ function setIdleState() {
 function runAutoFillSequence(data) {
   clearResults();
   updateCCBadge(null); // reset badge to idle
+  document.getElementById('btn-gen-chart').disabled = true;
   const log = [];
 
   // T=0ms: symptom chips
@@ -1268,6 +1275,8 @@ function clearResults() {
   document.getElementById('bb-alert').classList.remove('show');
   // Reset CC value and badge
   updateCCBadge(null);
+  const genChartBtn = document.getElementById('btn-gen-chart');
+  if (genChartBtn) genChartBtn.disabled = true;
 
   // ROS reset — deselect all, re-select none-pills
   document.querySelectorAll('#ros-table .ros-pill').forEach(p => {
@@ -1323,6 +1332,35 @@ function copyTopCondition() {
 
 function copyText(text) {
   navigator.clipboard.writeText(text).catch(() => {});
+}
+
+function generateChart() {
+  if (!lastData) return;
+  const chartData = {
+    patient: { name: "DOE, JANE", dob: "01/15/1985", age: "41F", mrn: "1004521", weight: "165 lb", height: "68 in", arrival: "05/08/2026 12:31 PM", provider: "Farhan Khan, MD", facility: "EastChase Texas Emergency Center" },
+    chief_complaint: document.getElementById('epd-cc-value').textContent,
+    hpi_text: document.getElementById('hpi-textarea').value,
+    symptoms: lastData.symptoms,
+    top_condition: lastData.top_condition,
+    differentials: lastData.differentials,
+    medications: lastData.medications,
+    recommended_tests: lastData.recommended_tests,
+    ros_findings: lastData.ros_findings,
+    impression_lines: lastData.impression_lines,
+    alert: lastData.alert
+  };
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/chart';
+  form.target = '_blank';
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'data';
+  input.value = JSON.stringify(chartData);
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
 }
 </script>
 </body>

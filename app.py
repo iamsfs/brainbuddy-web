@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify, render_template_string
 import os
 import json
 import re
@@ -383,6 +383,185 @@ def build_prescriptions(medications: list) -> list:
 # ─────────────────────────────────────────────────────────────────────────────
 # Routes
 # ─────────────────────────────────────────────────────────────────────────────
+
+CHART_TEMPLATE = """
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Physician Chart</title>
+<style>
+  body { font-family: "Times New Roman", Times, serif; font-size: 11px; color: #000; background: #fff; line-height: 1.4; padding: 40px; max-width: 800px; margin: 0 auto; }
+  h1, h2, h3 { margin: 0 0 5px 0; }
+  .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+  .header-grid { display: grid; grid-template-columns: 1fr 1fr; text-align: left; margin-bottom: 15px; }
+  .chart-title { text-align: center; font-weight: bold; font-size: 14px; margin: 15px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 5px 0; }
+  .section { margin-bottom: 15px; }
+  .section-title { font-weight: bold; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid #ccc; margin-bottom: 8px; padding-bottom: 3px; }
+  .ros-grid { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 2px; }
+  .ros-label { font-weight: bold; text-transform: uppercase; }
+  ul { margin: 0; padding-left: 20px; }
+  .print-btn { position: absolute; top: 20px; right: 20px; padding: 5px 15px; cursor: pointer; font-family: sans-serif; }
+  .footer { margin-top: 40px; border-top: 1px solid #000; padding-top: 10px; font-size: 10px; text-align: center; color: #555; }
+  @media print {
+    .print-btn { display: none; }
+    body { padding: 0; }
+  }
+</style>
+</head>
+<body>
+  <button class="print-btn" onclick="window.print()">🖨 Print Chart</button>
+  
+  <div class="header">
+    <strong>PRELIMINARY</strong><br>
+    EastChase Texas Emergency Center<br>
+    1251 Eastchase Parkway, Fort Worth, TX 76120<br>
+    (817)566-0285
+  </div>
+
+  <div class="header-grid">
+    <div>
+      Patient: {{ data.patient.name }}<br>
+      DOB: {{ data.patient.dob }} &nbsp; {{ data.patient.age }}<br>
+      Wt: {{ data.patient.weight }} &nbsp; Ht: {{ data.patient.height }}<br>
+      MRN: {{ data.patient.mrn }}
+    </div>
+    <div style="text-align: right;">
+      Arrival Time: {{ data.patient.arrival }}<br><br><br>
+      Provider: {{ data.patient.provider }}
+    </div>
+  </div>
+
+  <div class="chart-title">PHYSICIAN CHART</div>
+
+  <div class="section">
+    <div class="section-title">Chief Complaint</div>
+    <div>{{ data.chief_complaint }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">History of Present Illness</div>
+    <div>
+      Assessment time: {{ data.patient.arrival }}<br>
+      Chief Complaint: {{ data.chief_complaint }}<br>
+      Other history/Staff note: {{ data.hpi_text }}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Associated Symptoms</div>
+    <div>{{ data.symptoms | join(', ') | title }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Review of Systems</div>
+    <div class="ros-grid"><div class="ros-label">Constitutional:</div><div>{{ data.ros_findings.constitutional | join(', ') | title if data.ros_findings.constitutional else 'None' }}</div></div>
+    <div class="ros-grid"><div class="ros-label">Eyes:</div><div>None</div></div>
+    <div class="ros-grid"><div class="ros-label">ENT:</div><div>{{ data.ros_findings.ent | join(', ') | title if data.ros_findings.ent else 'None' }}</div></div>
+    <div class="ros-grid"><div class="ros-label">Respiratory:</div><div>{{ data.ros_findings.respiratory | join(', ') | title if data.ros_findings.respiratory else 'None' }}</div></div>
+    <div class="ros-grid"><div class="ros-label">CV:</div><div>{{ data.ros_findings.cv | join(', ') | title if data.ros_findings.cv else 'None' }}</div></div>
+    <div class="ros-grid"><div class="ros-label">GI:</div><div>{{ data.ros_findings.gi | join(', ') | title if data.ros_findings.gi else 'None' }}</div></div>
+    <div class="ros-grid"><div class="ros-label">Musculoskeletal:</div><div>{{ data.ros_findings.musculoskeletal | join(', ') | title if data.ros_findings.musculoskeletal else 'None' }}</div></div>
+    <div class="ros-grid"><div class="ros-label">Neurological:</div><div>{{ data.ros_findings.neurological | join(', ') | title if data.ros_findings.neurological else 'None' }}</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Sepsis Screening</div>
+    <div>Does the patient have risk factors for infection? {{ 'Yes' if data.alert and data.alert.title == 'SEPSIS ALERT' else 'No' }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Impression</div>
+    <div>Based on my analysis of the history, physical exam, and data, I believe the most likely impression is:</div>
+    <div style="font-weight: bold; margin-top: 5px;">{{ data.top_condition.name }} — {{ data.top_condition.icd10 }} &nbsp;&nbsp; Confidence: {{ data.top_condition.confidence }}%</div>
+    <ul style="margin-top: 5px;">
+      {% for line in data.impression_lines %}
+      <li>{{ line }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Diagnostic Considerations</div>
+    <ul>
+      {% for diff in data.differentials %}
+      <li>{{ diff.name }} ({{ diff.icd10 }})</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recommended Workup</div>
+    <ul>
+      {% for test in data.recommended_tests %}
+      <li>{{ test }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Suggested Medications</div>
+    <ul>
+      {% for med in data.medications %}
+      <li>{{ med.name }} {{ med.dose }} {{ med.route }} {{ med.frequency }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">MDM (Medical Decision Making)</div>
+    <div>Problems Addressed: {{ data.top_condition.name }}</div>
+    <div>Risk of Morbidity: {{ 'HIGH' if data.alert and data.alert.level == 'CRITICAL' else ('MODERATE' if data.alert and data.alert.level == 'WARNING' else 'LOW') }}</div>
+    <div>Disposition Management: Patient Care Management discussed</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Discharge</div>
+    <div>Discharge to: Home</div>
+    <div>Condition: Stable</div>
+    <div>Instructions given to patient: {{ data.chief_complaint }}</div>
+    <div>Follow up: As soon as possible</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Prescriptions</div>
+    <ul>
+      {% for med in data.medications %}
+      <li>{{ med.name }} {{ med.dose }} {{ med.route }} {{ med.frequency }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="footer">
+    Physician Record — Page 1 of 1<br>
+    Generated: <span id="gen-date"></span><br>
+    ─────────────────────────────────<br>
+    <strong>BrainBuddy ER — Clinical Intelligence Engine</strong><br>
+    ⚡ This chart was auto-generated from physician notes
+    <script>document.getElementById('gen-date').textContent = new Date().toLocaleString();</script>
+  </div>
+</body>
+</html>
+"""
+
+@app.route('/chart', methods=['POST'])
+def chart():
+    import json
+    data = json.loads(request.form.get('data', '{}'))
+    # Ensure all required keys exist to prevent Jinja undefined errors
+    data.setdefault('patient', {})
+    data.setdefault('chief_complaint', '')
+    data.setdefault('hpi_text', '')
+    data.setdefault('symptoms', [])
+    data.setdefault('top_condition', {})
+    data.setdefault('differentials', [])
+    data.setdefault('medications', [])
+    data.setdefault('recommended_tests', [])
+    data.setdefault('ros_findings', {})
+    data.setdefault('impression_lines', [])
+    data.setdefault('alert', {})
+    return render_template_string(CHART_TEMPLATE, data=data)
+
 
 @app.route('/')
 def index():
