@@ -215,28 +215,41 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 .hist-tag { padding: 2px 10px; background: #f0f4f8; border: 1px solid #d0d7de; border-radius: 10px; font-size: 10px; color: #5a6a7a; }
 
 /* Disposition form */
-.disp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-.disp-field { display: flex; flex-direction: column; gap: 3px; }
-.disp-label { font-size: 10px; font-weight: 700; color: #4a6a8a; text-transform: uppercase; letter-spacing: .3px; }
-.disp-input {
-  padding: 5px 8px; border: 1px solid #b0c0d0; border-radius: 3px; font-size: 11px;
-  font-family: 'IBM Plex Sans', sans-serif; background: #f8fafc; color: #1a2a3a; outline: none;
+#bb-imp-badge {
+  font-size: 9px; font-weight: 700; color: #d29922; background: rgba(210,153,34,.1);
+  padding: 2px 6px; border-radius: 4px; margin-left: 8px; opacity: 0; transition: opacity 0.3s;
 }
-.disp-input:focus { border-color: #4a80c0; box-shadow: 0 0 0 2px rgba(74,128,192,.1); }
-.disp-input.auto-filled { background: #f0fff8; border-color: #2a9a50; }
-.disp-full { grid-column: 1 / -1; }
-.imp-line {
-  padding: 5px 8px; border: 1px solid #c0d0e0; border-radius: 3px; font-size: 11px;
-  font-family: 'IBM Plex Mono', monospace; background: #f4f8ff; color: var(--epd-navy);
-  margin-bottom: 4px; min-height: 28px; transition: all .3s;
+#bb-imp-badge.show { opacity: 1; }
+
+.disp-icd-btn {
+  display: inline-block; padding: 3px 8px; background: rgba(0,212,170,.15); border: 1px solid rgba(0,212,170,.4);
+  color: var(--bb-teal); font-size: 10px; font-weight: 600; border-radius: 12px; cursor: pointer;
 }
-.imp-line.filled { background: #e8f8ee; border-color: #40b060; }
-.rx-line {
-  padding: 5px 8px; border: 1px solid #c0d0e0; border-radius: 3px; font-size: 10.5px;
-  font-family: 'IBM Plex Mono', monospace; background: #fffbf0; color: #3a3000;
-  margin-bottom: 4px; min-height: 28px; transition: all .3s;
+
+.imp-line-input, .rx-line-input {
+  display: block; width: 100%; padding: 4px 6px; border: 1px solid #c0d0e0; border-radius: 3px;
+  font-size: 11px; font-family: 'IBM Plex Sans', sans-serif; background: #fff; margin-bottom: 4px;
+  outline: none; transition: background 0.3s, border-color 0.3s; box-sizing: border-box;
 }
-.rx-line.filled { background: #fff8e0; border-color: #d0a820; }
+.imp-line-input.filled { background: #e8f8ee; border-color: #40b060; }
+.rx-line-input.filled { background: #fff8e0; border-color: #d0a820; }
+
+.disp-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.disp-row { margin-bottom: 6px; font-size: 11px; }
+.disp-pill {
+  display: inline-block; padding: 2px 8px; background: #f0f4f8; border: 1px solid #d0d7de;
+  border-radius: 10px; font-size: 10px; color: #5a6a7a; cursor: pointer; user-select: none;
+  transition: all 0.2s;
+}
+.disp-pill.selected {
+  background: #dc3545; border-color: #b02030; color: #fff; font-weight: 600;
+}
+
+.erx-btn {
+  padding: 4px 10px; background: #f0f4f8; border: 1px solid #c0d0e0; border-radius: 4px;
+  font-size: 11px; font-weight: 600; color: #3a5a80; cursor: pointer;
+}
+.erx-btn:hover { background: #e0e8f0; }
 
 /* ── BRAINBUDDY PANEL ── */
 #bb-panel {
@@ -665,49 +678,116 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   <!-- ─── DISPOSITION TAB ─── -->
   <div id="tab-disposition" class="tab-panel">
 
-    <!-- Impression -->
+    <!-- Section 1 — IMPRESSION -->
     <div class="epd-section">
-      <div class="epd-section-header">IMPRESSION</div>
+      <div class="epd-section-header">
+        IMPRESSION <span id="bb-imp-badge" class="" title="Auto-populated by BrainBuddy">⚡ BrainBuddy populated</span>
+      </div>
       <div class="epd-section-body">
-        <div class="imp-line" id="imp-line-1" contenteditable="true"></div>
-        <div class="imp-line" id="imp-line-2" contenteditable="true"></div>
-        <div class="imp-line" id="imp-line-3" contenteditable="true"></div>
-        <div class="imp-line" id="imp-line-4" contenteditable="true"></div>
+        <div style="font-size:11px; margin-bottom: 5px;">Based on my analysis of the history, physical exam, and data, I believe the most likely impression is:</div>
+        <div style="margin-bottom: 8px;">
+          <span class="disp-icd-btn" id="disp-top-icd">Impressions ICD10</span>
+        </div>
+        <input class="imp-line-input" id="imp-line-1" readonly />
+        <input class="imp-line-input" id="imp-line-2" readonly />
+        <input class="imp-line-input" id="imp-line-3" readonly />
+        <input class="imp-line-input" id="imp-line-4" readonly />
+        <input class="imp-line-input" id="imp-line-5" readonly />
       </div>
     </div>
 
-    <!-- Discharge -->
+    <!-- Section 2 — Refusal of Service -->
     <div class="epd-section">
-      <div class="epd-section-header">Discharge</div>
       <div class="epd-section-body">
-        <div class="disp-grid">
-          <div class="disp-field">
-            <label class="disp-label">Discharge To</label>
-            <input class="disp-input" type="text" value="Home" readonly>
-          </div>
-          <div class="disp-field">
-            <label class="disp-label">Condition</label>
-            <input class="disp-input" type="text" value="Stable" readonly>
-          </div>
-          <div class="disp-field disp-full">
-            <label class="disp-label">Instructions Given to Patient</label>
-            <input class="disp-input" id="disp-instructions" type="text" placeholder="Auto-populated by BrainBuddy..." value="Rest, push fluids. Return to ED if fever persists beyond 5 days, difficulty breathing, or symptoms worsen.">
-          </div>
-          <div class="disp-field disp-full">
-            <label class="disp-label">Work Excuse</label>
-            <input class="disp-input" type="text" value="No work starting 5/8/2026. Return on 5/10/2026.">
-          </div>
+        <div style="font-size:11px; font-weight: 600;">Refusal of Service: ___</div>
+      </div>
+    </div>
+
+    <!-- Section 3 — Disposition (Phys) -->
+    <div class="epd-section">
+      <div class="epd-section-header">Disposition (Phys)</div>
+      <div class="epd-section-body">
+        <div style="font-size:11px; margin-bottom: 8px; color: #1a2a3a;">
+          *Decision time for Disposition: ___________<br>
+          Disposition decision notes: _______________
+        </div>
+        <div class="disp-pills">
+          <span class="disp-pill" id="pill-discharge">Discharge</span>
+          <span class="disp-pill">Observation</span>
+          <span class="disp-pill">Admit to Inpatient</span>
+          <span class="disp-pill">Transfer</span>
+          <span class="disp-pill">Eloped/LBTC</span>
+          <span class="disp-pill">AMA</span>
+          <span class="disp-pill">LWBS</span>
+          <span class="disp-pill">Expired</span>
+          <span class="disp-pill">DOA</span>
+          <span class="disp-pill">MSE</span>
+          <span class="disp-pill">MED REL</span>
         </div>
       </div>
     </div>
 
-    <!-- Prescriptions -->
+    <!-- Section 4 — Discharge -->
+    <div class="epd-section">
+      <div class="epd-section-header">Discharge</div>
+      <div class="epd-section-body">
+        <div class="disp-row">
+          ☑ Discharge to: <span class="disp-pill" id="pill-home">Home</span> <span class="disp-pill">Law Enforcement</span> <span class="disp-pill">Other: ___</span>
+        </div>
+        <div class="disp-row">
+          Condition: <span class="disp-pill">Good</span> <span class="disp-pill">Fair</span> <span class="disp-pill">Poor</span> <span class="disp-pill">Critical</span> <span class="disp-pill" id="pill-stable">Stable</span> <span class="disp-pill">Unstable</span>
+        </div>
+        <div class="disp-row">
+          Education: <span class="disp-pill" id="pill-patient">Patient</span> <span class="disp-pill">Family</span> <span class="disp-pill">Caretaker</span> <span class="disp-pill">Friend</span> <span class="disp-pill">Police</span>
+        </div>
+        <div class="disp-row">
+          regarding: <span class="disp-pill">Impressions</span> <span class="disp-pill">Diagnostic study results</span> <span class="disp-pill" id="pill-treatment">Treatment</span> <span class="disp-pill">Prognosis</span> <span class="disp-pill">Need for follow up</span>
+        </div>
+        <div class="disp-row" style="margin-top: 5px;">
+          Notes: ___
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5 — e-Prescribing buttons -->
+    <div class="epd-section">
+      <div class="epd-section-body">
+        <div style="display:flex; gap: 6px;">
+          <button class="erx-btn">e-Prescribing</button>
+          <button class="erx-btn">Prescriptions/Excuses</button>
+          <button class="erx-btn">Discharge Instructions</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6 — Prescriptions -->
     <div class="epd-section">
       <div class="epd-section-header">Prescriptions</div>
-      <div class="epd-section-body">
-        <div class="rx-line" id="rx-line-1" contenteditable="true"></div>
-        <div class="rx-line" id="rx-line-2" contenteditable="true"></div>
-        <div class="rx-line" id="rx-line-3" contenteditable="true"></div>
+      <div class="epd-section-body" style="font-size:11px;">
+        <div style="margin-bottom:8px;">Based on the medications I am prescribing, I have made any necessary changes to the patients medications.</div>
+        
+        <div style="margin-bottom:8px;">Instructions given to the patient: <span id="disp-inst-cc" style="font-weight:600;"></span><br>
+        the patient was advised to return for worsening or increasing symptoms.</div>
+        
+        <div style="margin-bottom:8px;">
+          Follow up provider: UZOH, STELLA, MD<br>
+          Follow up: As soon as possible
+        </div>
+        
+        <div style="margin-bottom:8px; font-weight:600;">Prescriptions:</div>
+        <input class="rx-line-input" id="rx-line-1" readonly />
+        <input class="rx-line-input" id="rx-line-2" readonly />
+        
+        <div style="margin-top:8px; font-weight:600;">Excuse:</div>
+        <div id="disp-excuse">No work starting _______. Return on _______.</div>
+      </div>
+    </div>
+
+    <!-- Section 7 — Current Medications + e-Rx Notifications -->
+    <div class="epd-section">
+      <div class="epd-section-body" style="font-size:11px;">
+        <div>Current Medications: ___</div>
+        <div style="margin-top:5px;">e-Rx Notifications: Pending Rx Count ___ Rx sent - Not Signed ___</div>
       </div>
     </div>
 
@@ -1064,19 +1144,53 @@ function runAutoFillSequence(data) {
 
   // T=rosDelay: impression on disposition tab
   const impLines = data.impression_lines || [];
+  if (impLines.length > 0) {
+    setTimeout(() => {
+      const badge = document.getElementById('bb-imp-badge');
+      if (badge) badge.classList.add('show');
+    }, rosDelay + 200);
+  }
   impLines.forEach((line, i) => {
     setTimeout(() => {
       const el = document.getElementById(`imp-line-${i+1}`);
-      if (el) { el.textContent = line; el.classList.add('filled'); }
+      if (el) { el.value = line; el.classList.add('filled'); }
     }, rosDelay + 200 + i * 200);
   });
+  
+  // Highlight disposition pills
+  setTimeout(() => {
+    ['pill-discharge', 'pill-home', 'pill-stable', 'pill-patient', 'pill-treatment'].forEach(id => {
+      const pill = document.getElementById(id);
+      if (pill) pill.classList.add('selected');
+    });
+  }, rosDelay + 400);
 
-  // Prescriptions
-  const rxLines = data.prescriptions || [];
-  rxLines.forEach((line, i) => {
+  // Instructions CC
+  setTimeout(() => {
+    const cc = document.getElementById('disp-inst-cc');
+    if (cc) cc.textContent = (data.top_condition && data.top_condition.name) ? getCCText(data.top_condition.name) : '';
+    
+    // Work excuse
+    const exc = document.getElementById('disp-excuse');
+    if (exc) {
+      const today = new Date();
+      const returnDate = new Date(today);
+      returnDate.setDate(today.getDate() + 2);
+      exc.textContent = `No work starting ${today.toLocaleDateString()}. Return on ${returnDate.toLocaleDateString()}.`;
+    }
+  }, rosDelay + 500);
+
+  // Prescriptions format: [DRUG NAME] [DOSE] — Take [sig] — [dispense] — No refills
+  const rxLines = data.medications || [];
+  rxLines.forEach((m, i) => {
     setTimeout(() => {
       const el = document.getElementById(`rx-line-${i+1}`);
-      if (el) { el.textContent = line; el.classList.add('filled'); }
+      if (el) {
+        const sig = m.frequency ? `Take ${m.frequency}` : '';
+        const dispense = "Dispense: 30";
+        el.value = `${(m.name||'').toUpperCase()} ${m.dose||''} — ${sig} — ${dispense} — No refills`;
+        el.classList.add('filled');
+      }
     }, rosDelay + 600 + i * 200);
   });
 
@@ -1309,19 +1423,32 @@ function clearResults() {
   if (nonePill) nonePill.classList.add('selected');
 
   // Impression / Rx clear
-  ['imp-line-1','imp-line-2','imp-line-3','imp-line-4'].forEach(id => {
+  ['imp-line-1','imp-line-2','imp-line-3','imp-line-4','imp-line-5'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.textContent = ''; el.classList.remove('filled'); }
+    if (el) { el.value = ''; el.classList.remove('filled'); }
   });
+  
+  const badge = document.getElementById('bb-imp-badge');
+  if (badge) badge.classList.remove('show');
+  
+  ['pill-discharge', 'pill-home', 'pill-stable', 'pill-patient', 'pill-treatment'].forEach(id => {
+    const pill = document.getElementById(id);
+    if (pill) pill.classList.remove('selected');
+  });
+  
+  const ccInst = document.getElementById('disp-inst-cc');
+  if (ccInst) ccInst.textContent = '';
+  const dispExc = document.getElementById('disp-excuse');
+  if (dispExc) dispExc.textContent = 'No work starting _______. Return on _______.';
 
   // History Context clear
   const histContainer = document.getElementById('history-tags-container');
   if (histContainer) {
     histContainer.innerHTML = '<span style="font-size:10.5px; color:#8b949e; font-style:italic;" id="no-history-text">None detected</span>';
   }
-  ['rx-line-1','rx-line-2','rx-line-3'].forEach(id => {
+  ['rx-line-1','rx-line-2'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.textContent = ''; el.classList.remove('filled'); }
+    if (el) { el.value = ''; el.classList.remove('filled'); }
   });
 }
 
