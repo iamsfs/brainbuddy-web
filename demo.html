@@ -109,12 +109,8 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
   background: #fff; color: var(--epd-navy); font-weight: 600;
   border-top: 2px solid var(--epd-navy); border-bottom: 2px solid #fff; margin-bottom: -2px;
 }
-.epd-tab[data-demo="false"] { position: relative; }
-.epd-tab[data-demo="false"]:hover::after {
-  content: 'Not included in this demo'; position: absolute; bottom: -28px; left: 50%;
-  transform: translateX(-50%); background: #333; color: #fff; font-size: 10px;
-  padding: 3px 8px; border-radius: 3px; white-space: nowrap; z-index: 50; pointer-events: none;
-}
+.epd-tab[data-demo="false"] { opacity: 0.4; cursor: not-allowed; }
+.epd-tab[data-demo="false"]:hover { background: transparent; }
 
 /* Chief complaint bar */
 #epd-cc-bar {
@@ -473,19 +469,19 @@ html, body { height: 100%; overflow: hidden; font-family: 'IBM Plex Sans', syste
 
   <!-- Tab bar -->
   <div id="epd-tabs">
-    <div class="epd-tab" data-demo="false">Triage</div>
-    <div class="epd-tab" data-demo="false">Assessment</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">Triage</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">Assessment</div>
     <div class="epd-tab active" data-tab="hp" onclick="switchTab('hp',this)">H&amp;P Inpt</div>
-    <div class="epd-tab" data-demo="false">Course</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">Course</div>
     <div class="epd-tab" data-tab="disposition" onclick="switchTab('disposition',this)">Disposition</div>
-    <div class="epd-tab" data-demo="false">MAR</div>
-    <div class="epd-tab" data-demo="false">Orders</div>
-    <div class="epd-tab" data-demo="false">History</div>
-    <div class="epd-tab" data-demo="false">Physical</div>
-    <div class="epd-tab" data-demo="false">Procedures</div>
-    <div class="epd-tab" data-demo="false">Results</div>
-    <div class="epd-tab" data-demo="false">STO</div>
-    <div class="epd-tab" data-demo="false">Crit</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">MAR</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">Orders</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">History</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">Physical</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">Procedures</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">Results</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">STO</div>
+    <div class="epd-tab" data-demo="false" title="Not available in this demo">Crit</div>
   </div>
 
   <!-- Chief complaint bar -->
