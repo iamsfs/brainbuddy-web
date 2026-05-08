@@ -1,0 +1,1025 @@
+{
+  "Acute Liver Failure": [],
+  "Adrenal Crisis": [],
+  "Alcohol Withdrawal": [
+    {
+      "name": "Diazepam",
+      "rxcui": "3322"
+    },
+    {
+      "name": "Lorazepam",
+      "rxcui": "6470"
+    },
+    {
+      "name": "Thiamine",
+      "rxcui": "10454"
+    },
+    {
+      "name": "clobazam 5 MG Oral Film",
+      "rxcui": "2058255"
+    },
+    {
+      "name": "clobazam 10 MG Oral Film",
+      "rxcui": "2058253"
+    },
+    {
+      "name": "clobazam 20 MG Oral Film",
+      "rxcui": "2058254"
+    },
+    {
+      "name": "clobazam 5 MG Oral Tablet",
+      "rxcui": "427538"
+    },
+    {
+      "name": "clobazam 10 MG Oral Tablet",
+      "rxcui": "199450"
+    },
+    {
+      "name": "clobazam 20 MG Oral Tablet",
+      "rxcui": "246172"
+    },
+    {
+      "name": "ethotoin 250 MG Oral Tablet",
+      "rxcui": "197683"
+    }
+  ],
+  "Anaphylaxis": [
+    {
+      "name": "Epinephrine 1:1000 IM",
+      "rxcui": "3992"
+    },
+    {
+      "name": "Diphenhydramine",
+      "rxcui": "3498"
+    },
+    {
+      "name": "Methylprednisolone",
+      "rxcui": "6902"
+    },
+    {
+      "name": "Ranitidine",
+      "rxcui": "9143"
+    },
+    {
+      "name": "cortisone 5 MG Oral Tablet",
+      "rxcui": "197545"
+    },
+    {
+      "name": "cortisone 10 MG Oral Tablet",
+      "rxcui": "197543"
+    },
+    {
+      "name": "prednisone 1 MG Oral Tablet",
+      "rxcui": "198144"
+    },
+    {
+      "name": "prednisone 5 MG Oral Tablet",
+      "rxcui": "312617"
+    },
+    {
+      "name": "deflazacort 6 MG Oral Tablet",
+      "rxcui": "153098"
+    },
+    {
+      "name": "prednisone 10 MG Oral Tablet",
+      "rxcui": "198145"
+    }
+  ],
+  "Aortic Dissection": [
+    {
+      "name": "Labetalol",
+      "rxcui": "6185"
+    },
+    {
+      "name": "Esmolol",
+      "rxcui": "49737"
+    },
+    {
+      "name": "Nicardipine",
+      "rxcui": "7396"
+    },
+    {
+      "name": "Morphine",
+      "rxcui": "7052"
+    }
+  ],
+  "Appendicitis": [
+    {
+      "name": "Cefoxitin",
+      "rxcui": "2189"
+    },
+    {
+      "name": "Metronidazole",
+      "rxcui": "6922"
+    },
+    {
+      "name": "Morphine",
+      "rxcui": "7052"
+    },
+    {
+      "name": "Ondansetron",
+      "rxcui": "26225"
+    },
+    {
+      "name": "DOVERIN CAP",
+      "rxcui": "310018"
+    },
+    {
+      "name": "MORPHINE SO4 5MG/ML INJ",
+      "rxcui": "1541393"
+    },
+    {
+      "name": "MORPHINE SO4 1MG/ML INJ",
+      "rxcui": "2732461"
+    },
+    {
+      "name": "HYDROMORPHONE HCL 1GM PWDR",
+      "rxcui": "310913"
+    },
+    {
+      "name": "HYDROMORPHONE HCL CRYSTALS",
+      "rxcui": "310923"
+    },
+    {
+      "name": "fentanyl 1.2 MG Buccal Film",
+      "rxcui": "858087"
+    }
+  ],
+  "Asthma (Acute)": [
+    {
+      "name": "Albuterol",
+      "rxcui": "435"
+    },
+    {
+      "name": "Ipratropium",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "Methylprednisolone",
+      "rxcui": "6902"
+    },
+    {
+      "name": "Magnesium Sulfate",
+      "rxcui": "6585"
+    },
+    {
+      "name": "cortisone 5 MG Oral Tablet",
+      "rxcui": "197545"
+    },
+    {
+      "name": "cortisone 10 MG Oral Tablet",
+      "rxcui": "197543"
+    },
+    {
+      "name": "prednisone 1 MG Oral Tablet",
+      "rxcui": "198144"
+    },
+    {
+      "name": "prednisone 5 MG Oral Tablet",
+      "rxcui": "312617"
+    },
+    {
+      "name": "deflazacort 6 MG Oral Tablet",
+      "rxcui": "153098"
+    },
+    {
+      "name": "prednisone 10 MG Oral Tablet",
+      "rxcui": "198145"
+    }
+  ],
+  "Atrial Fibrillation": [
+    {
+      "name": "Metoprolol",
+      "rxcui": "6918"
+    },
+    {
+      "name": "Diltiazem",
+      "rxcui": "3443"
+    },
+    {
+      "name": "Heparin",
+      "rxcui": "5224"
+    },
+    {
+      "name": "Amiodarone",
+      "rxcui": "703"
+    },
+    {
+      "name": "desirudin 15 MG Injection",
+      "rxcui": "402248"
+    },
+    {
+      "name": "apixaban 5 MG Oral Tablet",
+      "rxcui": "1364445"
+    },
+    {
+      "name": "edoxaban 15 MG Oral Tablet",
+      "rxcui": "1599543"
+    },
+    {
+      "name": "edoxaban 30 MG Oral Tablet",
+      "rxcui": "1599551"
+    },
+    {
+      "name": "edoxaban 60 MG Oral Tablet",
+      "rxcui": "1599555"
+    },
+    {
+      "name": "dicumarol 25 MG Oral Tablet",
+      "rxcui": "197597"
+    }
+  ],
+  "COPD Exacerbation": [
+    {
+      "name": "Albuterol",
+      "rxcui": "435"
+    },
+    {
+      "name": "Ipratropium",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "Prednisone",
+      "rxcui": "8640"
+    },
+    {
+      "name": "Azithromycin",
+      "rxcui": "18631"
+    },
+    {
+      "name": "prednisone 1 MG Oral Tablet",
+      "rxcui": "198144"
+    },
+    {
+      "name": "prednisone 5 MG Oral Tablet",
+      "rxcui": "312617"
+    },
+    {
+      "name": "prednisone 10 MG Oral Tablet",
+      "rxcui": "198145"
+    }
+  ],
+  "Cardiogenic Shock": [],
+  "Cholecystitis (Acute)": [],
+  "DVT": [
+    {
+      "name": "desirudin 15 MG Injection",
+      "rxcui": "402248"
+    },
+    {
+      "name": "apixaban 5 MG Oral Tablet",
+      "rxcui": "1364445"
+    },
+    {
+      "name": "edoxaban 15 MG Oral Tablet",
+      "rxcui": "1599543"
+    },
+    {
+      "name": "edoxaban 30 MG Oral Tablet",
+      "rxcui": "1599551"
+    },
+    {
+      "name": "edoxaban 60 MG Oral Tablet",
+      "rxcui": "1599555"
+    },
+    {
+      "name": "dicumarol 25 MG Oral Tablet",
+      "rxcui": "197597"
+    },
+    {
+      "name": "dicumarol 50 MG Oral Tablet",
+      "rxcui": "309861"
+    },
+    {
+      "name": "apixaban 2.5 MG Oral Tablet",
+      "rxcui": "1364435"
+    }
+  ],
+  "Diabetic Ketoacidosis": [
+    {
+      "name": "Regular Insulin IV",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "Normal Saline IV",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "Potassium Chloride",
+      "rxcui": "8591"
+    },
+    {
+      "name": "Sodium Bicarbonate",
+      "rxcui": "36676"
+    },
+    {
+      "name": "HumaLOG Mix 75/25",
+      "rxcui": "752388"
+    },
+    {
+      "name": "HumuLIN 70/30 KwikPen",
+      "rxcui": "847189"
+    },
+    {
+      "name": "INSULIN NOVOLIN 70/30 INJ PENFILL 3ML",
+      "rxcui": "2687949"
+    },
+    {
+      "name": "INSULIN,HUMAN 1X90/3MGX90 ORAL INHL PKT",
+      "rxcui": "763015"
+    },
+    {
+      "name": "nabilone 1 MG Oral Capsule",
+      "rxcui": "311891"
+    },
+    {
+      "name": "ondansetron 8 MG Oral Film",
+      "rxcui": "998028"
+    }
+  ],
+  "Eclampsia": [
+    {
+      "name": "Magnesium Sulfate",
+      "rxcui": "6585"
+    },
+    {
+      "name": "Labetalol",
+      "rxcui": "6185"
+    },
+    {
+      "name": "Hydralazine",
+      "rxcui": "5470"
+    }
+  ],
+  "Encephalitis": [],
+  "GI Bleed (Upper)": [],
+  "Heart Failure (Acute)": [
+    {
+      "name": "Furosemide",
+      "rxcui": "4603"
+    },
+    {
+      "name": "Nitroglycerin",
+      "rxcui": "4917"
+    },
+    {
+      "name": "Morphine",
+      "rxcui": "7052"
+    },
+    {
+      "name": "Dobutamine",
+      "rxcui": "3616"
+    }
+  ],
+  "Hyperkalemia": [
+    {
+      "name": "Calcium Gluconate",
+      "rxcui": "1908"
+    },
+    {
+      "name": "Regular Insulin + D50",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "Sodium Bicarbonate",
+      "rxcui": "36676"
+    },
+    {
+      "name": "Kayexalate",
+      "rxcui": "56512"
+    }
+  ],
+  "Hyperosmolar Hyperglycemic State": [
+    {
+      "name": "Potassium Chloride",
+      "rxcui": "8591"
+    },
+    {
+      "name": "Normal Saline IV",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "Regular Insulin IV",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "HumaLOG Mix 75/25",
+      "rxcui": "752388"
+    },
+    {
+      "name": "HumuLIN 70/30 KwikPen",
+      "rxcui": "847189"
+    },
+    {
+      "name": "INSULIN NOVOLIN 70/30 INJ PENFILL 3ML",
+      "rxcui": "2687949"
+    },
+    {
+      "name": "INSULIN,HUMAN 1X90/3MGX90 ORAL INHL PKT",
+      "rxcui": "763015"
+    }
+  ],
+  "Hypertensive Emergency": [
+    {
+      "name": "Labetalol",
+      "rxcui": "6185"
+    },
+    {
+      "name": "Nicardipine",
+      "rxcui": "7396"
+    },
+    {
+      "name": "Hydralazine",
+      "rxcui": "5470"
+    },
+    {
+      "name": "Nitroprusside",
+      "rxcui": "7476"
+    },
+    {
+      "name": "VERAPAMIL HCL 2.5MG/ML INJ",
+      "rxcui": "2055037"
+    },
+    {
+      "name": "amlodipine 5 MG Oral Tablet",
+      "rxcui": "197361"
+    },
+    {
+      "name": "bepridil 200 MG Oral Tablet",
+      "rxcui": "308700"
+    },
+    {
+      "name": "bepridil 300 MG Oral Tablet",
+      "rxcui": "308701"
+    },
+    {
+      "name": "bepridil 400 MG Oral Tablet",
+      "rxcui": "313859"
+    },
+    {
+      "name": "isradipine 5 MG Oral Capsule",
+      "rxcui": "197849"
+    }
+  ],
+  "Hypoglycemia": [
+    {
+      "name": "Dextrose 50%",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "Glucagon",
+      "rxcui": "4832"
+    },
+    {
+      "name": "HumaLOG Mix 75/25",
+      "rxcui": "752388"
+    },
+    {
+      "name": "HumuLIN 70/30 KwikPen",
+      "rxcui": "847189"
+    },
+    {
+      "name": "INSULIN NOVOLIN 70/30 INJ PENFILL 3ML",
+      "rxcui": "2687949"
+    },
+    {
+      "name": "INSULIN,HUMAN 1X90/3MGX90 ORAL INHL PKT",
+      "rxcui": "763015"
+    }
+  ],
+  "Kidney Stones": [
+    {
+      "name": "DOVERIN CAP",
+      "rxcui": "310018"
+    },
+    {
+      "name": "MORPHINE SO4 5MG/ML INJ",
+      "rxcui": "1541393"
+    },
+    {
+      "name": "MORPHINE SO4 1MG/ML INJ",
+      "rxcui": "2732461"
+    },
+    {
+      "name": "HYDROMORPHONE HCL 1GM PWDR",
+      "rxcui": "310913"
+    },
+    {
+      "name": "HYDROMORPHONE HCL CRYSTALS",
+      "rxcui": "310923"
+    },
+    {
+      "name": "fentanyl 1.2 MG Buccal Film",
+      "rxcui": "858087"
+    },
+    {
+      "name": "fentanyl 0.2 MG Buccal Film",
+      "rxcui": "858092"
+    },
+    {
+      "name": "fentanyl 0.4 MG Buccal Film",
+      "rxcui": "858095"
+    },
+    {
+      "name": "aspirin 81 MG Oral Tablet",
+      "rxcui": "243670"
+    },
+    {
+      "name": "aspirin 486 MG Oral Tablet",
+      "rxcui": "198470"
+    }
+  ],
+  "Meningitis (Bacterial)": [
+    {
+      "name": "Ceftriaxone",
+      "rxcui": "2193"
+    },
+    {
+      "name": "Vancomycin",
+      "rxcui": "11124"
+    },
+    {
+      "name": "Dexamethasone",
+      "rxcui": "3264"
+    },
+    {
+      "name": "Ampicillin",
+      "rxcui": "733"
+    },
+    {
+      "name": "cortisone 5 MG Oral Tablet",
+      "rxcui": "197545"
+    },
+    {
+      "name": "cortisone 10 MG Oral Tablet",
+      "rxcui": "197543"
+    },
+    {
+      "name": "prednisone 1 MG Oral Tablet",
+      "rxcui": "198144"
+    },
+    {
+      "name": "prednisone 5 MG Oral Tablet",
+      "rxcui": "312617"
+    },
+    {
+      "name": "deflazacort 6 MG Oral Tablet",
+      "rxcui": "153098"
+    },
+    {
+      "name": "prednisone 10 MG Oral Tablet",
+      "rxcui": "198145"
+    }
+  ],
+  "Meningococcemia": [],
+  "NSTEMI / Unstable Angina": [
+    {
+      "name": "Aspirin",
+      "rxcui": "1191"
+    },
+    {
+      "name": "Heparin",
+      "rxcui": "5224"
+    },
+    {
+      "name": "Ticagrelor",
+      "rxcui": "1116632"
+    },
+    {
+      "name": "Nitroglycerin",
+      "rxcui": "4917"
+    },
+    {
+      "name": "cangrelor 50 MG Injection",
+      "rxcui": "1656056"
+    },
+    {
+      "name": "prasugrel 5 MG Oral Tablet",
+      "rxcui": "855818"
+    },
+    {
+      "name": "prasugrel 10 MG Oral Tablet",
+      "rxcui": "855812"
+    },
+    {
+      "name": "ticagrelor 90 MG Oral Tablet",
+      "rxcui": "1116635"
+    },
+    {
+      "name": "ticagrelor 60 MG Oral Tablet",
+      "rxcui": "1666332"
+    },
+    {
+      "name": "clopidogrel 75 MG Oral Tablet",
+      "rxcui": "309362"
+    }
+  ],
+  "Necrotizing Fasciitis": [],
+  "Opioid Overdose": [
+    {
+      "name": "Naloxone",
+      "rxcui": "7242"
+    }
+  ],
+  "Pancreatitis (Acute)": [],
+  "Pneumonia": [
+    {
+      "name": "Ceftriaxone",
+      "rxcui": "2193"
+    },
+    {
+      "name": "Azithromycin",
+      "rxcui": "18631"
+    },
+    {
+      "name": "Levofloxacin",
+      "rxcui": "82122"
+    }
+  ],
+  "Pulmonary Embolism": [
+    {
+      "name": "Heparin",
+      "rxcui": "5224"
+    },
+    {
+      "name": "Enoxaparin",
+      "rxcui": "67108"
+    },
+    {
+      "name": "Alteplase (tPA)",
+      "rxcui": "8410"
+    },
+    {
+      "name": "Rivaroxaban",
+      "rxcui": "1114195"
+    },
+    {
+      "name": "desirudin 15 MG Injection",
+      "rxcui": "402248"
+    },
+    {
+      "name": "apixaban 5 MG Oral Tablet",
+      "rxcui": "1364445"
+    },
+    {
+      "name": "edoxaban 15 MG Oral Tablet",
+      "rxcui": "1599543"
+    },
+    {
+      "name": "edoxaban 30 MG Oral Tablet",
+      "rxcui": "1599551"
+    },
+    {
+      "name": "edoxaban 60 MG Oral Tablet",
+      "rxcui": "1599555"
+    },
+    {
+      "name": "dicumarol 25 MG Oral Tablet",
+      "rxcui": "197597"
+    }
+  ],
+  "Pyelonephritis": [
+    {
+      "name": "Ceftriaxone",
+      "rxcui": "2193"
+    },
+    {
+      "name": "Ciprofloxacin",
+      "rxcui": "2551"
+    },
+    {
+      "name": "Gentamicin",
+      "rxcui": "1596450"
+    },
+    {
+      "name": "TOBRAMYCIN 28MG INHL CAP",
+      "rxcui": "2389498"
+    },
+    {
+      "name": "TOBRAMYCIN 28MG CAP,INHL_#1",
+      "rxcui": "1661466"
+    },
+    {
+      "name": "TOBRAMYCIN 28MG CAP,INHL_#2",
+      "rxcui": "1661559"
+    },
+    {
+      "name": "amikacin 250 MG/ML Injection",
+      "rxcui": "1723157"
+    },
+    {
+      "name": "kanamycin 500 MG Oral Capsule",
+      "rxcui": "311215"
+    },
+    {
+      "name": "streptomycin 1000 MG Injection",
+      "rxcui": "313115"
+    },
+    {
+      "name": "gentamicin 1.2 MG/ML Injection",
+      "rxcui": "1870632"
+    }
+  ],
+  "Ruptured Ectopic Pregnancy": [
+    {
+      "name": "Morphine",
+      "rxcui": "7052"
+    },
+    {
+      "name": "Ondansetron",
+      "rxcui": "26225"
+    },
+    {
+      "name": "Normal Saline IV",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "Methotrexate",
+      "rxcui": "6851"
+    },
+    {
+      "name": "DOVERIN CAP",
+      "rxcui": "310018"
+    },
+    {
+      "name": "MORPHINE SO4 5MG/ML INJ",
+      "rxcui": "1541393"
+    },
+    {
+      "name": "MORPHINE SO4 1MG/ML INJ",
+      "rxcui": "2732461"
+    },
+    {
+      "name": "HYDROMORPHONE HCL 1GM PWDR",
+      "rxcui": "310913"
+    },
+    {
+      "name": "HYDROMORPHONE HCL CRYSTALS",
+      "rxcui": "310923"
+    },
+    {
+      "name": "fentanyl 1.2 MG Buccal Film",
+      "rxcui": "858087"
+    }
+  ],
+  "STEMI": [
+    {
+      "name": "Aspirin",
+      "rxcui": "1191"
+    },
+    {
+      "name": "Heparin",
+      "rxcui": "5224"
+    },
+    {
+      "name": "Ticagrelor",
+      "rxcui": "1116632"
+    },
+    {
+      "name": "Nitroglycerin",
+      "rxcui": "4917"
+    },
+    {
+      "name": "Morphine",
+      "rxcui": "7052"
+    }
+  ],
+  "STEMI (Heart Attack)": [
+    {
+      "name": "desirudin 15 MG Injection",
+      "rxcui": "402248"
+    },
+    {
+      "name": "apixaban 5 MG Oral Tablet",
+      "rxcui": "1364445"
+    },
+    {
+      "name": "edoxaban 15 MG Oral Tablet",
+      "rxcui": "1599543"
+    },
+    {
+      "name": "edoxaban 30 MG Oral Tablet",
+      "rxcui": "1599551"
+    },
+    {
+      "name": "edoxaban 60 MG Oral Tablet",
+      "rxcui": "1599555"
+    },
+    {
+      "name": "dicumarol 25 MG Oral Tablet",
+      "rxcui": "197597"
+    },
+    {
+      "name": "dicumarol 50 MG Oral Tablet",
+      "rxcui": "309861"
+    },
+    {
+      "name": "apixaban 2.5 MG Oral Tablet",
+      "rxcui": "1364435"
+    },
+    {
+      "name": "cangrelor 50 MG Injection",
+      "rxcui": "1656056"
+    },
+    {
+      "name": "prasugrel 5 MG Oral Tablet",
+      "rxcui": "855818"
+    }
+  ],
+  "Sepsis": [
+    {
+      "name": "Piperacillin-Tazobactam",
+      "rxcui": "8339"
+    },
+    {
+      "name": "Vancomycin",
+      "rxcui": "11124"
+    },
+    {
+      "name": "Norepinephrine",
+      "rxcui": "7512"
+    },
+    {
+      "name": "Normal Saline 30mL/kg",
+      "rxcui": "N/A"
+    },
+    {
+      "name": "TOBRAMYCIN 28MG INHL CAP",
+      "rxcui": "2389498"
+    },
+    {
+      "name": "TOBRAMYCIN 28MG CAP,INHL_#1",
+      "rxcui": "1661466"
+    },
+    {
+      "name": "TOBRAMYCIN 28MG CAP,INHL_#2",
+      "rxcui": "1661559"
+    },
+    {
+      "name": "amikacin 250 MG/ML Injection",
+      "rxcui": "1723157"
+    }
+  ],
+  "Septic Shock": [
+    {
+      "name": "Norepinephrine",
+      "rxcui": "7512"
+    },
+    {
+      "name": "Vancomycin",
+      "rxcui": "11124"
+    },
+    {
+      "name": "Piperacillin-Tazobactam",
+      "rxcui": "8339"
+    },
+    {
+      "name": "Hydrocortisone",
+      "rxcui": "5492"
+    }
+  ],
+  "Sickle Cell Crisis": [],
+  "Status Epilepticus": [
+    {
+      "name": "Lorazepam",
+      "rxcui": "6470"
+    },
+    {
+      "name": "Levetiracetam",
+      "rxcui": "114477"
+    },
+    {
+      "name": "Fosphenytoin",
+      "rxcui": "72236"
+    },
+    {
+      "name": "clobazam 5 MG Oral Film",
+      "rxcui": "2058255"
+    },
+    {
+      "name": "clobazam 10 MG Oral Film",
+      "rxcui": "2058253"
+    },
+    {
+      "name": "clobazam 20 MG Oral Film",
+      "rxcui": "2058254"
+    },
+    {
+      "name": "clobazam 5 MG Oral Tablet",
+      "rxcui": "427538"
+    },
+    {
+      "name": "clobazam 10 MG Oral Tablet",
+      "rxcui": "199450"
+    },
+    {
+      "name": "clobazam 20 MG Oral Tablet",
+      "rxcui": "246172"
+    },
+    {
+      "name": "ethotoin 250 MG Oral Tablet",
+      "rxcui": "197683"
+    }
+  ],
+  "Stroke / CVA": [
+    {
+      "name": "Alteplase (tPA)",
+      "rxcui": "8410"
+    },
+    {
+      "name": "Aspirin",
+      "rxcui": "1191"
+    },
+    {
+      "name": "Labetalol",
+      "rxcui": "6185"
+    },
+    {
+      "name": "desirudin 15 MG Injection",
+      "rxcui": "402248"
+    },
+    {
+      "name": "apixaban 5 MG Oral Tablet",
+      "rxcui": "1364445"
+    },
+    {
+      "name": "edoxaban 15 MG Oral Tablet",
+      "rxcui": "1599543"
+    },
+    {
+      "name": "edoxaban 30 MG Oral Tablet",
+      "rxcui": "1599551"
+    },
+    {
+      "name": "edoxaban 60 MG Oral Tablet",
+      "rxcui": "1599555"
+    },
+    {
+      "name": "dicumarol 25 MG Oral Tablet",
+      "rxcui": "197597"
+    },
+    {
+      "name": "dicumarol 50 MG Oral Tablet",
+      "rxcui": "309861"
+    }
+  ],
+  "Subarachnoid Hemorrhage": [],
+  "TIA": [
+    {
+      "name": "Aspirin",
+      "rxcui": "1191"
+    },
+    {
+      "name": "cangrelor 50 MG Injection",
+      "rxcui": "1656056"
+    },
+    {
+      "name": "prasugrel 5 MG Oral Tablet",
+      "rxcui": "855818"
+    },
+    {
+      "name": "prasugrel 10 MG Oral Tablet",
+      "rxcui": "855812"
+    },
+    {
+      "name": "ticagrelor 90 MG Oral Tablet",
+      "rxcui": "1116635"
+    },
+    {
+      "name": "ticagrelor 60 MG Oral Tablet",
+      "rxcui": "1666332"
+    },
+    {
+      "name": "clopidogrel 75 MG Oral Tablet",
+      "rxcui": "309362"
+    },
+    {
+      "name": "vorapaxar 2.08 MG Oral Tablet",
+      "rxcui": "1537039"
+    },
+    {
+      "name": "dipyridamole 50 MG Oral Tablet",
+      "rxcui": "197622"
+    }
+  ],
+  "Tension Pneumothorax": [],
+  "Thyroid Storm": [
+    {
+      "name": "Propylthiouracil",
+      "rxcui": "8794"
+    },
+    {
+      "name": "Propranolol",
+      "rxcui": "8787"
+    },
+    {
+      "name": "Hydrocortisone",
+      "rxcui": "5492"
+    },
+    {
+      "name": "Lugol's Iodine",
+      "rxcui": "N/A"
+    }
+  ],
+  "Ventricular Tachycardia": []
+}
