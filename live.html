@@ -815,7 +815,7 @@ body.focus-mode .btn-exit-focus {
     <button class="btn-generate-note" id="btn-generate-note-bar" onclick="copyGenerateNote()">
       Generate HP Note ➔ Copy to Clipboard
     </button>
-    <button class="btn-print-note" onclick="printNote()">
+    <button id="print-note-btn" class="btn-print-note">
       🖨️ Print Note
     </button>
   </div>
@@ -1239,18 +1239,21 @@ function loadLivePreset(key) {
   }
 }
 
-function printNote() {
-  const noteBox = document.getElementById('box-suggested-note');
-  if (!noteBox) return;
-  const noteText = noteBox.textContent.trim();
-  
-  const newWindow = window.open('', '_blank');
-  if (!newWindow) {
-    alert('Please allow popups to print the note.');
-    return;
-  }
-  
-  newWindow.document.write(`<!DOCTYPE html>
+document.addEventListener('DOMContentLoaded', () => {
+  const printBtn = document.getElementById('print-note-btn');
+  if (printBtn) {
+    printBtn.addEventListener('click', function() {
+      const noteBox = document.getElementById('box-suggested-note');
+      if (!noteBox) return;
+      const noteText = noteBox.textContent.trim();
+      
+      const newWindow = window.open('', '_blank');
+      if (!newWindow) {
+        alert('Please allow popups to print the note.');
+        return;
+      }
+      
+      newWindow.document.write(`<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -1315,15 +1318,17 @@ function printNote() {
         window.print();
       }, 300);
     });
-  </script>
+  </` + `script>
 </body>
 </html>`);
-  newWindow.document.close();
-  newWindow.focus();
-  setTimeout(() => {
-    newWindow.print();
-  }, 250);
-}
+      newWindow.document.close();
+      newWindow.focus();
+      setTimeout(() => {
+        newWindow.print();
+      }, 250);
+    });
+  }
+});
 </script>
 </body>
 </html>
