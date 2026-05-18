@@ -175,6 +175,14 @@ section.light{background:var(--off);color:var(--navy)}
   transition: border-color .2s, background .2s; display: inline-block;
 }
 .btn-ghost:hover { border-color: var(--teal); background: rgba(0,200,150,0.06); }
+.btn-red {
+  background: var(--red); color: var(--white);
+  padding: 14px 28px; border-radius: 8px; border: none;
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  text-decoration: none; letter-spacing: 0.5px;
+  transition: transform .2s, opacity .2s; display: inline-block;
+}
+.btn-red:hover { transform: translateY(-2px); opacity: 0.92; }
 
 .hero-stats {
   display: flex; gap: 40px; margin-top: 48px;
@@ -764,7 +772,6 @@ footer{
     <li><a href="#revenue">Revenue</a></li>
     <li><a href="#competitive-advantage">Advantage</a></li>
     <li><a href="#cta">Invest</a></li>
-    <li><a href="/live" style="color:var(--teal);font-weight:600;">Live Demo ➔</a></li>
   </ul>
   <a href="/live" class="nav-cta" id="nav-live-btn">
     Launch Live Demo
@@ -780,7 +787,7 @@ footer{
     <p class="hero-desc">An AI-powered clinical scribe that sits beside the EMR — watching what the doctor types, delivering differential diagnoses, recommended tests, drug references and billing codes before the doctor even asks.</p>
     <div class="hero-btns" style="margin-bottom: 40px;">
       <a href="/live" class="btn-primary">Launch Live Demo ➔</a>
-      <a href="#downloadForm" class="btn-ghost" onclick="document.getElementById('downloadForm').scrollIntoView({behavior:'smooth'}); return false;">Get Mac App</a>
+      <a href="#downloadForm" class="btn-red" onclick="document.getElementById('downloadForm').scrollIntoView({behavior:'smooth'}); return false;">Get Mac App</a>
     </div>
     <div class="hero-stats">
       <div class="hstat">

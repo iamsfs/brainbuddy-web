@@ -521,12 +521,14 @@ body.light-mode .card:hover {
   box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
   z-index: 20;
   transition: width 0.3s ease, background 0.3s ease;
+  display: flex;
+  gap: 16px;
 }
 body.light-mode .sticky-bottom-bar {
   box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
 }
 .btn-generate-note {
-  width: 100%;
+  flex: 1;
   padding: 18px 32px;
   border-radius: 14px;
   background: linear-gradient(90deg, var(--amber), #F76B1C);
@@ -549,6 +551,48 @@ body.light-mode .sticky-bottom-bar {
 }
 .btn-generate-note:active {
   transform: translateY(0);
+}
+.btn-print-note {
+  padding: 18px 32px;
+  border-radius: 14px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.btn-print-note:hover {
+  border-color: var(--text-muted);
+  background-color: rgba(255,255,255,0.05);
+  transform: translateY(-2px);
+}
+body.light-mode .btn-print-note:hover {
+  background-color: rgba(0,0,0,0.03);
+}
+.preset-badge {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-main);
+}
+.preset-badge:hover, .preset-badge.active {
+  border-color: var(--green);
+  color: var(--green);
+  background-color: rgba(0, 200, 150, 0.08);
 }
 
 /* Focus Mode */
@@ -596,6 +640,12 @@ body.focus-mode .btn-exit-focus {
 
   <div class="sidebar-input-group">
     <label class="input-label" for="scribe-textarea">WHAT THE DOCTOR WROTE :</label>
+    <div class="presets-row" style="display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap;">
+      <button class="preset-badge active" onclick="loadLivePreset('Flu')">🤧 Flu</button>
+      <button class="preset-badge" onclick="loadLivePreset('Stroke')">🧠 Stroke</button>
+      <button class="preset-badge" onclick="loadLivePreset('STEMI')">❤️ STEMI</button>
+      <button class="preset-badge" onclick="loadLivePreset('Ankle Sprain')">🦶 Ankle Sprain</button>
+    </div>
     <textarea id="scribe-textarea" placeholder="Type or paste clinical narrative here... BrainBuddy analyzes in real time"></textarea>
     <div class="status-indicator" id="sync-status">
       <span class="status-dot live" id="status-dot"></span>
@@ -764,6 +814,9 @@ body.focus-mode .btn-exit-focus {
   <div class="sticky-bottom-bar">
     <button class="btn-generate-note" id="btn-generate-note-bar" onclick="copyGenerateNote()">
       Generate HP Note ➔ Copy to Clipboard
+    </button>
+    <button class="btn-print-note" onclick="printNote()">
+      🖨️ Print Note
     </button>
   </div>
 </div>
@@ -1161,6 +1214,115 @@ function copyGenerateNote() {
 
 function copyText(text) {
   navigator.clipboard.writeText(text).catch(() => {});
+}
+
+const LIVE_PRESETS = {
+  'Flu': `36 year old female who presents with concern of flu like symptoms. She has been having cough, fever, chills, nasal congestion, body aches, nausea and sore throat for the last 2 days. She said that she almost vomited this morning. She felt feverish yesterday. She denies any diarrhea. She admits to some shortness of breath. Past medical history significant for hypothyroidism, hypertension, GERD, and anxiety.`,
+  'Stroke': `72 year old female brought in by family. Sudden onset facial droop on right side, slurred speech, left arm weakness. Symptoms started 45 minutes ago. History of atrial fibrillation, on warfarin. BP 180/100.`,
+  'STEMI': `58 year old male presents with crushing chest pain radiating to left arm and jaw, diaphoresis, nausea, shortness of breath. Pain started 45 minutes ago at rest, rated 9/10. History of hypertension, diabetes, and hyperlipidemia. Smoker 20 pack years. BP 88/60, HR 112, SpO2 94%.`,
+  'Ankle Sprain': `24 year old male presents with right ankle pain and swelling after twisting it while playing basketball 2 hours ago. He was able to bear weight immediately after but now limps. Moderate edema and ecchymosis noted over the lateral malleolus. Palpation reveals tenderness over the anterior talofibular ligament. Denies foot or knee pain. No prior ankle injuries.`
+};
+
+function loadLivePreset(key) {
+  const text = LIVE_PRESETS[key];
+  if (!text) return;
+  const scribeInput = document.getElementById('scribe-textarea');
+  if (scribeInput) {
+    scribeInput.value = text;
+  }
+  document.querySelectorAll('.preset-badge').forEach(b => b.classList.remove('active'));
+  const activeBtn = Array.from(document.querySelectorAll('.preset-badge')).find(b => b.textContent.includes(key));
+  if (activeBtn) activeBtn.classList.add('active');
+  
+  if (typeof scheduleAnalyze === 'function') {
+    scheduleAnalyze(text);
+  }
+}
+
+function printNote() {
+  const noteBox = document.getElementById('box-suggested-note');
+  if (!noteBox) return;
+  const noteText = noteBox.textContent.trim();
+  
+  const newWindow = window.open('', '_blank');
+  if (!newWindow) {
+    alert('Please allow popups to print the note.');
+    return;
+  }
+  
+  newWindow.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Physician Note</title>
+  <style>
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #000000;
+      padding: 40px 60px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #000000;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      font-family: sans-serif;
+      font-size: 12px;
+    }
+    .note-title {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    .content {
+      white-space: pre-wrap;
+      font-family: inherit;
+    }
+    .footer {
+      margin-top: 48px;
+      border-top: 1px solid #000000;
+      padding-top: 12px;
+      font-size: 10px;
+      text-align: center;
+      color: #555555;
+      font-family: sans-serif;
+    }
+    @media print {
+      body { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <strong>CONFIDENTIAL MEDICAL RECORD</strong><br>
+    BrainBuddy Clinical Intelligence Scribe
+  </div>
+  <div class="note-title">Physician H&P Note</div>
+  <div class="content">\n${noteText}\n</div>
+  <div class="footer">
+    Generated by BrainBuddy ER &mdash; ${new Date().toLocaleString()}<br>
+    Page 1 of 1
+  </div>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    });
+  </script>
+</body>
+</html>`);
+  newWindow.document.close();
+  newWindow.focus();
+  setTimeout(() => {
+    newWindow.print();
+  }, 250);
 }
 </script>
 </body>
