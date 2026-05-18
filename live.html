@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrainBuddy ER — Medical Scribe Dashboard</title>
+<meta name="description" content="AI-Powered Medical Scribe Dashboard for Emergency Medicine">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Dark Mode Defaults */
+  --bg-main: #0A0E1A;
+  --bg-sidebar: #111827;
+  --bg-card: #162033;
+  --bg-input: #0D1322;
+  --text-main: #F0F6FF;
+  --text-muted: #8B96AA;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Accents */
+  --red: #E24B4A;
+  --red-glow: rgba(226, 75, 74, 0.25);
+  --amber: #F5A623;
+  --amber-glow: rgba(245, 166, 35, 0.25);
+  --green: #00C896;
+  --green-glow: rgba(0, 200, 150, 0.25);
+  --blue: #3B82F6;
+  --blue-glow: rgba(59, 130, 246, 0.35);
+
+  /* Typography */
+  --font-main: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', "JetBrains Mono", monospace;
+}
+
+body.light-mode {
+  --bg-main: #F4F7F6;
+  --bg-sidebar: #E8EEEB;
+  --bg-card: #FFFFFF;
+  --bg-input: #FFFFFF;
+  --text-main: #0A0E1A;
+  --text-muted: #5C6B7A;
+  --border-color: rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  display: flex;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ── LEFT SIDEBAR ── */
+#sidebar {
+  width: 320px;
+  min-width: 320px;
+  height: 100vh;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.sidebar-header {
+  margin-bottom: 24px;
+}
+.logo-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-accent {
+  color: var(--green);
+}
+.logo-subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.sidebar-input-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-bottom: 24px;
+}
+.input-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+}
+#scribe-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  font-size: 13px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.2);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+body:not(.light-mode) #scribe-textarea:focus {
+  border-color: var(--blue);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.2), 0 0 16px var(--blue-glow);
+}
+body.light-mode #scribe-textarea:focus {
+  border-color: var(--blue);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.05), 0 0 16px rgba(59, 130, 246, 0.2);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 0 4px;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--green);
+}
+.status-dot.live {
+  animation: pulse-green 1.5s infinite;
+}
+.status-dot.analyzing {
+  background-color: var(--amber);
+  animation: pulse-amber 1s infinite;
+}
+.status-text {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 1px;
+  font-family: var(--font-mono);
+}
+.status-text.analyzing {
+  color: var(--amber);
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 var(--green-glow); }
+  50% { box-shadow: 0 0 0 6px rgba(0,200,150,0); }
+}
+@keyframes pulse-amber {
+  0%, 100% { box-shadow: 0 0 0 0 var(--amber-glow); }
+  50% { box-shadow: 0 0 0 6px rgba(245,166,35,0); }
+}
+
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.btn {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn-red {
+  background-color: var(--red);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px var(--red-glow);
+}
+.btn-amber {
+  background-color: var(--amber);
+  color: #0A0E1A;
+  box-shadow: 0 4px 12px var(--amber-glow);
+}
+.btn-secondary {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+.btn-secondary:hover {
+  border-color: var(--text-muted);
+  background-color: rgba(255,255,255,0.05);
+}
+body.light-mode .btn-secondary:hover {
+  background-color: rgba(0,0,0,0.03);
+}
+
+.sidebar-footer-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+.footer-box-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.footer-box-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── RIGHT MAIN CONTENT AREA ── */
+#main-content {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 32px 48px 120px;
+  background-color: var(--bg-main);
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+#main-content::-webkit-scrollbar {
+  width: 8px;
+}
+#main-content::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+#main-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+#main-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+body.light-mode .card:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.card-dot.red { background-color: var(--red); box-shadow: 0 0 10px var(--red-glow); }
+.card-dot.orange { background-color: var(--amber); box-shadow: 0 0 10px var(--amber-glow); }
+.card-dot.green { background-color: var(--green); box-shadow: 0 0 10px var(--green-glow); }
+.card-dot.blue { background-color: var(--blue); box-shadow: 0 0 10px var(--blue-glow); }
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.3px;
+}
+
+.btn-copy-small {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.btn-copy-small:hover {
+  border-color: var(--green);
+  color: var(--green);
+  background-color: rgba(0, 200, 150, 0.08);
+}
+
+.pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill {
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+.pill:hover {
+  border-color: var(--blue);
+  background-color: rgba(59, 130, 246, 0.08);
+  transform: translateY(-1px);
+}
+.pill-icon {
+  color: var(--blue);
+  font-size: 14px;
+}
+
+/* Top Condition Card */
+.critical-banner {
+  background: linear-gradient(90deg, var(--red), #9B2C2C);
+  color: #FFFFFF;
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -24px -24px 20px -24px;
+}
+.top-condition-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.top-condition-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -1px;
+}
+.top-condition-badge {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--red);
+  background-color: var(--red-glow);
+  padding: 6px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(226, 75, 74, 0.4);
+}
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: var(--bg-input);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red), var(--amber));
+  width: 0%;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+}
+.top-condition-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+}
+.sub-row {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.sub-label {
+  font-weight: 700;
+  color: var(--text-main);
+  min-width: 90px;
+}
+
+/* Clinical Suggestions List */
+.suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--amber);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+.suggestion-item:hover {
+  transform: translateX(4px);
+  border-color: var(--amber);
+  background-color: rgba(245, 166, 35, 0.05);
+}
+.suggestion-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.suggestion-icd {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--amber);
+  font-weight: 600;
+  background-color: var(--amber-glow);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* Suggested Note */
+.suggested-note-box {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-main);
+  white-space: pre-wrap;
+  font-family: var(--font-main);
+}
+
+/* Sticky Bottom Action Bar */
+.sticky-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: calc(100% - 320px);
+  background: var(--bg-main);
+  padding: 24px 48px;
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+body.light-mode .sticky-bottom-bar {
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
+}
+.btn-generate-note {
+  width: 100%;
+  padding: 18px 32px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--amber), #F76B1C);
+  color: #0A0E1A;
+  font-family: var(--font-main);
+  font-size: 16px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 8px 24px var(--amber-glow);
+  transition: all 0.2s ease;
+}
+.btn-generate-note:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(245, 166, 35, 0.4);
+}
+.btn-generate-note:active {
+  transform: translateY(0);
+}
+
+/* Focus Mode */
+body.focus-mode #sidebar {
+  width: 0;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+}
+body.focus-mode .sticky-bottom-bar {
+  width: 100%;
+}
+.btn-exit-focus {
+  position: fixed;
+  top: 24px;
+  right: 48px;
+  z-index: 100;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: none;
+  box-shadow: var(--shadow-card);
+}
+body.focus-mode .btn-exit-focus {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<!-- LEFT SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-title">
+      <span class="logo-icon">🧠</span> Brain<span class="logo-accent">Buddy</span>
+    </div>
+    <div class="logo-subtitle">Your Medical Scribe</div>
+  </div>
+
+  <div class="sidebar-input-group">
+    <label class="input-label" for="scribe-textarea">WHAT THE DOCTOR WROTE :</label>
+    <textarea id="scribe-textarea" placeholder="Type or paste clinical narrative here... BrainBuddy analyzes in real time"></textarea>
+    <div class="status-indicator" id="sync-status">
+      <span class="status-dot live" id="status-dot"></span>
+      <span class="status-text" id="status-text">LIVE SCRIBING</span>
+    </div>
+  </div>
+
+  <div class="sidebar-actions">
+    <button class="btn btn-red" id="btn-toggle-scribe" onclick="toggleScribing()">
+      <span class="btn-icon">⏹</span> <span id="scribe-btn-text">Stop Scribing (Live)</span>
+    </button>
+    <button class="btn btn-amber" onclick="clearScribe()">
+      <span class="btn-icon">↺</span> Clear Scribe
+    </button>
+    <button class="btn btn-secondary" onclick="hideScribe()">
+      <span class="btn-icon">👁</span> Hide Scribe
+    </button>
+    <button class="btn btn-secondary" id="btn-toggle-theme" onclick="toggleTheme()">
+      <span class="btn-icon">☀</span> <span id="theme-btn-text">Light Mode</span>
+    </button>
+    <button class="btn btn-secondary" id="btn-toggle-focus" onclick="toggleFocusMode()">
+      <span class="btn-icon">⛶</span> Focus Mode
+    </button>
+  </div>
+
+  <div class="sidebar-footer-box">
+    <div class="footer-box-title">✓ Runs 100% on-device.</div>
+    <div class="footer-box-desc">No data stored. No tracking. No internet required.</div>
+  </div>
+</div>
+
+<!-- RIGHT MAIN CONTENT AREA -->
+<div id="main-content">
+  <button class="btn-exit-focus" onclick="toggleFocusMode()">⛶ Exit Focus Mode</button>
+
+  <div class="cards-container">
+    <!-- Card 1: Detected symptoms (Red dot) -->
+    <div class="card" id="card-detected-symptoms">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-dot red"></div>
+          <div class="card-title">Detected Symptoms</div>
+        </div>
+        <button class="btn-copy-small" onclick="copyCardContent('pills-symptoms')">📋 Copy</button>
+      </div>
+      <div class="pills-container" id="pills-symptoms">
+        <span style="color: var(--text-muted); font-size: 13px; font-style: italic;">Awaiting clinical input...</span>
+      </div>
+    </div>
+
+    <!-- Card 2: Top Condition (Red dot) -->
+    <div class="card" id="card-top-condition">
+      <div class="critical-banner" id="top-critical-banner" style="display: none;">
+        <span>⚠ CRITICAL ACUITY DETECTED</span>
+      </div>
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-dot red"></div>
+          <div class="card-title">Top Condition</div>
+        </div>
+        <button class="btn-copy-small" onclick="copyTopConditionData()">📋 Copy</button>
+      </div>
+      <div class="top-condition-main">
+        <div class="top-condition-title" id="top-cond-title">—</div>
+        <div class="top-condition-badge" id="top-cond-badge">0%</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="top-cond-progress" style="width: 0%;"></div>
+      </div>
+      <div class="top-condition-sub">
+        <div class="sub-row">
+          <span class="sub-label">ICD-10 Code:</span>
+          <span id="top-cond-icd">—</span>
+        </div>
+        <div class="sub-row">
+          <span class="sub-label">Reasoning:</span>
+          <span id="top-cond-reason">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Clinical Suggestions (Live) (Orange dot) -->
+    <div class="card" id="card-suggestions">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-dot orange"></div>
+          <div class="card-title">Clinical Suggestions (Live)</div>
+        </div>
+        <button class="btn-copy-small" onclick="copySuggestionsData()">📋 Copy</button>
+      </div>
+      <div class="suggestions-list" id="list-suggestions">
+        <span style="color: var(--text-muted); font-size: 13px; font-style: italic;">Awaiting clinical input...</span>
+      </div>
+    </div>
+
+    <!-- Card 4: Suggested Note (Green dot) -->
+    <div class="card" id="card-suggested-note">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-dot green"></div>
+          <div class="card-title">Suggested Note</div>
+        </div>
+        <button class="btn-copy-small" onclick="copyCardContent('box-suggested-note')">📋 Copy</button>
+      </div>
+      <div class="suggested-note-box" id="box-suggested-note">Awaiting clinical input...</div>
+    </div>
+
+    <!-- Card 5: Clinical Wording (Blue dot) -->
+    <div class="card" id="card-clinical-wording">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-dot blue"></div>
+          <div class="card-title">Clinical Wording</div>
+        </div>
+        <button class="btn-copy-small" onclick="copyCardContent('pills-wording')">📋 Copy</button>
+      </div>
+      <div class="pills-container" id="pills-wording">
+        <span style="color: var(--text-muted); font-size: 13px; font-style: italic;">Awaiting clinical input...</span>
+      </div>
+    </div>
+
+    <!-- Card 6: Recommended tests (Green dot) -->
+    <div class="card" id="card-recommended-tests">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-dot green"></div>
+          <div class="card-title">Recommended Tests</div>
+        </div>
+        <button class="btn-copy-small" onclick="copyCardContent('pills-tests')">📋 Copy</button>
+      </div>
+      <div class="pills-container" id="pills-tests">
+        <span style="color: var(--text-muted); font-size: 13px; font-style: italic;">Awaiting clinical input...</span>
+      </div>
+    </div>
+
+    <!-- Card 7: Billing codes (Blue dot) -->
+    <div class="card" id="card-billing-codes">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-dot blue"></div>
+          <div class="card-title">Billing Codes</div>
+        </div>
+        <button class="btn-copy-small" onclick="copyCardContent('pills-billing')">📋 Copy</button>
+      </div>
+      <div class="pills-container" id="pills-billing">
+        <span style="color: var(--text-muted); font-size: 13px; font-style: italic;">Awaiting clinical input...</span>
+      </div>
+    </div>
+
+    <!-- Card 8: First-line medications (Blue dot) -->
+    <div class="card" id="card-medications">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-dot blue"></div>
+          <div class="card-title">First-Line Medications</div>
+        </div>
+        <button class="btn-copy-small" onclick="copyCardContent('pills-medications')">📋 Copy</button>
+      </div>
+      <div class="pills-container" id="pills-medications">
+        <span style="color: var(--text-muted); font-size: 13px; font-style: italic;">Awaiting clinical input...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Bottom Action Bar -->
+  <div class="sticky-bottom-bar">
+    <button class="btn-generate-note" id="btn-generate-note-bar" onclick="copyGenerateNote()">
+      Generate HP Note ➔ Copy to Clipboard
+    </button>
+  </div>
+</div>
+
+<script>
+const DEMO_TEXT = `36 year old female who presents with concern of flu like symptoms. She has been having cough, fever, chills, nasal congestion, body aches, nausea and sore throat for the last 2 days. She said that she almost vomited this morning. She felt feverish yesterday. She denies any diarrhea. She admits to some shortness of breath. Past medical history significant for hypothyroidism, hypertension, GERD, and anxiety.`;
+
+let debounceTimer = null;
+let lastData = null;
+let isScribing = true;
+
+window.addEventListener('DOMContentLoaded', () => {
+  const scribeInput = document.getElementById('scribe-textarea');
+  if (scribeInput) {
+    scribeInput.value = DEMO_TEXT;
+    scribeInput.addEventListener('input', () => {
+      if (!isScribing) return;
+      scheduleAnalyze(scribeInput.value);
+    });
+  }
+  setTimeout(() => triggerAnalyze(), 400);
+});
+
+function scheduleAnalyze(text) {
+  clearTimeout(debounceTimer);
+  showAnalyzingState(true);
+  debounceTimer = setTimeout(() => callAnalyzeAPI(text), 600);
+}
+
+function triggerAnalyze() {
+  const scribeInput = document.getElementById('scribe-textarea');
+  const text = scribeInput ? scribeInput.value.trim() : '';
+  if (!text) return;
+  showAnalyzingState(true);
+  clearTimeout(debounceTimer);
+  callAnalyzeAPI(text);
+}
+
+async function callAnalyzeAPI(text) {
+  try {
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    const data = await res.json();
+    if (data.error) { showAnalyzingState(false); return; }
+    lastData = data;
+    showAnalyzingState(false);
+    runAutoFillSequence(data, text);
+  } catch (e) {
+    console.error('[BB] API error:', e);
+    showAnalyzingState(false);
+  }
+}
+
+function showAnalyzingState(active) {
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+  if (!dot || !txt) return;
+  if (active) {
+    dot.className = 'status-dot analyzing';
+    txt.textContent = 'ANALYZING…';
+    txt.className = 'status-text analyzing';
+  } else {
+    dot.className = 'status-dot live';
+    txt.textContent = isScribing ? 'LIVE SCRIBING' : 'SCRIBING PAUSED';
+    txt.className = 'status-text';
+  }
+}
+
+function runAutoFillSequence(data, rawText) {
+  // 1. Detected Symptoms
+  const symContainer = document.getElementById('pills-symptoms');
+  if (symContainer) {
+    symContainer.innerHTML = '';
+    const syms = data.symptoms || [];
+    if (syms.length === 0) {
+      symContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 13px; font-style: italic;">No symptoms detected</span>';
+    } else {
+      syms.forEach(sym => {
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        pill.innerHTML = `<span class="pill-icon">⚡</span> ${formatSymptom(sym)}`;
+        symContainer.appendChild(pill);
+      });
+    }
+  }
+
+  // 2. Top Condition
+  const topCond = data.top_condition || {};
+  const banner = document.getElementById('top-critical-banner');
+  const titleEl = document.getElementById('top-cond-title');
+  const badgeEl = document.getElementById('top-cond-badge');
+  const progressEl = document.getElementById('top-cond-progress');
+  const icdEl = document.getElementById('top-cond-icd');
+  const reasonEl = document.getElementById('top-cond-reason');
+
+  if (titleEl) {
+    const name = topCond.name || 'No condition detected';
+    titleEl.textContent = name;
+    
+    // Check critical acuity
+    const criticalKeywords = ['stemi', 'nstemi', 'stroke', 'cva', 'sepsis', 'anaphylaxis', 'pulmonary embolism', 'pe', 'dka', 'meningitis', 'ectopic'];
+    const isCritical = criticalKeywords.some(k => name.toLowerCase().includes(k));
+    if (banner) {
+      banner.style.display = isCritical ? 'flex' : 'none';
+    }
+
+    const conf = topCond.confidence || 0;
+    if (badgeEl) badgeEl.textContent = `${conf}%`;
+    if (progressEl) progressEl.style.width = `${conf}%`;
+    if (icdEl) icdEl.textContent = topCond.icd10 || 'N/A';
+    if (reasonEl) reasonEl.textContent = topCond.reasoning || 'Clinical correlation required.';
+  }
+
+  // 3. Clinical Suggestions (Live)
+  const sugContainer = document.getElementById('list-suggestions');
+  if (sugContainer) {
+    sugContainer.innerHTML = '';
+    
+    // Add alert if present
+    if (data.alert && data.alert.message) {
+      const alertItem = document.createElement('div');
+      alertItem.className = 'suggestion-item';
+      alertItem.style.borderLeftColor = 'var(--red)';
+      alertItem.innerHTML = `
+        <span class="suggestion-name" style="color: var(--red);">⚠ ${data.alert.message}</span>
+        <span class="suggestion-icd" style="background-color: var(--red-glow); color: var(--red);">${data.alert.level || 'ALERT'}</span>
+      `;
+      sugContainer.appendChild(alertItem);
+    }
+
+    const diffs = data.differentials || [];
+    if (diffs.length === 0 && (!data.alert || !data.alert.message)) {
+      sugContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 13px; font-style: italic;">No differentials generated</span>';
+    } else {
+      diffs.forEach(d => {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+        item.innerHTML = `
+          <span class="suggestion-name">${d.name}</span>
+          <span class="suggestion-icd">${d.icd10 || 'N/A'}</span>
+        `;
+        sugContainer.appendChild(item);
+      });
+    }
+  }
+
+  // 4. Suggested Note
+  const noteBox = document.getElementById('box-suggested-note');
+  if (noteBox) {
+    const topName = (data.top_condition || {}).name || 'Pending';
+    const topIcd = (data.top_condition || {}).icd10 || '';
+    const symList = (data.symptoms || []).map(formatSymptom).join(', ');
+    const testList = (data.recommended_tests || []).join(', ');
+    const rxList = (data.medications || []).map(m => `${m.name} ${m.dose} ${m.route} ${m.frequency}`).join('; ');
+    
+    // Build ROS summary
+    let rosSummary = [];
+    if (data.ros_findings) {
+      for (const [sys, vals] of Object.entries(data.ros_findings)) {
+        if (vals && vals.length > 0) {
+          rosSummary.push(`${sys.toUpperCase()}: ${vals.join(', ')}`);
+        }
+      }
+    }
+    const rosStr = rosSummary.length > 0 ? rosSummary.join(' | ') : '10 point ROS negative except as noted in HPI.';
+
+    const noteText = `CHIEF COMPLAINT / HPI:
+${rawText || 'No narrative provided.'}
+
+REVIEW OF SYSTEMS:
+${rosStr}
+
+IMPRESSION / PLAN:
+1. ${topName} ${topIcd ? '(' + topIcd + ')' : ''}
+   - Documented Symptoms: ${symList || 'None'}
+   - Diagnostic Workup: ${testList || 'Clinical evaluation'}
+   - Therapeutic Plan: ${rxList || 'Supportive care'}
+   - Disposition: Stable for discharge / admission pending lab results.`;
+
+    noteBox.textContent = noteText;
+  }
+
+  // 5. Clinical Wording
+  const wordingContainer = document.getElementById('pills-wording');
+  if (wordingContainer) {
+    wordingContainer.innerHTML = '';
+    const hist = data.history_context || [];
+    const assoc = data.associated_symptoms || [];
+    const combined = [...new Set([...hist, ...assoc])];
+    
+    if (combined.length === 0) {
+      wordingContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 13px; font-style: italic;">No clinical context keywords identified</span>';
+    } else {
+      combined.forEach(w => {
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        pill.innerHTML = `<span class="pill-icon">📌</span> ${formatSymptom(w)}`;
+        wordingContainer.appendChild(pill);
+      });
+    }
+  }
+
+  // 6. Recommended Tests
+  const testsContainer = document.getElementById('pills-tests');
+  if (testsContainer) {
+    testsContainer.innerHTML = '';
+    const tests = data.recommended_tests || [];
+    if (tests.length === 0) {
+      testsContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 13px; font-style: italic;">No tests recommended</span>';
+    } else {
+      tests.forEach(t => {
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        pill.innerHTML = `<span class="pill-icon">🧪</span> ${t}`;
+        testsContainer.appendChild(pill);
+      });
+    }
+  }
+
+  // 7. Billing Codes
+  const billingContainer = document.getElementById('pills-billing');
+  if (billingContainer) {
+    billingContainer.innerHTML = '';
+    const lines = data.impression_lines || [];
+    const topIcd = (data.top_condition || {}).icd10;
+    const topName = (data.top_condition || {}).name;
+    
+    let codes = [];
+    if (topIcd && topIcd !== 'N/A') {
+      codes.push(`${topIcd} (${topName})`);
+    }
+    lines.forEach(l => {
+      const parts = l.split('—');
+      if (parts.length === 2) {
+        codes.push(`${parts[1].trim()} (${parts[0].trim()})`);
+      }
+    });
+
+    const uniqueCodes = [...new Set(codes)];
+    if (uniqueCodes.length === 0) {
+      billingContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 13px; font-style: italic;">No billing codes generated</span>';
+    } else {
+      uniqueCodes.forEach(c => {
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        pill.innerHTML = `<span class="pill-icon">🏷</span> ${c}`;
+        billingContainer.appendChild(pill);
+      });
+    }
+  }
+
+  // 8. First-Line Medications
+  const medsContainer = document.getElementById('pills-medications');
+  if (medsContainer) {
+    medsContainer.innerHTML = '';
+    const meds = data.medications || [];
+    if (meds.length === 0) {
+      medsContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 13px; font-style: italic;">No medications suggested</span>';
+    } else {
+      meds.forEach(m => {
+        const sig = [m.dose, m.route, m.frequency].filter(Boolean).join(' ');
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        pill.innerHTML = `<span class="pill-icon">💊</span> ${m.name} ${sig}`;
+        medsContainer.appendChild(pill);
+      });
+    }
+  }
+}
+
+function formatSymptom(s) {
+  if (!s) return '';
+  return s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function toggleScribing() {
+  isScribing = !isScribing;
+  const btnText = document.getElementById('scribe-btn-text');
+  const toggleBtn = document.getElementById('btn-toggle-scribe');
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+
+  if (isScribing) {
+    if (btnText) btnText.textContent = 'Stop Scribing (Live)';
+    if (toggleBtn) toggleBtn.className = 'btn btn-red';
+    if (dot) dot.className = 'status-dot live';
+    if (txt) txt.textContent = 'LIVE SCRIBING';
+    triggerAnalyze();
+  } else {
+    if (btnText) btnText.textContent = 'Start Scribing';
+    if (toggleBtn) toggleBtn.className = 'btn btn-amber';
+    if (dot) dot.className = 'status-dot';
+    if (txt) txt.textContent = 'SCRIBING PAUSED';
+  }
+}
+
+function clearScribe() {
+  const scribeInput = document.getElementById('scribe-textarea');
+  if (scribeInput) scribeInput.value = '';
+  
+  const containers = ['pills-symptoms', 'pills-wording', 'pills-tests', 'pills-billing', 'pills-medications', 'list-suggestions'];
+  containers.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '<span style="color: var(--text-muted); font-size: 13px; font-style: italic;">Awaiting clinical input...</span>';
+  });
+
+  const titleEl = document.getElementById('top-cond-title');
+  const badgeEl = document.getElementById('top-cond-badge');
+  const progressEl = document.getElementById('top-cond-progress');
+  const icdEl = document.getElementById('top-cond-icd');
+  const reasonEl = document.getElementById('top-cond-reason');
+  const banner = document.getElementById('top-critical-banner');
+  const noteBox = document.getElementById('box-suggested-note');
+
+  if (titleEl) titleEl.textContent = '—';
+  if (badgeEl) badgeEl.textContent = '0%';
+  if (progressEl) progressEl.style.width = '0%';
+  if (icdEl) icdEl.textContent = '—';
+  if (reasonEl) reasonEl.textContent = '—';
+  if (banner) banner.style.display = 'none';
+  if (noteBox) noteBox.textContent = 'Awaiting clinical input...';
+}
+
+function hideScribe() {
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar) {
+    sidebar.style.display = sidebar.style.display === 'none' ? 'flex' : 'none';
+  }
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  const isLight = document.body.classList.contains('light-mode');
+  const btnText = document.getElementById('theme-btn-text');
+  if (btnText) {
+    btnText.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+  }
+  const btnIcon = document.querySelector('#btn-toggle-theme .btn-icon');
+  if (btnIcon) {
+    btnIcon.textContent = isLight ? '🌙' : '☀';
+  }
+}
+
+function toggleFocusMode() {
+  document.body.classList.toggle('focus-mode');
+}
+
+function copyCardContent(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const text = container.innerText || container.textContent;
+  copyText(text.trim());
+}
+
+function copyTopConditionData() {
+  const title = document.getElementById('top-cond-title')?.textContent || '';
+  const icd = document.getElementById('top-cond-icd')?.textContent || '';
+  const reason = document.getElementById('top-cond-reason')?.textContent || '';
+  copyText(`${title} (${icd}) - ${reason}`);
+}
+
+function copySuggestionsData() {
+  const container = document.getElementById('list-suggestions');
+  if (!container) return;
+  let items = [];
+  container.querySelectorAll('.suggestion-item').forEach(item => {
+    const name = item.querySelector('.suggestion-name')?.textContent || '';
+    const icd = item.querySelector('.suggestion-icd')?.textContent || '';
+    items.push(`${name} ${icd}`);
+  });
+  copyText(items.join('\n'));
+}
+
+function copyGenerateNote() {
+  const noteBox = document.getElementById('box-suggested-note');
+  if (!noteBox) return;
+  copyText(noteBox.textContent.trim());
+  
+  const btn = document.getElementById('btn-generate-note-bar');
+  if (btn) {
+    const origHtml = btn.innerHTML;
+    btn.innerHTML = '✓ Copied to Clipboard!';
+    btn.style.background = 'linear-gradient(90deg, var(--green), #007A5C)';
+    btn.style.color = '#FFFFFF';
+    setTimeout(() => {
+      btn.innerHTML = origHtml;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 2000);
+  }
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).catch(() => {});
+}
+</script>
+</body>
+</html>
