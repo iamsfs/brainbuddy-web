@@ -764,11 +764,10 @@ footer{
     <li><a href="#revenue">Revenue</a></li>
     <li><a href="#competitive-advantage">Advantage</a></li>
     <li><a href="#cta">Invest</a></li>
+    <li><a href="/live" style="color:var(--teal);font-weight:600;">Live Demo ➔</a></li>
   </ul>
-  <a href="#downloadForm" 
-     onclick="document.getElementById('downloadForm').scrollIntoView({behavior:'smooth'}); return false;"
-     class="nav-cta" id="nav-download-btn">
-    Get Free Early Access
+  <a href="/live" class="nav-cta" id="nav-live-btn">
+    Launch Live Demo
   </a>
 </nav>
 
@@ -779,6 +778,10 @@ footer{
     <h1 class="hero-title">Brain<span class="accent">Buddy</span><br>Clinical<br>Intelligence</h1>
     <p class="hero-tagline">// diagnose smarter. document instantly.</p>
     <p class="hero-desc">An AI-powered clinical scribe that sits beside the EMR — watching what the doctor types, delivering differential diagnoses, recommended tests, drug references and billing codes before the doctor even asks.</p>
+    <div class="hero-btns" style="margin-bottom: 40px;">
+      <a href="/live" class="btn-primary">Launch Live Demo ➔</a>
+      <a href="#downloadForm" class="btn-ghost" onclick="document.getElementById('downloadForm').scrollIntoView({behavior:'smooth'}); return false;">Get Mac App</a>
+    </div>
     <div class="hero-stats">
       <div class="hstat">
         <div class="hstat-val">97%</div>
@@ -808,9 +811,9 @@ footer{
 
       <!-- RIGHT COLUMN: thumbnails 2, 4, 6 — offset up, first is featured -->
       <div class="showcase-col col-right">
-        <div class="sc-thumb large featured" onclick="openLightbox(1)">
+        <div class="sc-thumb large featured" onclick="window.location.href='/live'">
           <img src="Screenshot_2026-04-25_at_9_54_53_PM.png" alt="BrainBuddy Screenshot 2">
-          <span class="sc-label">Live demo</span>
+          <span class="sc-label" style="background:var(--teal);color:var(--navy);">Launch Live Demo ➔</span>
         </div>
         <div class="sc-thumb large" onclick="openLightbox(3)">
           <img src="Screenshot_2026-04-25_at_9_55_35_PM.png" alt="BrainBuddy Screenshot 4">

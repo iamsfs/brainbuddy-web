@@ -66,6 +66,7 @@ LOGIN_TEMPLATE = """<!DOCTYPE html>
     <div class="subtitle">Clinical Intelligence Engine &mdash; Demo Access</div>
     {% if error %}<div class="error">{{ error }}</div>{% endif %}
     <form method="POST">
+      <input type="hidden" name="next" value="{{ next_url }}">
       <div class="field">
         <label>Username</label>
         <input type="text" name="username" autocomplete="username" autofocus required>
@@ -684,13 +685,15 @@ CHART_TEMPLATE = """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    next_url = request.args.get('next', '/live')
     if request.method == 'POST':
         if request.form['username'] == DEMO_USERNAME and request.form['password'] == DEMO_PASSWORD:
             session['authenticated'] = True
-            return redirect('/demo')
+            next_url = request.form.get('next', '/live')
+            return redirect(next_url)
         else:
             error = 'Invalid credentials'
-    return render_template_string(LOGIN_TEMPLATE, error=error)
+    return render_template_string(LOGIN_TEMPLATE, error=error, next_url=next_url)
 
 
 @app.route('/logout')
@@ -727,8 +730,14 @@ def index():
 @app.route('/demo')
 def demo():
     if not session.get('authenticated'):
-        return redirect('/login')
+        return redirect('/login?next=/demo')
     return send_from_directory('.', 'demo.html')
+
+@app.route('/live')
+def live():
+    if not session.get('authenticated'):
+        return redirect('/login?next=/live')
+    return send_from_directory('.', 'live.html')
 
 @app.route('/<path:filename>')
 def static_files(filename):
