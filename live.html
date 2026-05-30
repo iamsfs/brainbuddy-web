@@ -645,6 +645,7 @@ body.focus-mode .btn-exit-focus {
       <button class="preset-badge" onclick="loadLivePreset('Stroke')">🧠 Stroke</button>
       <button class="preset-badge" onclick="loadLivePreset('STEMI')">❤️ STEMI</button>
       <button class="preset-badge" onclick="loadLivePreset('Ankle Sprain')">🦶 Ankle Sprain</button>
+      <button class="preset-badge" onclick="loadLivePreset('Eye Infection')">👁️ Eye Infection</button>
     </div>
     <textarea id="scribe-textarea" placeholder="Type or paste clinical narrative here... BrainBuddy analyzes in real time"></textarea>
     <div class="status-indicator" id="sync-status">
@@ -1220,7 +1221,8 @@ const LIVE_PRESETS = {
   'Flu': `36 year old female who presents with concern of flu like symptoms. She has been having cough, fever, chills, nasal congestion, body aches, nausea and sore throat for the last 2 days. She said that she almost vomited this morning. She felt feverish yesterday. She denies any diarrhea. She admits to some shortness of breath. Past medical history significant for hypothyroidism, hypertension, GERD, and anxiety.`,
   'Stroke': `72 year old female brought in by family. Sudden onset facial droop on right side, slurred speech, left arm weakness. Symptoms started 45 minutes ago. History of atrial fibrillation, on warfarin. BP 180/100.`,
   'STEMI': `58 year old male presents with crushing chest pain radiating to left arm and jaw, diaphoresis, nausea, shortness of breath. Pain started 45 minutes ago at rest, rated 9/10. History of hypertension, diabetes, and hyperlipidemia. Smoker 20 pack years. BP 88/60, HR 112, SpO2 94%.`,
-  'Ankle Sprain': `24 year old male presents with right ankle pain and swelling after twisting it while playing basketball 2 hours ago. He was able to bear weight immediately after but now limps. Moderate edema and ecchymosis noted over the lateral malleolus. Palpation reveals tenderness over the anterior talofibular ligament. Denies foot or knee pain. No prior ankle injuries.`
+  'Ankle Sprain': `24 year old male presents with right ankle pain and swelling after twisting it while playing basketball 2 hours ago. He was able to bear weight immediately after but now limps. Moderate edema and ecchymosis noted over the lateral malleolus. Palpation reveals tenderness over the anterior talofibular ligament. Denies foot or knee pain. No prior ankle injuries.`,
+  'Eye Infection': `32-year-old female presents with left eye redness and swelling for 2 days. Patient reports eye pain and discharge from the left eye. Associated tearing and light sensitivity. Denies trauma to the eye. Denies fever. No vision changes reported. Eye appears red with purulent discharge. Eyelid edema present.`
 };
 
 function loadLivePreset(key) {
