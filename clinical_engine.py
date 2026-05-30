@@ -62,7 +62,7 @@ class SymptomLibrary:
 			"ataxia":                  ["ataxia", "unsteady gait", "difficulty walking", "stumbling", "coordination problems", "cant walk straight", "ataxia (finding)", "ataxia (loss of muscle coordination)", "disequilibrium when walking", "instability of gait", "unstable when walking", "unsteady when walking", "unsteady when walking (finding)", "difficulty walking (finding)", "stumbling (event)", "acquired ataxia", "adult-onset autosomal recessive cerebellar ataxia", "alcohol-induced cerebellar ataxia", "ataxia as sequela of cerebrovascular accident", "ataxia as sequela of cerebrovascular disease", "ataxia of bilateral upper limbs", "ataxia pancytopenia syndrome", "ataxia telangiectasia variant", "ataxia with tapetoretinal degeneration syndrome", "ataxia with vitamin e deficiency", "autosomal dominant cerebellar ataxia type 2", "autosomal dominant spastic ataxia type 1", "autosomal recessive cerebellar ataxia beauce type", "bedouin spastic ataxia syndrome", "bilateral lower limb ataxia", "cardiomyopathy in friedreich's ataxia", "carrier of spinocerebellar ataxia", "cerebellar ataxia", "cerebellar ataxia and ectodermal dysplasia", "cerebellar ataxia cayman type", "cerebellar ataxia with quadrupedal gait", "cerebral ataxia", "cerebral paralysis with homolateral ataxia", "cerebral paresis with homolateral ataxia", "congenital non-progressive ataxia", "drug-induced cerebellar ataxia", "early onset cerebellar ataxia", "early onset cerebellar ataxia with hypogonadism", "early onset cerebellar ataxia with myoclonus", "episodic ataxia", "episodic ataxia type 1", "episodic ataxia type 2", "episodic ataxia type 3", "episodic ataxia type 4", "episodic ataxia type 5", "episodic ataxia type 6", "episodic ataxia type 7", "episodic ataxia with slurred speech", "fragile x associated tremor ataxia syndrome", "friedreich ataxia", "frontal ataxia", "hereditary ataxia", "infantile onset spinocerebellar ataxia", "late onset cerebellar ataxia", "marie's cerebellar ataxia", "motor ataxia", "myoclonic epilepsy myopathy sensory ataxia", "neuropathy in association with hereditary ataxia", "non-progressive cerebellar ataxia", "optic ataxia", "oral motor ataxia", "parkinsonian ataxia", "periodic ataxia", "posthemiplegic ataxia", "postinfectious ataxia", "progressive cerebellar ataxia", "progressive cerebellar ataxia with hypogonadism", "progressive locomotor ataxia", "progressive myoclonus epilepsy with ataxia", "progressive spinal ataxia", "progressive truncal ataxia", "pum1-related cerebellar ataxia", "recessive mitochondrial ataxia syndrome", "sanger-brown cerebellar ataxia", "sensory ataxia", "single limb ataxia", "spastic ataxia", "spastic ataxia with congenital miosis", "spinal ataxia", "spinocerebellar ataxia", "spinocerebellar ataxia dysmorphism syndrome", "spinocerebellar ataxia type 1", "spinocerebellar ataxia type 10", "spinocerebellar ataxia type 11", "spinocerebellar ataxia type 12", "spinocerebellar ataxia type 13", "spinocerebellar ataxia type 14", "spinocerebellar ataxia type 15/16", "spinocerebellar ataxia type 17", "spinocerebellar ataxia type 18", "spinocerebellar ataxia type 19", "spinocerebellar ataxia type 2", "spinocerebellar ataxia type 20", "spinocerebellar ataxia type 21", "spinocerebellar ataxia type 23"],
 			"tremor":                  ["tremor", "shaking hands", "hand tremor", "involuntary shaking", "resting tremor", "has a tremor", "involuntary quiver", "involuntary trembling", "quivering", "shakes", "shaking", "shaking all over", "the shakes", "trembling", "tremor (finding)", "hand tremor (finding)", "resting tremor (finding)", "arsenical tremor", "bilateral outstretched hands tremor", "chronic tremor", "coarse tremor", "continuous tremor", "dysphonia of organic tremor", "dystonic tremor", "enhanced physiological tremor", "essential tremor", "fine tremor", "fragile x associated tremor ataxia syndrome", "hereditary essential tremor", "intention tremor", "intermittent tremor", "isolated facial tremor", "isolated head tremor", "isolated vocal tremor", "lip tremor", "massive tremor", "medication-induced postural tremor", "mercurial tremor", "metallic tremor", "organic voice tremor", "orthostatic tremor", "parkinsonian tremor", "passive tremor", "persistent tremor", "physiological tremor", "post-hemiplegic tremor", "postural tremor of upper limb", "primary orthostatic tremor", "progressive cerebellar tremor", "psychogenic tremor", "rubral tremor", "saturnine tremor", "senile tremor", "static tremor", "thyrotoxic tremor", "toxic tremor", "tremor of limb", "tremor of palate", "tremor of tongue", "tremor opiophagorum", "voice tremor", "arsenical tremor (finding)", "tremor in bilateral outstretched hands", "tremor in bilateral outstretched hands (finding)", "tremor in both outstretched hands", "chronic tremor (finding)", "coarse tremor (finding)", "continuous tremor (finding)", "dysphonia of essential tremor", "dysphonia of organic tremor (disorder)", "dystonic tremor (finding)", "enhanced physiological tremor (finding)", "essential tremor (disorder)", "fine tremor (finding)", "fragile x associated tremor ataxia syndrome (disorder)", "hereditary essential tremor (disorder)", "action tremor", "cerebellar tremor", "intention tremor (finding)", "kinetic tremor", "volitional tremor", "intermittent tremor (finding)", "isolated facial tremor (finding)", "isolated head tremor (finding)", "isolated vocal tremor (finding)", "lip tremor (finding)", "massive tremor (finding)", "drug-induced tremor", "medication-induced postural tremor (disorder)", "mercurial tremor (finding)", "metallic tremor (finding)", "essential voice tremor", "organic voice tremor (finding)", "orthostatic tremor (finding)", "parkinsonian tremor (finding)", "passive tremor (finding)", "persistent tremor (finding)", "physiological tremor (finding)", "post-hemiplegic tremor (finding)", "postural tremor of upper limb (finding)"],
 			"papilledema":             ["papilledema", "blurred disc margins", "raised icp signs"],
-			"photophobia":             ["photophobia", "light sensitivity", "sensitive to light", "cant tolerate light", "photophobia (finding)"],
+			"photophobia":             ["photophobia", "light sensitivity", "sensitive to light", "lights bother", "eyes hurt in light", "can't tolerate light", "light hurts eyes", "brightness bothers", "light sensitive", "photophobia (finding)"],
 			"phonophobia":             ["phonophobia", "noise sensitivity", "sensitive to sound", "phonophobia (finding)"],
 		},
 
@@ -212,10 +212,15 @@ class SymptomLibrary:
 
 		# ── OPHTHALMOLOGIC / ENT ─────────────────────────────────────
 		"ent_eye": {
-			"eye pain":                ["eye pain", "ocular pain", "painful eye", "eye ache", "sore eye", "pain in eye", "pain in eye (finding)", "sore eye (finding)", "pain around eye", "pain on eye movement", "periorbital pain of left eye", "periorbital pain of right eye", "pain around eye (finding)", "periorbital pain", "pain on movement of eye", "pain on movement of eye (finding)", "pain provoked by movement of eye", "left periorbital eye pain", "periorbital pain of left eye (finding)", "periorbital pain of right eye (finding)", "right periorbital eye pain"],
+			"eye pain":                ["eye pain", "ocular pain", "painful eye", "eye ache", "sore eye", "pain in eye", "pain in eye (finding)", "sore eye (finding)", "pain around eye", "pain on eye movement", "periorbital pain of left eye", "periorbital pain of right eye", "pain around eye (finding)", "periorbital pain", "pain on movement of eye", "pain on movement of eye (finding)", "pain provoked by movement of eye", "left periorbital eye pain", "periorbital pain of left eye (finding)", "periorbital pain of right eye (finding)", "right periorbital eye pain", "pain in the eye", "eye hurts", "eye is painful", "eye soreness"],
+			"eye swelling":            ["eye swelling", "swollen eye", "swelling around eye", "swelling of the eye", "eyelid swelling", "swollen eyelid", "periorbital swelling", "periorbital edema", "eye puffiness", "puffy eye", "puffy eyelid", "left eye swelling", "right eye swelling", "eye swollen"],
+			"eye redness":             ["eye redness", "red eye", "redness of eye", "eye is red", "conjunctival injection", "bloodshot eye", "pink eye", "conjunctivitis symptoms", "eye erythema"],
+			"eye discharge":           ["eye discharge", "discharge from eye", "eye drainage", "eye crusting", "eye matting", "crusty eye", "watery eye", "eye secretion", "eye weeping"],
+			"blurry vision":           ["blurry vision", "blurred vision", "vision blurry", "vision is blurred", "can't see clearly", "double vision", "diplopia", "vision changes", "visual disturbance", "vision loss", "decreased vision", "loss of vision", "partial vision loss"],
+			"eye trauma":              ["eye trauma", "eye injury", "chemical in eye", "foreign body eye", "hit eye", "hit in eye", "foreign body in eye", "something in eye", "eye scratched", "eye laceration", "eye struck", "object in eye", "foreign object eye"],
+			"tearing":                 ["tearing", "excessive tearing", "watering eye", "eyes watering", "epiphora", "eye watering", "tears running"],
 			"vision change":           ["vision change", "visual change", "sudden vision loss", "vision gone", "blurred vision", "blind spot", "flashing lights", "floaters", "blurring of visual image", "blurring of visual image (finding)", "blurry vision", "visual field scotoma", "visual field scotoma (finding)"],
 			"red eye":                 ["red eye", "conjunctivitis", "pink eye", "eye redness", "bloodshot eye", "red eye (finding)", "conjunctivitis (disorder)", "inflammation of conjunctiva", "pink eye disease", "hyperemia of eye", "hyperemia of eye (finding)", "ocular hyperemia", "contact lens related red eye", "has a red eye", "contact lens related red eye (disorder)", "has a red eye (situation)"],
-			"eye trauma":              ["eye trauma", "eye injury", "chemical in eye", "foreign body eye", "hit eye"],
 			"epistaxis":               ["epistaxis", "nosebleed", "bleeding from nose", "bloody nose", "bleeding from nose (finding)", "finding of bleeding of nose", "nasal hemorrhage", "observation of bleeding of nose", "anterior epistaxis", "evidence of recent epistaxis", "fetal epistaxis", "maternal perinatal epistaxis", "neonatal epistaxis", "post-surgical epistaxis", "posterior epistaxis", "traumatic epistaxis", "anterior epistaxis (disorder)", "epistaxis from anterior nasal septum", "epistaxis from kiesselbach's plexus", "epistaxis from little's area", "evidence of recent epistaxis (finding)", "fetal epistaxis (disorder)", "maternal perinatal epistaxis (disorder)", "neonatal epistaxis (disorder)", "post-surgical epistaxis (disorder)", "posterior epistaxis (disorder)", "traumatic epistaxis (disorder)"],
 			"dental pain":             ["dental pain", "toothache", "tooth pain", "dental abscess", "jaw abscess", "dental infection", "dentagra", "dentalgia", "odontalgia", "pain in tooth", "toothache (finding)", "dental abscess (disorder)", "dental sepsis", "tooth abscess", "infection of tooth", "infection of tooth (disorder)", "chronic dental pain", "chronic pain due to dental disorder", "chronic pain due to dental disorder (finding)"],
 			"facial pain":             ["facial pain", "sinusitis", "sinus pain", "facial swelling", "periorbital swelling", "orbital cellulitis", "face ache", "face pain", "pain in face", "pain in face (finding)", "pain of face", "sinusitis (disorder)", "orbital cellulitis (disorder)", "postseptal orbital cellulitis", "facial swelling (finding)", "swollen face", "atypical facial pain", "chronic secondary facial pain", "persistent idiopathic facial pain", "atypical facial pain (finding)", "chronic secondary facial pain (finding)", "persistent idiopathic facial pain (disorder)"],
@@ -544,8 +549,14 @@ class SymptomLibrary:
 		"Pleuritis":                        ["chest pain", "pleuritic chest pain", "fever", "shortness of breath"],
 		# ENT / OPHTHALMOLOGY
 		"Acute Angle Closure Glaucoma":     ["eye pain","vision loss","headache","nausea","vomiting","red eye"],
+		"Acute Angle-Closure Glaucoma":    ["eye pain", "blurry vision", "headache", "nausea", "vomiting"],
 		"Retinal Artery Occlusion":         ["sudden vision loss","vision change"],
-		"Orbital Cellulitis":               ["facial pain","fever","eye pain","vision change"],
+		"Orbital Cellulitis":              ["eye swelling", "eye pain", "fever", "eye redness", "blurry vision", "facial pain"],
+		"Periorbital Cellulitis":          ["eye swelling", "eye pain", "eye redness", "fever"],
+		"Conjunctivitis":                  ["eye redness", "eye discharge", "eye pain", "eye swelling", "tearing"],
+		"Corneal Abrasion":                ["eye pain", "photophobia", "tearing", "blurry vision"],
+		"Uveitis":                         ["eye pain", "photophobia", "blurry vision", "eye redness"],
+		"Foreign Body Eye":                ["eye pain", "eye trauma", "tearing", "eye redness", "blurry vision"],
 		"Peritonsillar Abscess":            ["throat swelling","sore throat","fever","dysphagia"],
 		"Ludwig's Angina":                  ["throat swelling","dental pain","fever","dysphagia"],
 		"Mastoiditis":                      ["ear pain","fever","headache"],
@@ -690,6 +701,13 @@ class SymptomLibrary:
 		"Sickle Cell Crisis":               "D57.00",
 		"Massive Hemorrhage":               "R58",
 		"Acute Angle Closure Glaucoma":     "H40.20",
+		"Acute Angle-Closure Glaucoma":    "H40.211",
+		"Orbital Cellulitis":              "H05.019",
+		"Periorbital Cellulitis":          "H00.01",
+		"Conjunctivitis":                  "H10.9",
+		"Corneal Abrasion":                "S05.00XA",
+		"Uveitis":                         "H20.9",
+		"Foreign Body Eye":                "T15.90XA",
 		"Retinal Artery Occlusion":         "H34.1",
 	}
 
@@ -1455,6 +1473,12 @@ class SymptomLibrary:
 							cls._PHRASE_MAP[p_low].append(symptom)
 		except: pass
 
+		# Manual eye-related root overrides
+		cls._ROOT_MAP["eye"] = "eye pain"
+		cls._ROOT_MAP["ocul"] = "eye pain"
+		cls._ROOT_MAP["ophthalm"] = "eye pain"
+		cls._ROOT_MAP["discharge"] = "eye discharge"
+
 	@classmethod
 	def parse_vitals(cls, text):
 		"""Strict numeric parsing for vital signs to prevent NLP hallucinations."""
@@ -1553,6 +1577,22 @@ class SymptomLibrary:
 				context = tokens[max(0, start_idx-5):min(len(tokens), end_idx+5)]
 				if any(a in context for a in anchors_pleuritic):
 					return True, "pleuritic chest pain"
+
+			if symptom == "pain general":
+				context = tokens[max(0, start_idx-5):min(len(tokens), end_idx+5)]
+				if any(w in context for w in ["eye", "eyes", "ocular", "eyelid", "eyelids"]):
+					return True, "eye pain"
+				if any(w in context for w in ["ear", "ears", "otic", "auricular"]):
+					return True, "ear pain"
+				if "chest" in context:
+					return True, "chest pain"
+
+			if symptom == "eye discharge" and matched_text.lower() == "discharge":
+				context = tokens[max(0, start_idx-5):min(len(tokens), end_idx+5)]
+				if not any(w in context for w in ["eye", "eyes", "ocular", "eyelid", "eyelids", "red", "swelling", "swollen"]):
+					if "nasal" in context or "nose" in context or "runny" in context:
+						return True, "nasal congestion"
+					return False, None
 				
 			return True, symptom
 
@@ -1585,7 +1625,7 @@ class SymptomLibrary:
 		# ── 4. ROOT MATCHING (for unconsumed tokens) ─────────────────
 		for i, token in enumerate(tokens):
 			if consumed[i]: continue
-			if len(token) < 4: continue
+			if len(token) < 3: continue
 			
 			for root, sym in cls._ROOT_MAP.items():
 				# Extra rule: 'racing' maps to rapid heart rate

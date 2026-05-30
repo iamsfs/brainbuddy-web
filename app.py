@@ -111,7 +111,7 @@ CONDITION_MEDS       = load_json('data/condition_medications.json')
 # ── ROS mapping ───────────────────────────────────────────────────────────────
 ROS_MAP = {
     "constitutional": ["fever", "chills", "sweats", "fatigue", "malaise", "weakness", "weight loss"],
-    "eyes":           ["eye pain", "blurred vision", "vision loss", "photophobia", "redness", "red eye"],
+    "eyes":           ["eye pain", "blurred vision", "vision loss", "photophobia", "redness", "red eye", "eye swelling", "eye redness", "eye discharge", "tearing", "blurry vision", "eye trauma"],
     "ent":            ["sore throat", "nasal congestion", "ear pain", "hearing loss", "nasal discharge",
                        "throat pain", "earache", "runny nose", "rhinorrhea"],
     "respiratory":    ["cough", "shortness of breath", "wheezing", "dyspnea", "sob"],
@@ -367,6 +367,14 @@ SYMPTOM_ICD = {
     "ear pain":          ("OTALGIA", "H92.09"),
     "dysuria":           ("DYSURIA", "R30.0"),
     "wheezing":          ("WHEEZING", "R06.2"),
+    "eye pain":          ("EYE PAIN", "H57.10"),
+    "eye swelling":      ("EYE SWELLING", "H02.84"),
+    "eye redness":       ("RED EYE", "H57.89"),
+    "eye discharge":     ("EYE DISCHARGE", "H10.89"),
+    "photophobia":       ("PHOTOPHOBIA", "H53.14"),
+    "blurry vision":     ("BLURRED VISION", "H53.8"),
+    "eye trauma":        ("EYE INJURY", "S05.90XA"),
+    "tearing":           ("TEARING OF EYE", "H04.20"),
 }
 
 # ─────────────────────────────────────────────────────────────────────────────

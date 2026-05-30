@@ -7664,5 +7664,47 @@
         "hyperthermia in newborn",
         "hyperthermia of newborn",
         "neonatal hyperthermia (disorder)"
+    ],
+    "eye pain": [
+        "eye pain", "ocular pain", "pain in eye", "pain in the eye",
+        "eye hurts", "eye is painful", "painful eye", "eye ache",
+        "sore eye", "eye soreness"
+    ],
+    "eye swelling": [
+        "eye swelling", "swollen eye", "swelling around eye", "swelling of the eye",
+        "eyelid swelling", "swollen eyelid", "periorbital swelling",
+        "periorbital edema", "eye puffiness", "puffy eye", "puffy eyelid",
+        "left eye swelling", "right eye swelling", "eye swollen"
+    ],
+    "eye redness": [
+        "eye redness", "red eye", "redness of eye", "eye is red",
+        "conjunctival injection", "bloodshot eye", "pink eye",
+        "conjunctivitis symptoms", "eye erythema"
+    ],
+    "eye discharge": [
+        "eye discharge", "discharge from eye", "eye drainage",
+        "eye crusting", "eye matting", "crusty eye", "watery eye",
+        "eye secretion", "eye weeping"
+    ],
+    "photophobia": [
+        "photophobia", "light sensitivity", "sensitive to light",
+        "lights bother", "eyes hurt in light", "can't tolerate light",
+        "light hurts eyes", "brightness bothers", "light sensitive",
+        "sensitivity to light", "sensitivity to lights"
+    ],
+    "blurry vision": [
+        "blurry vision", "blurred vision", "vision blurry", "vision is blurred",
+        "can't see clearly", "double vision", "diplopia", "vision changes",
+        "visual disturbance", "vision loss", "decreased vision",
+        "loss of vision", "partial vision loss"
+    ],
+    "eye trauma": [
+        "eye trauma", "hit in eye", "eye injury", "foreign body in eye",
+        "something in eye", "eye scratched", "eye laceration",
+        "eye struck", "object in eye", "foreign object eye"
+    ],
+    "tearing": [
+        "tearing", "excessive tearing", "watering eye", "eyes watering",
+        "epiphora", "eye watering", "tears running"
     ]
 }
