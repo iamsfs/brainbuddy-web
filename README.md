@@ -35,8 +35,6 @@ BrainBuddy is actively deployed and maintained with continuous feature updates a
 
 ## Deployment
 
-## Deployment to Heroku
-
 ### Prerequisites
 
 - Heroku CLI installed
