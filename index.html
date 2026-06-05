@@ -1229,116 +1229,56 @@ footer{
  }, {threshold: 0.12});
  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
- // Active nav highlight
- const navLinks = document.querySelectorAll('.nav-links a');
- const navObserver = new IntersectionObserver((entries) => {
-   entries.forEach(entry => {
-     if (entry.isIntersecting) {
-       navLinks.forEach(link => {
-         link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
-       });
-     }
-   });
- }, { threshold: 0.5 });
- document.querySelectorAll('section[id]').forEach(section => navObserver.observe(section));
- </script>
- 
-  <script>
-    const BACK4APP_APP_ID  = 'Wm6rlmXv53Ik1VlBTsnaMhQHDcEIreugsv5xVoCw';
-    const BACK4APP_REST_KEY = '8mVf9Hs9DbGz1B69cIGsN8HS6YFAEBnXcWvHX3P2';
-
-    // 1. Function to load the download URL and update any .download-btn elements (e.g. Nav bar)
-    async function loadDownloadUrl() {
-      try {
-        const res = await fetch(
-          'https://parseapi.back4app.com/classes/brainbuddy',
-          {
-            headers: {
-              'X-Parse-Application-Id': BACK4APP_APP_ID,
-              'X-Parse-REST-API-Key':   BACK4APP_REST_KEY
-            }
-          }
-        );
-        const data = await res.json();
-        const record = data.results?.[0];
-        if (record?.download_url) {
-          document.querySelectorAll('.download-btn').forEach(btn => {
-            btn.href = record.download_url;
-          });
-        }
-      } catch (e) {
-        console.error('Failed to load download URL:', e);
+  // Active nav highlight
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+        });
       }
-    }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('section[id]').forEach(section => navObserver.observe(section));
+  </script>
 
-    // 2. Form submission handler
+  <script>
+    // Form submission handler with local mock success response
     document.addEventListener("DOMContentLoaded", function () {
       const form = document.getElementById("downloadForm");
       const messageDiv = document.getElementById("formMessage");
 
       if (form) {
-        form.addEventListener("submit", async function (e) {
+        form.addEventListener("submit", function (e) {
           e.preventDefault();
-          const email = document.getElementById("userEmail").value;
+          const email = document.getElementById("userEmail").value.trim();
           const submitBtn = form.querySelector("button[type='submit']");
 
           submitBtn.innerText = "Verifying...";
           submitBtn.style.opacity = "0.7";
           submitBtn.disabled = true;
 
-          try {
-            // Step 1: Get latest download_url from Back4App
-            const configRes = await fetch(
-              'https://parseapi.back4app.com/classes/brainbuddy',
-              {
-                headers: {
-                  'X-Parse-Application-Id': BACK4APP_APP_ID,
-                  'X-Parse-REST-API-Key': BACK4APP_REST_KEY
-                }
-              }
-            );
-            const configData = await configRes.json();
-            const download_url = configData.results?.[0]?.download_url || '';
-
-            // Step 2: Call Cloud Code with email + download_url
-            const res = await fetch(
-              'https://parseapi.back4app.com/functions/sendDownloadLink',
-              {
-                method: "POST",
-                headers: {
-                  "X-Parse-Application-Id": BACK4APP_APP_ID,
-                  "X-Parse-REST-API-Key": BACK4APP_REST_KEY,
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, download_url })
-              }
-            );
-
-            const result = await res.json();
-            
-            // Check for success
-            if (res.ok && (result.result?.status === 'success' || result.result)) {
+          // Simulate network delay
+          setTimeout(function () {
+            // Simple email validation regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(email)) {
               form.style.display = "none";
               messageDiv.style.display = "block";
-              messageDiv.style.color = "#4ade80";
-              messageDiv.innerHTML = "<strong>Success!</strong> Check your inbox for your secure download link.";
+              messageDiv.style.color = "#00C896";
+              messageDiv.innerHTML = "<strong>Success!</strong> A secure download link has been simulated and sent to your email (Mock Mode).";
             } else {
-              throw new Error("Server error");
+              submitBtn.innerText = "Get Mac App";
+              submitBtn.style.opacity = "1";
+              submitBtn.disabled = false;
+              messageDiv.style.display = "block";
+              messageDiv.style.color = "#f87171";
+              messageDiv.innerHTML = "Please enter a valid clinical email address.";
             }
-          } catch (error) {
-            console.error("Submission Error:", error);
-            submitBtn.innerText = "Get Mac App";
-            submitBtn.style.opacity = "1";
-            submitBtn.disabled = false;
-            messageDiv.style.display = "block";
-            messageDiv.style.color = "#f87171";
-            messageDiv.innerHTML = "Connection error. Please try again or contact support.";
-          }
+          }, 800);
         });
       }
-      
-      // Also load the download URL for the nav button
-      loadDownloadUrl();
     });
   </script>
 
