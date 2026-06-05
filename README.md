@@ -35,4 +35,45 @@ BrainBuddy is actively deployed and maintained with continuous feature updates a
 
 ## Deployment
 
-(Keep your current Heroku deployment instructions below this section.)
+## Deployment to Heroku
+
+### Prerequisites
+
+- Heroku CLI installed
+- Heroku account
+
+### Deploy in 4 commands
+
+```bash
+# 1. Login to Heroku
+heroku login
+
+# 2. Create app
+heroku create brainbuddy-pitch
+
+# 3. Deploy
+git init
+git add .
+git commit -m "BrainBuddy pitch deck"
+git push heroku main
+
+# 4. Open
+heroku open
+```
+
+### Files
+
+- `index.html` — Full pitch deck / landing page (self-contained, screenshots embedded)
+- `app.py` — Flask server
+- `Procfile` — Heroku process definition
+- `requirements.txt` — Python dependencies
+- `runtime.txt` — Python version
+
+### Local Development
+
+```bash
+pip install flask gunicorn
+python app.py
+
+# Open http://localhost:5000
+```
