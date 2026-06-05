@@ -23,6 +23,8 @@ BrainBuddy Web is an AI-powered clinical decision support and physician document
 
 ## Live Demo
 
+https://brainbuddy-58ae48db486f.herokuapp.com
+
 BrainBuddy is actively deployed and maintained with continuous feature updates and clinical workflow improvements.
 
 ## Roadmap
