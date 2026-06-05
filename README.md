@@ -1,40 +1,38 @@
-# BrainBuddy — Web Pitch Deck
+# BrainBuddy Web
 
-## Deploy to Heroku
+BrainBuddy Web is an AI-powered clinical decision support and physician documentation platform designed to assist healthcare professionals with differential diagnosis generation, clinical workflows, medical scoring systems, and structured physician chart creation.
 
-### Prerequisites
-- [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed
-- Heroku account
+## Features
 
-### Deploy in 4 commands
+- Clinical decision support engine
+- Differential diagnosis generation
+- Physician chart generation
+- Interactive medical workflow dashboard
+- Syndrome and scoring engines
+- Ophthalmology templates
+- Emergency medicine workflows
+- AI-assisted clinical documentation
 
-```bash
-# 1. Login to Heroku
-heroku login
+## Technology Stack
 
-# 2. Create app
-heroku create brainbuddy-pitch
+- Python
+- Flask
+- HTML/CSS/JavaScript
+- Clinical knowledge engines
+- Dynamic physician chart generation
 
-# 3. Deploy
-git init
-git add .
-git commit -m "BrainBuddy pitch deck"
-git push heroku main
+## Live Demo
 
-# 4. Open
-heroku open
-```
+BrainBuddy is actively deployed and maintained with continuous feature updates and clinical workflow improvements.
 
-### Files
-- `index.html` — Full pitch deck / landing page (self-contained, screenshots embedded)
-- `app.py` — Flask server
-- `Procfile` — Heroku process definition
-- `requirements.txt` — Python dependencies
-- `runtime.txt` — Python version
+## Roadmap
 
-### Local development
-```bash
-pip install flask gunicorn
-python app.py
-# Open http://localhost:5000
-```
+- FHIR export support
+- Mobile UI optimization
+- Advanced physician analytics
+- Expanded specialty templates
+- Improved diagnosis ranking algorithms
+
+## Deployment
+
+(Keep your current Heroku deployment instructions below this section.)
