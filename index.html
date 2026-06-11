@@ -787,7 +787,7 @@ footer{
     <p class="hero-desc">An AI-powered clinical scribe that sits beside the EMR — watching what the doctor types, delivering differential diagnoses, recommended tests, drug references and billing codes before the doctor even asks.</p>
     <div class="hero-btns" style="margin-bottom: 40px;">
       <a href="/live" class="btn-primary">Launch Live Demo ➔</a>
-      <a href="#downloadForm" class="btn-red" onclick="document.getElementById('downloadForm').scrollIntoView({behavior:'smooth'}); return false;">Get Mac App</a>
+      <a href="#download-section" class="btn-red" onclick="document.getElementById('download-section').scrollIntoView({behavior:'smooth'}); return false;">Get Mac App</a>
     </div>
     <div class="hero-stats">
       <div class="hstat">
@@ -1197,22 +1197,18 @@ footer{
     <div class="invest-label">Early Bird Investment Opportunity</div>
     <div class="invest-val">$10K – $300K &nbsp;·&nbsp; 1% – 30% Equity</div>
   </div>
-  <!-- ── EMAIL GATE ── -->
-  <div class="download-gate-container" style="margin-top: 24px; text-align: center;">
-      <form id="downloadForm" style="display: flex; justify-content: center; gap: 10px; max-width: 450px; margin: 0 auto;">
-        <input type="email" id="userEmail" placeholder="Enter your clinical email address" required
-               style="flex: 1; padding: 14px 18px; border-radius: 8px; border: 1px solid #444; background: rgba(0,0,0,0.6); color: #fff; font-family: 'Lato', sans-serif; font-size: 16px; outline: none;">
-        <button type="submit"
-                style="padding: 14px 28px; border-radius: 8px; border: none; background: #008080; color: #fff; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s opacity;">
-          Get Mac App
-        </button>
-      </form>
-      <div id="formMessage" style="margin-top: 16px; font-family: 'Lato', sans-serif; font-size: 15px; display: none;"></div>
-      <p style="margin-top: 12px; font-size: 12px; color: var(--muted);">macOS 12+ &middot; Apple Silicon &amp; Intel &middot; ~500 MB &middot; Free Early Access</p>
+  <!-- ── DOWNLOAD SECTION ── -->
+  <div class="download-section" id="download-section">
+    <a href="https://www.dropbox.com/scl/fi/xnevu47duc7hlg67dp3dd/BrainBuddy-3.2.2.dmg?rlkey=ppwo4325iymqvgqfz2yupa49j&dl=1" class="download-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+      </svg>
+      Download for macOS
+    </a>
+    <div class="download-meta">
+      macOS 12+ &middot; Apple Silicon &amp; Intel &middot; ~500 MB &middot; Free Early Access
     </div>
-    <p class="cta-contact reveal" style="transition-delay:.35s">
-      <a href="mailto:faisaly2k1@gmail.com">faisaly2k1@gmail.com</a>
-    </p>
+  </div>
   </section>
   
   <footer>
@@ -1243,44 +1239,6 @@ footer{
   document.querySelectorAll('section[id]').forEach(section => navObserver.observe(section));
   </script>
 
-  <script>
-    // Form submission handler with local mock success response
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("downloadForm");
-      const messageDiv = document.getElementById("formMessage");
-
-      if (form) {
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
-          const email = document.getElementById("userEmail").value.trim();
-          const submitBtn = form.querySelector("button[type='submit']");
-
-          submitBtn.innerText = "Verifying...";
-          submitBtn.style.opacity = "0.7";
-          submitBtn.disabled = true;
-
-          // Simulate network delay
-          setTimeout(function () {
-            // Simple email validation regex
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (emailRegex.test(email)) {
-              form.style.display = "none";
-              messageDiv.style.display = "block";
-              messageDiv.style.color = "#00C896";
-              messageDiv.innerHTML = "<strong>Success!</strong> A secure download link has been simulated and sent to your email (Mock Mode).";
-            } else {
-              submitBtn.innerText = "Get Mac App";
-              submitBtn.style.opacity = "1";
-              submitBtn.disabled = false;
-              messageDiv.style.display = "block";
-              messageDiv.style.color = "#f87171";
-              messageDiv.innerHTML = "Please enter a valid clinical email address.";
-            }
-          }, 800);
-        });
-      }
-    });
-  </script>
 
 
 
